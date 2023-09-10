@@ -16,11 +16,10 @@ public class Node {
     Symbol symbol;
     Generator generator;
 
-    public Node(Generator generator, Symbol symbol, int maxLen) {
+    public Node(Generator generator, Symbol symbol) {
         this.generator = generator;
         this.symbol = symbol;
         this.ruleCount = generator.ruleCount(symbol);
-        first(maxLen);
     }
 
     public String string() {
@@ -59,7 +58,8 @@ public class Node {
         assert (!symbol.terminal);
         Rule rule = generator.getRule(symbol.index, ruleIndex);
         for (int i = start; i < rule.size(); i++) {
-            Node child = new Node(generator, rule.get(i), maxLen);
+            Node child = new Node(generator, rule.get(i));
+            child.first(maxLen);
             maxLen -= child.getLen();
             childs.add(child);
         }

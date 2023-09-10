@@ -14,7 +14,8 @@ public class CollectTest {
         Set followS, followA;
         Generator generator = new Generator(TestGrammars.grammar2(), 5);
         Symbol symbol = generator.getNT(0);
-        Node node = new Node(generator, symbol, 5);
+        Node node = new Node(generator, symbol);
+        node.first(5);
         assertEquals("",node.string());
         assertEquals("S()",node.parenString());
         for (int k=1; k<3; k++) {

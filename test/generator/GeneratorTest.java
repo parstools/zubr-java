@@ -12,6 +12,7 @@ public class GeneratorTest {
     @Test
     void grammar3Test() {
         Generator generator = new Generator(TestGrammars.grammar3(), 5);
+        generator.first();
         assertEquals("aaa", generator.string());
         assertTrue(generator.next());
         assertEquals("aab", generator.string());

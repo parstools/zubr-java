@@ -30,7 +30,7 @@ public class Generator {
         }
         for (NTInfo ntInfo: ntInfos)
             ntInfo.sortRules();
-        root = new Node(this, getNT(0), maxLen);
+        root = new Node(this, getNT(0));
     }
 
     Symbol getNT(int ntIndex) {
@@ -57,6 +57,10 @@ public class Generator {
         return root.parenString();
     }
 
+    public void first() {
+        root.first(maxLen);
+    }
+
     public boolean next() {
         return root.next(maxLen);
     }
@@ -68,4 +72,5 @@ public class Generator {
     public Set collectFollow(int ntNumber, int k) {
         return new Set();
     }
+
 }
