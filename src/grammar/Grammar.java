@@ -13,12 +13,15 @@ public class Grammar {
     List<String> tNames = new ArrayList<>();
 
     public String getTerminalName(int t) {
-        return tNames.get(t);
+        if (t==-1)
+            return "$"; //end of stream
+        else
+            return tNames.get(t);
     }
 
     public String getSymbolName(Symbol symbol) {
         if (symbol.terminal)
-            return tNames.get(symbol.index);
+            return getTerminalName(symbol.index);
         else
             return ntNames.get(symbol.index);
     }

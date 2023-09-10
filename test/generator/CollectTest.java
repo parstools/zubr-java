@@ -17,9 +17,11 @@ public class CollectTest {
         Grammar grammar = TestGrammars.grammar2();
         Generator generator = new Generator(grammar, 5);
         generator.createFromString("S(aS()S(b))");
-        SequenceSet sset = new SequenceSet(grammar);
-        generator.root.collectFirst(0,1, sset);
-        out.println(sset);
+        SequenceSet sset1 = new SequenceSet(grammar);
+        generator.root.collectFirst(0,1, sset1);
+        SequenceSet sset2 = new SequenceSet(grammar);
+        generator.root.collectFirst(0,2, sset2);
+        out.println(sset2);
     }
     @Test
     void grammar2Collect() {
