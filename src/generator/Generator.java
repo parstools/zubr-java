@@ -64,6 +64,10 @@ public class Generator {
         return root.string();
     }
 
+    public String parenString() {
+        return root.parenString();
+    }
+
     public boolean next() {
         return root.next(maxLen);
     }
