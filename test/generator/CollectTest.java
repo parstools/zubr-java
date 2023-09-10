@@ -7,6 +7,10 @@ import set.SequenceSet;
 import set.Set;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,35 +41,58 @@ public class CollectTest {
         Grammar grammar = TestGrammars.grammar2();
         Generator generator = new Generator(grammar, 5);
         generator.createFromString("S(aS()S(b)a)");
-        Sequence eofSeq = new Sequence(grammar, "$");
-        Sequence seq = generator.root.terminalsFrom(2,1,eofSeq);
+        Sequence seq = generator.root.terminalsFrom(2,1);
         assertEquals("b", seq.toString());
-        seq = generator.root.terminalsFrom(3,1,eofSeq);
+        seq = generator.root.terminalsFrom(3,1);
         assertEquals("a", seq.toString());
 
-        seq = generator.root.terminalsFrom(2,2,eofSeq);
+        seq = generator.root.terminalsFrom(2,2);
         assertEquals("ba", seq.toString());
-        seq = generator.root.terminalsFrom(3,2,eofSeq);
-        assertEquals("a$", seq.toString());
+        seq = generator.root.terminalsFrom(3,2);
+        assertEquals("a", seq.toString());
 
-        seq = generator.root.terminalsFrom(2,3,eofSeq);
-        assertEquals("ba$", seq.toString());
-        seq = generator.root.terminalsFrom(3,3,eofSeq);
-        assertEquals("a$", seq.toString());
+        seq = generator.root.terminalsFrom(2,3);
+        assertEquals("ba", seq.toString());
+        seq = generator.root.terminalsFrom(3,3);
+        assertEquals("a", seq.toString());
     }
 
     @Test
-    void terminalsFrom_upSeq() {
+    void collectFollow() {
         Grammar grammar = TestGrammars.grammar2();
         Generator generator = new Generator(grammar, 5);
-        Sequence upSeq = new Sequence(grammar, "ab");
-        generator.createFromString("A(S(c)ab)");
-        Sequence seq = generator.root.childs.get(0).terminalsFrom(1,1,upSeq);
-        assertEquals("a", seq.toString());
-        seq = generator.root.childs.get(0).terminalsFrom(1,2,upSeq);
-        assertEquals("ab", seq.toString());
-        seq = generator.root.childs.get(0).terminalsFrom(1,3,upSeq);
-        assertEquals("ab", seq.toString());
+        Sequence upSeq = new Sequence(grammar, "$");
+        Stack<Sequence> stackSeq = new Stack<>();
+        stackSeq.add(upSeq);
+        generator.createFromString("S(A(S(c)ab))");
+
+        SequenceSet sset1 = new SequenceSet();
+        SequenceSet expected1 = new SequenceSet();
+        expected1.add(new Sequence(grammar, "$"));
+        expected1.add(new Sequence(grammar, "a"));
+        generator.root.collectFollow(0,1, stackSeq, sset1);
+        assertEquals(expected1, sset1);
+
+        SequenceSet sset2 = new SequenceSet();
+        SequenceSet expected2 = new SequenceSet();
+        expected2.add(new Sequence(grammar, "$"));
+        expected2.add(new Sequence(grammar, "ab"));
+        generator.root.collectFollow(0,2, stackSeq, sset2);
+        assertEquals(expected2, sset2);
+
+        SequenceSet sset3 = new SequenceSet();
+        SequenceSet expected3 = new SequenceSet();
+        expected3.add(new Sequence(grammar, "$"));
+        expected3.add(new Sequence(grammar, "ab$"));
+        generator.root.collectFollow(0,3, stackSeq, sset3);
+        assertEquals(expected3, sset3);
+
+        SequenceSet sset4 = new SequenceSet();
+        SequenceSet expected4 = new SequenceSet();
+        expected4.add(new Sequence(grammar, "$"));
+        expected4.add(new Sequence(grammar, "ab$"));
+        generator.root.collectFollow(0,4, stackSeq, sset4);
+        assertEquals(expected4, sset4);
     }
 
     @Test

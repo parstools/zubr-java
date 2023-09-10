@@ -9,6 +9,7 @@ import set.Set;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Node {
     final List<Node> childs = new ArrayList<>();
@@ -140,6 +141,39 @@ public class Node {
             child.collectFirst(ntNumber, k, sset);
     }
 
+    Sequence kSymbolsFromStack(int k, Stack<Sequence> stackSeq) {
+        int remaining = k;
+        Sequence seq = new Sequence(grammar);
+        for (int i = stackSeq.size() - 1; i >= 0; i--) {
+            Sequence stackItem = stackSeq.get(i);
+            if (remaining >= stackItem.size()) {
+                seq.addAll(stackItem);
+                remaining -= stackItem.size();
+            } else {
+                for (int j = 0; j < remaining; j++)
+                    seq.add(stackItem.get(j));
+                remaining = 0;
+                break;
+            }
+            if (remaining == 0) break;
+        }
+        return seq;
+    }
+
+    public void collectFollow(int ntNumber, int k, Stack<Sequence> stackSeq, SequenceSet sset) {
+        if (!symbol.terminal && symbol.index == ntNumber) {
+            Sequence seq = kSymbolsFromStack(k, stackSeq);
+            sset.add(seq);
+        }
+        for (int i = 0; i < childs.size(); i++) {
+            Node child = childs.get(i);
+            Sequence seq = terminalsFrom(i + 1, k);
+            stackSeq.push(seq);
+            child.collectFollow(ntNumber, k, stackSeq, sset);
+            stackSeq.pop();
+        }
+    }
+
     private Sequence appendTerminals(int k) {
         assert (k > 0);
         Sequence seq = new Sequence(grammar);
@@ -159,7 +193,7 @@ public class Node {
         return seq;
     }
 
-    Sequence terminalsFrom(int start, int k, Sequence upSeq) {
+    Sequence terminalsFrom(int start, int k) {
         assert (k > 0);
         Sequence seq = new Sequence(grammar);
         int remaining = k;
@@ -172,9 +206,6 @@ public class Node {
             if (remaining == 0)
                 break;
         }
-        int k1 = seq.size();
-        for (int i = k1; i < Math.min(k, k1+upSeq.size()); i++)
-            seq.add(upSeq.get(i - k1));
         return seq;
     }
 }
