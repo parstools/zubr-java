@@ -38,11 +38,11 @@ public class TokenSet {
         for (int i = 0; i <= maxLen; i++) {
             String tstr = tiers.get(i).toString();
             boolean empty = tstr.isEmpty();
-            if (needSpace && i < maxLen) {
-                sb.append(" ");
-                needSpace = false;
-            }
             if (!empty) {
+                if (needSpace) {
+                    sb.append(" ");
+                    needSpace = false;
+                }
                 sb.append(tstr);
                 needSpace = true;
             }

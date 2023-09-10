@@ -73,7 +73,7 @@ public class Generator {
 
     public TokenSet collectFirst(int ntNumber, int k) {
         SequenceSet sset = new SequenceSet();
-        root.collectFirst(0, k, sset);
+        root.collectFirst(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
         result.fromSSeq(sset);
         return result;
@@ -84,7 +84,7 @@ public class Generator {
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
-        root.collectFollow(0,k, stackSeq, sset);
+        root.collectFollow(ntNumber,k, stackSeq, sset);
         TokenSet result = new TokenSet(grammar, k);
         result.fromSSeq(sset);
         return result;
