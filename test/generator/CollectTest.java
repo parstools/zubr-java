@@ -96,6 +96,24 @@ public class CollectTest {
     }
 
     @Test
+    void collectFollow2() {
+        Grammar grammar = TestGrammars.grammar2();
+        Generator generator = new Generator(grammar, 5);
+        Sequence upSeq = new Sequence(grammar, "$");
+        Stack<Sequence> stackSeq = new Stack<>();
+        stackSeq.add(upSeq);
+        generator.createFromString("S(A(S(c)ab)S(S(c))b)");
+
+        SequenceSet sset2 = new SequenceSet();
+        SequenceSet expected2 = new SequenceSet();
+        expected2.add(new Sequence(grammar, "$"));
+        expected2.add(new Sequence(grammar, "b$"));
+        expected2.add(new Sequence(grammar, "ab"));
+        generator.root.collectFollow(0, 2, stackSeq, sset2);
+        assertEquals(expected2, sset2);
+    }
+
+    @Test
     void grammar2Collect() {
         Set firstS,firstA;
         Set followS, followA;
