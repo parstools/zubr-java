@@ -10,25 +10,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NodeTest {
-    Grammar grammar1() {
-        List<String> lines = new ArrayList<>();
-        lines.add("S -> C C");
-        lines.add("C -> e C");
-        lines.add("C -> d");
-        return new Grammar(lines);
-    }
-
-    Grammar grammar2() {
-        List<String> lines = new ArrayList<>();
-        lines.add("S -> a S A");
-        lines.add("S ->");
-        lines.add("A -> a b S");
-        lines.add("A -> c");
-        return new Grammar(lines);
-    }
     @Test
     void grammar1CTest() {
-        Generator generator = new Generator(grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol, 5);
         assertEquals("d",node.string());
@@ -46,7 +30,7 @@ class NodeTest {
 
     @Test
     void grammar1Test() {
-        Generator generator = new Generator(grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol,  5);
         assertEquals("dd",node.string());
@@ -74,7 +58,7 @@ class NodeTest {
 
     @Test
     void grammar2ATest() {
-        Generator generator = new Generator(grammar2(), 5);
+        Generator generator = new Generator(TestGrammars.grammar2(), 5);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol, 5);
         assertEquals("c",node.string());
@@ -93,7 +77,7 @@ class NodeTest {
 
     @Test
     void grammar2Test() {
-        Generator generator = new Generator(grammar2(), 5);
+        Generator generator = new Generator(TestGrammars.grammar2(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol, 5);
         assertEquals("",node.string());
