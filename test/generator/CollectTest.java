@@ -170,7 +170,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 2);
         assertEquals("{eps aa}", firstS.toString());
         assertEquals("{ab}", firstA.toString());
-        assertEquals("{ab $}", followS.toString());
+        assertEquals("{$ ab}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         assertTrue(generator.next());
@@ -192,7 +192,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 2);
         assertEquals("{eps aa ac}", firstS.toString());
         assertEquals("{c ab}", firstA.toString());
-        assertEquals("{ab $ c$}", followS.toString());
+        assertEquals("{$ ab c$}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         firstS = generator.collectFirst(0, 3);

@@ -5,7 +5,7 @@ import grammar.Grammar;
 import java.util.*;
 
 public class Tier {
-    static public class Trie extends HashMap<Integer, Trie> {
+    static public class Trie extends TreeMap<Integer, Trie> {
         Grammar grammar;
 
         Trie(Grammar grammar) {
