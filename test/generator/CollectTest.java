@@ -38,8 +38,34 @@ public class CollectTest {
         Generator generator = new Generator(grammar, 5);
         generator.createFromString("S(aS()S(b)a)");
         Sequence eofSeq = new Sequence(grammar, "$");
-        //Sequence seq = generator.root.terminalsFrom(2,1,eofSeq);
-        //assertEquals("");
+        Sequence seq = generator.root.terminalsFrom(2,1,eofSeq);
+        assertEquals("b", seq.toString());
+        seq = generator.root.terminalsFrom(3,1,eofSeq);
+        assertEquals("a", seq.toString());
+
+        seq = generator.root.terminalsFrom(2,2,eofSeq);
+        assertEquals("ba", seq.toString());
+        seq = generator.root.terminalsFrom(3,2,eofSeq);
+        assertEquals("a$", seq.toString());
+
+        seq = generator.root.terminalsFrom(2,3,eofSeq);
+        assertEquals("ba$", seq.toString());
+        seq = generator.root.terminalsFrom(3,3,eofSeq);
+        assertEquals("a$", seq.toString());
+    }
+
+    @Test
+    void terminalsFrom_upSeq() {
+        Grammar grammar = TestGrammars.grammar2();
+        Generator generator = new Generator(grammar, 5);
+        Sequence upSeq = new Sequence(grammar, "ab");
+        generator.createFromString("A(S(c)ab)");
+        Sequence seq = generator.root.childs.get(0).terminalsFrom(1,1,upSeq);
+        assertEquals("a", seq.toString());
+        seq = generator.root.childs.get(0).terminalsFrom(1,2,upSeq);
+        assertEquals("ab", seq.toString());
+        seq = generator.root.childs.get(0).terminalsFrom(1,3,upSeq);
+        assertEquals("ab", seq.toString());
     }
 
     @Test

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    private final List<Node> childs = new ArrayList<>();
+    final List<Node> childs = new ArrayList<>();
 
     void addChild(Node child) {
         childs.add(child);
@@ -137,11 +137,11 @@ public class Node {
             sset.add(seq);
         }
         for (Node child : childs)
-            child.collectFirst(ntNumber, k,sset);
+            child.collectFirst(ntNumber, k, sset);
     }
 
     private Sequence appendTerminals(int k) {
-        assert(k>0);
+        assert (k > 0);
         Sequence seq = new Sequence(grammar);
         if (symbol.terminal)
             seq.add(symbol.index);
@@ -156,6 +156,25 @@ public class Node {
                     break;
             }
         }
+        return seq;
+    }
+
+    Sequence terminalsFrom(int start, int k, Sequence upSeq) {
+        assert (k > 0);
+        Sequence seq = new Sequence(grammar);
+        int remaining = k;
+        for (int i = start; i < childs.size(); i++) {
+            Node child = childs.get(i);
+            Sequence subSeq = child.appendTerminals(remaining);
+            seq.addAll(subSeq);
+            remaining -= subSeq.size();
+            assert (remaining >= 0);
+            if (remaining == 0)
+                break;
+        }
+        int k1 = seq.size();
+        for (int i = k1; i < Math.min(k, k1+upSeq.size()); i++)
+            seq.add(upSeq.get(i - k1));
         return seq;
     }
 }
