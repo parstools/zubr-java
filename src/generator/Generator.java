@@ -4,10 +4,13 @@ import grammar.Grammar;
 import grammar.Nonterminal;
 import grammar.Rule;
 import grammar.Symbol;
+import set.Sequence;
+import set.SequenceSet;
 import set.Set;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import static java.lang.Character.*;
 
@@ -69,11 +72,22 @@ public class Generator {
     }
 
     public Set collectFirst(int ntNumber, int k) {
-        return new Set(k);
+        SequenceSet sset = new SequenceSet();
+        root.collectFirst(0, k, sset);
+        Set result = new Set(k);
+        result.fromSSeq(sset);
+        return result;
     }
 
     public Set collectFollow(int ntNumber, int k) {
-        return new Set(k);
+        SequenceSet sset = new SequenceSet();
+        Sequence upSeq = new Sequence(grammar, "$");
+        Stack<Sequence> stackSeq = new Stack<>();
+        stackSeq.add(upSeq);
+        root.collectFollow(0,k, stackSeq, sset);
+        Set result = new Set(k);
+        result.fromSSeq(sset);
+        return result;
     }
 
     static int afterParen(String parenStr, int start) {
