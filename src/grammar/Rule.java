@@ -18,7 +18,7 @@ public class Rule extends ArrayList<Symbol> {
         Scanner scanner = new Scanner(input);
         while (scanner.hasNext()) {
             String symbolName = scanner.next();
-            add(grammar.findSymbol(symbolName));
+            add(grammar.findSymbolAddingTerminal(symbolName));
         }
     }
 }

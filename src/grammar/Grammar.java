@@ -65,6 +65,14 @@ public class Grammar {
         if (ntNamesToInt.containsKey(name)) {
             return new Symbol(this, false, ntNamesToInt.get(name));
         } else {
+            return new Symbol(this, true, tNamesToInt.get(name));
+        }
+    }
+
+    public Symbol findSymbolAddingTerminal(String name) {
+        if (ntNamesToInt.containsKey(name)) {
+            return new Symbol(this, false, ntNamesToInt.get(name));
+        } else {
             if (!tNamesToInt.containsKey(name))
                 addT(name);
             return new Symbol(this, true, tNamesToInt.get(name));

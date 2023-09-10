@@ -11,6 +11,11 @@ import java.util.List;
 
 public class Node {
     private final List<Node> childs = new ArrayList<>();
+
+    void addChild(Node child) {
+        childs.add(child);
+    }
+
     int ruleIndex = 0;
     int ruleCount;
     Symbol symbol;

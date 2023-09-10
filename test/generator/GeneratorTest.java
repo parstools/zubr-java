@@ -1,10 +1,6 @@
 package generator;
 
-import grammar.Grammar;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,5 +25,19 @@ public class GeneratorTest {
         assertTrue(generator.next());
         assertEquals("bbb", generator.string());
         assertFalse(generator.next());
+    }
+
+    @Test
+    void creationFromString() {
+        Generator generator = new Generator(TestGrammars.grammar2(), 5);
+        String parenStr = "A(S()a)";
+        generator.createFromString(parenStr);
+        assertEquals(parenStr, generator.parenString());
+        parenStr = "S(aA(b)aA(S()a)b)";
+        generator.createFromString(parenStr);
+        assertEquals(parenStr, generator.parenString());
+        parenStr = "S(aA(a)b)";
+        generator.createFromString(parenStr);
+        assertEquals(parenStr, generator.parenString());
     }
 }
