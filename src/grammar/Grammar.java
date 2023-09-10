@@ -69,7 +69,10 @@ public class Grammar {
     }
 
     public int findTerminal(String name) {
-        return tNamesToInt.get(name);
+        if (name.equals("$"))
+            return -1;
+        else
+            return tNamesToInt.get(name);
     }
 
     public Symbol findSymbol(String name) {

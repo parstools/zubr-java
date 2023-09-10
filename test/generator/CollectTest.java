@@ -7,22 +7,41 @@ import set.SequenceSet;
 import set.Set;
 import org.junit.jupiter.api.Test;
 
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CollectTest {
     @Test
-    void constructed() {
+    void collectFirst() {
         Grammar grammar = TestGrammars.grammar2();
         Generator generator = new Generator(grammar, 5);
         generator.createFromString("S(aS()S(b))");
-        SequenceSet sset1 = new SequenceSet(grammar);
+        SequenceSet sset1 = new SequenceSet();
+        SequenceSet expected1 = new SequenceSet();
+        expected1.add(new Sequence(grammar, "a"));
+        expected1.add(new Sequence(grammar, "b"));
+        expected1.add(new Sequence(grammar, ""));
         generator.root.collectFirst(0,1, sset1);
-        SequenceSet sset2 = new SequenceSet(grammar);
+        assertEquals(expected1, sset1);
+        SequenceSet sset2 = new SequenceSet();
+        SequenceSet expected2 = new SequenceSet();
+        expected2.add(new Sequence(grammar, "ab"));
+        expected2.add(new Sequence(grammar, "b"));
+        expected2.add(new Sequence(grammar, ""));
         generator.root.collectFirst(0,2, sset2);
-        out.println(sset2);
+        assertEquals(expected2, sset2);
     }
+
+    @Test
+    void terminalsFrom() {
+        Grammar grammar = TestGrammars.grammar2();
+        Generator generator = new Generator(grammar, 5);
+        generator.createFromString("S(aS()S(b)a)");
+        Sequence eofSeq = new Sequence(grammar, "$");
+        //Sequence seq = generator.root.terminalsFrom(2,1,eofSeq);
+        //assertEquals("");
+    }
+
     @Test
     void grammar2Collect() {
         Set firstS,firstA;
