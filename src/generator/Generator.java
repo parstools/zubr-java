@@ -69,11 +69,11 @@ public class Generator {
     }
 
     public Set collectFirst(int ntNumber, int k) {
-        return new Set();
+        return new Set(k);
     }
 
     public Set collectFollow(int ntNumber, int k) {
-        return new Set();
+        return new Set(k);
     }
 
     static int afterParen(String parenStr, int start) {
