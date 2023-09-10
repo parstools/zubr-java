@@ -29,7 +29,7 @@ class NodeTest {
     }
     @Test
     void grammar1CTest() {
-        Generator generator = new Generator(grammar1());
+        Generator generator = new Generator(grammar1(), 5);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol, 5);
         assertEquals("d",node.string());
@@ -47,7 +47,7 @@ class NodeTest {
 
     @Test
     void grammar1Test() {
-        Generator generator = new Generator(grammar1());
+        Generator generator = new Generator(grammar1(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol,  5);
         assertEquals("dd",node.string());
@@ -75,7 +75,7 @@ class NodeTest {
 
     @Test
     void grammar2ATest() {
-        Generator generator = new Generator(grammar2());
+        Generator generator = new Generator(grammar2(), 5);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol, 5);
         assertEquals("c",node.string());
@@ -94,7 +94,7 @@ class NodeTest {
 
     @Test
     void grammar2Test() {
-        Generator generator = new Generator(grammar2());
+        Generator generator = new Generator(grammar2(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol, 5);
         assertEquals("",node.string());

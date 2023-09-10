@@ -11,8 +11,11 @@ import java.util.List;
 public class Generator {
     Grammar grammar;
     List<NTInfo> ntInfos = new ArrayList<>();
-    Generator(Grammar grammar) {
+    int maxLen;
+    Node root;
+    Generator(Grammar grammar, int maxLen) {
         this.grammar = grammar;
+        this.maxLen = maxLen;
         for (Nonterminal nt: grammar.nonterminals) {
             ntInfos.add(new NTInfo(this, nt));
         }
@@ -26,6 +29,7 @@ public class Generator {
         }
         for (NTInfo ntInfo: ntInfos)
             ntInfo.sortRules();
+        root = new Node(this, getNT(0), maxLen);
     }
 
     Symbol getNT(int ntIndex) {
@@ -63,5 +67,13 @@ public class Generator {
         else {
             return ntInfos.get(symbol.index).ruleInfos.size();
         }
+    }
+
+    public String string() {
+        return root.string();
+    }
+
+    public boolean next() {
+        return root.next(maxLen);
     }
 }
