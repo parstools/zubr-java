@@ -36,15 +36,6 @@ public class Generator {
         return new Symbol(grammar, false, ntIndex);
     }
 
-    int ruleMinLen(Symbol symbol, int sortedIndex) {
-        if (symbol.terminal)
-            return 1;
-        else {
-            int ntIndex = symbol.index;
-            return ntInfos.get(ntIndex).ruleInfos.get(sortedIndex).minLen;
-        }
-    }
-
     Rule getRule(int ntIndex, int sortedIndex) {
        return ntInfos.get(ntIndex).ruleInfos.get(sortedIndex).rule;
     }
