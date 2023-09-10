@@ -1,5 +1,6 @@
 package generator;
 
+import grammar.Grammar;
 import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
@@ -20,9 +21,11 @@ public class Node {
     int ruleCount;
     Symbol symbol;
     Generator generator;
+    Grammar grammar;
 
     public Node(Generator generator, Symbol symbol) {
         this.generator = generator;
+        this.grammar = generator.grammar;
         this.symbol = symbol;
         this.ruleCount = generator.ruleCount(symbol);
     }
@@ -95,7 +98,7 @@ public class Node {
         if (nextRuleIndexOK()) {
             NTInfo ntINfo = generator.ntInfos.get(symbol.index);
             RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);
-            if (maxLen <  ruleInfo.minLen)
+            if (maxLen < ruleInfo.minLen)
                 return false;
         }
         int lens[] = new int[childs.size()];
@@ -120,7 +123,7 @@ public class Node {
             ruleIndex++;
         if (ruleIndexOK()) {
             generateChilds(canNextIndex + 1, maxLen);
-            if (getLen()>maxLen)
+            if (getLen() > maxLen)
                 return false;
             else
                 return true;
@@ -128,7 +131,31 @@ public class Node {
             return false;
     }
 
-    public SequenceSet collectFirst(int ntNumber, int k, Sequence current) {
-        return new SequenceSet();
+    public void collectFirst(int ntNumber, int k, SequenceSet sset) {
+        if (!symbol.terminal && symbol.index == ntNumber) {
+            Sequence seq = appendTerminals(k);
+            sset.add(seq);
+        }
+        for (Node child : childs)
+            child.collectFirst(ntNumber, k,sset);
+    }
+
+    private Sequence appendTerminals(int k) {
+        assert(k>0);
+        Sequence seq = new Sequence(grammar);
+        if (symbol.terminal)
+            seq.add(symbol.index);
+        else {
+            int remaining = k;
+            for (Node child : childs) {
+                Sequence subSeq = child.appendTerminals(remaining);
+                seq.addAll(subSeq);
+                remaining -= subSeq.size();
+                assert (remaining >= 0);
+                if (remaining == 0)
+                    break;
+            }
+        }
+        return seq;
     }
 }

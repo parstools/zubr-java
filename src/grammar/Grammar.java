@@ -12,7 +12,11 @@ public class Grammar {
     Map<String, Integer> tNamesToInt = new HashMap<>();
     List<String> tNames = new ArrayList<>();
 
-    String getSymbolName(Symbol symbol) {
+    public String getTerminalName(int t) {
+        return tNames.get(t);
+    }
+
+    public String getSymbolName(Symbol symbol) {
         if (symbol.terminal)
             return tNames.get(symbol.index);
         else
@@ -59,6 +63,10 @@ public class Grammar {
             rule.parse(ruleString);
             nt.addRule(rule);
         }
+    }
+
+    public int findTerminal(String name) {
+        return tNamesToInt.get(name);
     }
 
     public Symbol findSymbol(String name) {

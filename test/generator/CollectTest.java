@@ -1,13 +1,26 @@
 package generator;
 
+import grammar.Grammar;
 import grammar.Symbol;
+import set.Sequence;
+import set.SequenceSet;
 import set.Set;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CollectTest {
+    @Test
+    void constructed() {
+        Grammar grammar = TestGrammars.grammar2();
+        Generator generator = new Generator(grammar, 5);
+        generator.createFromString("S(aS()S(b))");
+        SequenceSet sset = new SequenceSet(grammar);
+        generator.root.collectFirst(0,1, sset);
+        out.println(sset);
+    }
     @Test
     void grammar2Collect() {
         Set firstS,firstA;
