@@ -4,6 +4,7 @@ import grammar.Grammar;
 import grammar.Nonterminal;
 import grammar.Rule;
 import grammar.Symbol;
+import set.Set;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +41,6 @@ public class Generator {
        return ntInfos.get(ntIndex).ruleInfos.get(sortedIndex).rule;
     }
 
-    void collectFirstSet(int k) {
-
-    }
-
-    void collectFollowSet(int k) {
-
-    }
-
-    void collectFFSet(int k) {
-
-    }
-
     int ruleCount(Symbol symbol) {
         if (symbol.terminal)
             return 0;
@@ -70,5 +59,13 @@ public class Generator {
 
     public boolean next() {
         return root.next(maxLen);
+    }
+
+    public Set collectFirst(int ntNumber, int k) {
+        return new Set();
+    }
+
+    public Set collectFollow(int ntNumber, int k) {
+        return new Set();
     }
 }

@@ -2,6 +2,9 @@ package generator;
 
 import grammar.Rule;
 import grammar.Symbol;
+import set.Sequence;
+import set.SequenceSet;
+import set.Set;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,5 +121,9 @@ public class Node {
                 return true;
         } else
             return false;
+    }
+
+    public SequenceSet collectFirst(int ntNumber, int k, Sequence current) {
+        return new SequenceSet();
     }
 }
