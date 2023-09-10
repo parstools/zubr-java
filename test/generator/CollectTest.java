@@ -4,11 +4,9 @@ import grammar.Grammar;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
-import set.Set;
+import set.TokenSet;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,8 +113,8 @@ public class CollectTest {
 
     @Test
     void grammar2Collect() {
-        Set firstS,firstA;
-        Set followS, followA;
+        TokenSet firstS,firstA;
+        TokenSet followS, followA;
         Generator generator = new Generator(TestGrammars.grammar2(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);

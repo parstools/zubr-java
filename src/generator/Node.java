@@ -5,7 +5,6 @@ import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
-import set.Set;
 
 import java.util.ArrayList;
 import java.util.List;

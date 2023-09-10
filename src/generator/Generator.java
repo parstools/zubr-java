@@ -6,7 +6,7 @@ import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
-import set.Set;
+import set.TokenSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,21 +71,21 @@ public class Generator {
         return root.next(maxLen);
     }
 
-    public Set collectFirst(int ntNumber, int k) {
+    public TokenSet collectFirst(int ntNumber, int k) {
         SequenceSet sset = new SequenceSet();
         root.collectFirst(0, k, sset);
-        Set result = new Set(k);
+        TokenSet result = new TokenSet(grammar, k);
         result.fromSSeq(sset);
         return result;
     }
 
-    public Set collectFollow(int ntNumber, int k) {
+    public TokenSet collectFollow(int ntNumber, int k) {
         SequenceSet sset = new SequenceSet();
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
         root.collectFollow(0,k, stackSeq, sset);
-        Set result = new Set(k);
+        TokenSet result = new TokenSet(grammar, k);
         result.fromSSeq(sset);
         return result;
     }
