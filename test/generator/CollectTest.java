@@ -116,7 +116,7 @@ public class CollectTest {
         TokenSet firstS,firstA;
         TokenSet followS, followA;
         Generator generator = new Generator(TestGrammars.grammar2(), 5);
-        generator.first();
+        assertTrue(generator.next());
         assertEquals("",generator.string());
         assertEquals("S()",generator.parenString());
         for (int k=1; k<3; k++) {

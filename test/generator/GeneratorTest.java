@@ -8,7 +8,7 @@ public class GeneratorTest {
     @Test
     void grammar3Test() {
         Generator generator = new Generator(TestGrammars.grammar3(), 5);
-        generator.first();
+        assertTrue(generator.next());
         assertEquals("aaa", generator.string());
         assertTrue(generator.next());
         assertEquals("aab", generator.string());
@@ -44,7 +44,7 @@ public class GeneratorTest {
     @Test
     void grammar4Test() {
         Generator generator = new Generator(TestGrammars.grammar4(), 5);
-        generator.first();
+        assertTrue(generator.next());
         assertEquals("S()", generator.parenString());
         assertTrue(generator.next());
         assertEquals("S(aS()A(c))", generator.parenString());
