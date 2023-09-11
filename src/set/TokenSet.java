@@ -25,7 +25,7 @@ public class TokenSet {
             tiers.get(seq.size()).addSeq(seq);
     }
 
-    public void fromSSeq(SequenceSet sseq) {
+    public void addAllSSeq(SequenceSet sseq) {
         for (Sequence seq : sseq)
             addSeq(seq);
     }

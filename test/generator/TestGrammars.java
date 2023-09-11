@@ -30,4 +30,13 @@ public class TestGrammars {
         lines.add("C -> b");
         return new Grammar(lines);
     }
+
+    static Grammar grammar4() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a S A");
+        lines.add("S ->");
+        lines.add("A -> a b S");
+        lines.add("A -> c");
+        return new Grammar(lines);
+    }
 }

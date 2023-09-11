@@ -43,6 +43,7 @@ public class Main {
             String line = lines.get(n).trim();
             if (line.isEmpty() || line.equals("---")) break;
             n++;
+            out.println(line);
             gramLines.add(line);
         }
         return n;
@@ -52,8 +53,7 @@ public class Main {
         Path path = Paths.get("res/test1.dat");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            lines.stream().forEach(out::println);
-            testFF1(lines);
+             testFF1(lines);
         }
         catch (IOException e) {
             e.printStackTrace();

@@ -110,14 +110,30 @@ public class Node {
             sumlens[i] = sum;
         }
 
+        int minLens[] = new int[childs.size()];
+        int sumBackMinLens[] = new int[childs.size()];
+        sum = 0;
+        for (int i = childs.size() - 1; i >= 0; i--) {
+            minLens[i] = generator.getMinLen(childs.get(i).symbol);
+            sum += minLens[i];
+            sumBackMinLens[i] = sum;
+        }
+
         int canNextIndex = -1;
-        for (int i = childs.size() - 1; i >= 0; i--)
-            if (childs.get(i).next(i > 0 ? maxLen - sumlens[i - 1] : maxLen)) {
+        for (int i = childs.size() - 1; i >= 0; i--) {
+            int newMaxLen = maxLen;
+            if (i > 0)
+                newMaxLen -= sumlens[i - 1];
+            if (i < sumBackMinLens.length - 1)
+                newMaxLen -= sumBackMinLens[i + 1];
+            if (childs.get(i).next(newMaxLen)) {
+                int len = childs.get(i).getLen();
                 canNextIndex = i;
                 break;
             } else {
                 childs.remove(i);
             }
+        }
 
         if (canNextIndex < 0)
             ruleIndex++;

@@ -40,4 +40,22 @@ public class GeneratorTest {
         generator.createFromString(parenStr);
         assertEquals(parenStr, generator.parenString());
     }
+
+    @Test
+    void grammar4Test() {
+        Generator generator = new Generator(TestGrammars.grammar4(), 5);
+        generator.first();
+        assertEquals("S()", generator.parenString());
+        assertTrue(generator.next());
+        assertEquals("S(aS()A(c))", generator.parenString());
+        assertTrue(generator.next());
+        assertEquals("S(aS()A(abS()))", generator.parenString());
+        assertTrue(generator.next());
+        assertEquals("S(aS()A(abS(aS()A(c))))", generator.parenString());
+        assertEquals("aabac", generator.string());
+        assertTrue(generator.next());
+        assertEquals("S(aS(aS()A(c))A(c))", generator.parenString());
+        while (generator.next())
+            assertTrue(generator.string().length()<=5);
+    }
 }

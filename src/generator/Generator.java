@@ -20,7 +20,14 @@ public class Generator {
     int maxLen;
     Node root;
 
-    Generator(Grammar grammar, int maxLen) {
+    int getMinLen(Symbol symbol) {
+        if (symbol.terminal)
+            return 1;
+        else
+            return ntInfos.get(symbol.index).minLen;
+    }
+
+    public Generator(Grammar grammar, int maxLen) {
         this.grammar = grammar;
         this.maxLen = maxLen;
         for (Nonterminal nt : grammar.nonterminals) {
@@ -75,7 +82,7 @@ public class Generator {
         SequenceSet sset = new SequenceSet();
         root.collectFirst(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
-        result.fromSSeq(sset);
+        result.addAllSSeq(sset);
         return result;
     }
 
@@ -86,7 +93,7 @@ public class Generator {
         stackSeq.add(upSeq);
         root.collectFollow(ntNumber,k, stackSeq, sset);
         TokenSet result = new TokenSet(grammar, k);
-        result.fromSSeq(sset);
+        result.addAllSSeq(sset);
         return result;
     }
 
