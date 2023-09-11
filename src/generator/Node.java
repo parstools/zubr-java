@@ -17,7 +17,7 @@ public class Node {
         childs.add(child);
     }
 
-    int ruleIndex = 0;
+    int ruleIndex = -1;
     int ruleCount;
     Symbol symbol;
     Generator generator;
@@ -67,17 +67,10 @@ public class Node {
         Rule rule = generator.getRule(symbol.index, ruleIndex);
         for (int i = start; i < rule.size(); i++) {
             Node child = new Node(generator, rule.get(i));
-            child.first(maxLen);
+            child.next(maxLen);
             maxLen -= child.getLen();
             childs.add(child);
         }
-    }
-
-    void first(int maxLen) {
-        childs.clear();
-        ruleIndex = 0;
-        if (!symbol.terminal)
-            generateChilds(0, maxLen);
     }
 
     int getLen() {
@@ -92,9 +85,10 @@ public class Node {
     }
 
     public boolean next(int maxLen) {
+        if (symbol.terminal)
+            return false;
         if (!ruleIndexOK())
             return false;
-        assert (!symbol.terminal);//terminal has ruleCount == 0
         if (nextRuleIndexOK()) {
             NTInfo ntINfo = generator.ntInfos.get(symbol.index);
             RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);

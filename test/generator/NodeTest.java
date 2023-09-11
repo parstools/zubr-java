@@ -15,7 +15,7 @@ class NodeTest {
         Generator generator = new Generator(TestGrammars.grammar1(), 5);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol);
-        node.first(5);
+        node.next(5);
         assertEquals("d",node.string());
         assertTrue(node.next(5));
         assertEquals("ed",node.string());
@@ -34,7 +34,7 @@ class NodeTest {
         Generator generator = new Generator(TestGrammars.grammar1(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);
-        node.first(5);
+        node.next(5);
         assertEquals("dd",node.string());
         assertTrue(node.next(5));
         assertEquals("ded",node.string());
@@ -63,7 +63,7 @@ class NodeTest {
         Generator generator = new Generator(TestGrammars.grammar2(), 5);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol);
-        node.first(5);
+        node.next(5);
         assertEquals("c",node.string());
         assertEquals("A(c)",node.parenString());
         assertTrue(node.next(5));
@@ -83,7 +83,7 @@ class NodeTest {
         Generator generator = new Generator(TestGrammars.grammar2(), 5);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);
-        node.first(5);
+        node.next(5);
         assertEquals("",node.string());
         assertEquals("S()",node.parenString());
         assertTrue(node.next(5));

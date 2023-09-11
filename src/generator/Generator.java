@@ -71,7 +71,7 @@ public class Generator {
     }
 
     public void first() {
-        root.first(maxLen);
+        root.next(maxLen);
     }
 
     public boolean next() {
