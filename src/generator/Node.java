@@ -74,8 +74,8 @@ public class Node {
     }
 
     void first(int maxLen) {
-        assert (childs.isEmpty());
-        assert (ruleIndex == 0);
+        childs.clear();
+        ruleIndex = 0;
         if (!symbol.terminal)
             generateChilds(0, maxLen);
     }

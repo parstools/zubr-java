@@ -20,7 +20,8 @@ public class Main {
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
             SetContainer sc = new SetContainer(grammar);
-            sc.firstSetsByGeneration(1);
+            out.println(counter);
+            sc.computeSetsByGeneration(1);
             counter++;
             n++;
             n = readExpect1Lines(lines, n);

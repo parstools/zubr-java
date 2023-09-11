@@ -86,6 +86,20 @@ public class Generator {
         return result;
     }
 
+    public TokenSet collectFirstAllGenerated(int ntNumber, int k) {
+        TokenSet result = new TokenSet(grammar, k);
+        first();
+        SequenceSet sset = new SequenceSet();
+        root.collectFirst(ntNumber, k, sset);
+        result.addAllSSeq(sset);
+        while (next()) {
+            sset = new SequenceSet();
+            root.collectFirst(ntNumber, k, sset);
+            result.addAllSSeq(sset);
+        }
+        return result;
+    }
+
     public TokenSet collectFollow(int ntNumber, int k) {
         SequenceSet sset = new SequenceSet();
         Sequence upSeq = new Sequence(grammar, "$");
@@ -94,6 +108,24 @@ public class Generator {
         root.collectFollow(ntNumber,k, stackSeq, sset);
         TokenSet result = new TokenSet(grammar, k);
         result.addAllSSeq(sset);
+        return result;
+    }
+
+    public TokenSet collectFollowAllGenerated(int ntNumber, int k) {
+        Sequence upSeq = new Sequence(grammar, "$");
+        TokenSet result = new TokenSet(grammar, k);
+        Stack<Sequence> stackSeq = new Stack<>();
+        stackSeq.add(upSeq);
+        first();
+        SequenceSet sset = new SequenceSet();
+        root.collectFollow(ntNumber,k, stackSeq, sset);
+        result.addAllSSeq(sset);
+        while (next()) {
+            sset = new SequenceSet();
+            assert(stackSeq.size()==1);
+            root.collectFollow(ntNumber,k, stackSeq, sset);
+            result.addAllSSeq(sset);
+        }
         return result;
     }
 

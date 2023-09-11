@@ -1,6 +1,7 @@
 package set;
 
 import grammar.Grammar;
+import util.Hash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,5 +50,13 @@ public class TokenSet {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        Hash h = new Hash();
+        for (Tier t: tiers)
+            h.add(t.hashCode());
+        return h.hash();
     }
 }

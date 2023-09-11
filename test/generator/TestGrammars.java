@@ -39,4 +39,14 @@ public class TestGrammars {
         lines.add("A -> c");
         return new Grammar(lines);
     }
+
+    // bad grammar
+    static Grammar grammar5() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B");
+        lines.add("A -> b B");
+        lines.add("B -> A");
+        lines.add("B -> a A");
+        return new Grammar(lines);
+    }
 }

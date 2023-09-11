@@ -56,6 +56,6 @@ public class GeneratorTest {
         assertTrue(generator.next());
         assertEquals("S(aS(aS()A(c))A(c))", generator.parenString());
         while (generator.next())
-            assertTrue(generator.string().length()<=5);
+            assertTrue(generator.string().length() <= 5);
     }
 }

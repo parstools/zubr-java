@@ -1,6 +1,7 @@
 package set;
 
 import grammar.Grammar;
+import util.Hash;
 
 import java.util.*;
 
@@ -30,6 +31,19 @@ public class Tier {
                     }
             }
             return list;
+        }
+
+        @Override
+        public int hashCode() {
+            Set<Integer> intSet = this.keySet();
+            Iterator<Integer> iter = intSet.iterator();
+            Hash h = new Hash();
+            while (iter.hasNext()) {
+                int t = iter.next();
+                h.add(t);
+                h.add(get(t).hashCode());
+            }
+            return h.hash();
         }
     }
 
@@ -71,5 +85,13 @@ public class Tier {
             sb.append(stringList.get(i));
         }
         return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        if (trie==null)
+            return 0;
+        else
+            return trie.hashCode();
     }
 }
