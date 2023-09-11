@@ -1,0 +1,518 @@
+S -> a S A
+S ->
+A -> a b S
+A -> c
+---
+S'	✖	a, $	
+S	✔	a	a, c, $
+A	✖	a, c	a, c, $
+
+S -> a a A
+A -> a A c
+A -> b B c
+B -> b B c
+B -> b c 
+---
+S'	✖	a	
+S	✖	a	$
+A	✖	a, b	c, $
+B	✖	b	c
+
+A -> B
+A -> b B
+B -> A
+B -> a A
+---
+S'	✖	b, a	
+A	✖	b, a	$
+B	✖	b, a	$
+
+S -> i e t S
+S -> i e t W e S
+S -> o
+W -> i e t W e W
+W -> o
+---
+S'	✖	i, o	
+S	✖	i, o	$
+W	✖	i, o	e
+
+S -> M
+S -> U
+M -> i e t M e M
+M -> o
+U -> i e t S
+U -> i e t M e U
+---
+S'	✖	i, o	
+S	✖	i, o	$
+M	✖	i, o	e, $
+U	✖	i	$
+
+S -> i b t S e S
+S -> i b t S
+S -> s
+---
+S'	✖	i, s	
+S	✖	i, s	e, $
+
+G -> S
+G -> L
+G -> s
+S -> i b t G
+L -> i b t L e G
+---
+S'	✖	s, i	
+G	✖	s, i	$, e
+S	✖	i	$, e
+L	✖	i	e, $
+
+E -> E + i
+E -> i * E
+E -> i
+---
+S'	✖	i	
+E	✖	i	+, $
+
+E -> E + i
+E -> E * i
+E -> i
+---
+S'	✖	i	
+E	✖	i	+, *, $
+
+E -> E + i
+E -> E * i
+---
+S'	✖		
+E	✖		+, *, $
+
+E -> E + T
+E -> T
+T -> T * i
+T -> i
+---
+S'	✖	i	
+E	✖	i	+, $
+T	✖	i	+, *, $
+
+E -> E + T
+E -> T
+T -> T * F
+T -> F
+F -> ( E )
+F -> i
+---
+S'	✖	(, i	
+E	✖	(, i	+, ), $
+T	✖	(, i	+, *, ), $
+F	✖	(, i	+, *, ), $
+
+E -> E + E
+E -> E * E
+E -> i
+---
+S'	✖	i	
+E	✖	i	+, *, $
+
+E -> E + E
+E -> E * E
+E -> ( E )
+E -> i
+E -> n
+---
+S'	✖	(, i, n	
+E	✖	(, i, n	+, *, ), $
+
+S -> L = R
+S -> R
+L -> * R
+L -> i
+R -> L
+---
+S'	✖	*, i	
+S	✖	*, i	$
+L	✖	*, i	=, $
+R	✖	*, i	=, $
+
+S -> S a
+S -> a
+---
+S'	✖	a	
+S	✖	a	a, $
+
+A -> a B b
+A -> a d c
+A -> b B c
+A -> b d d
+B -> d
+---
+S'	✖	a, b	
+A	✖	a, b	$
+B	✖	d	b, c
+
+S -> C C
+C -> e C
+C -> d
+---
+S'	✖	e, d	
+S	✖	e, d	$
+C	✖	e, d	e, d, $
+
+E -> T G
+G -> + T G
+G ->
+T -> F U
+U -> * F U
+U ->
+F -> ( E )
+F -> i
+---
+S'	✖	(, i	
+E	✖	(, i	), $
+G	✔	+	), $
+T	✖	(, i	+, ), $
+U	✔	*	+, ), $
+F	✖	(, i	+, *, ), $
+
+E -> A 1
+E -> B 2
+A -> 1
+B -> 1
+---
+S'	✖	1	
+E	✖	1	$
+A	✖	1	1
+B	✖	1	2
+
+E -> T G
+G -> + T G
+G ->
+T -> F U
+U -> * F U
+U ->
+F -> ( E )
+F -> i
+---
+S'	✖	(, i	
+E	✖	(, i	), $
+G	✔	+	), $
+T	✖	(, i	+, ), $
+U	✔	*	+, ), $
+F	✖	(, i	+, *, ), $
+
+E -> 1 E
+E -> 1
+---
+S'	✖	1	
+E	✖	1	$
+
+E -> E * B
+E -> E + B
+E -> B
+B -> 0
+B -> 1
+---
+S'	✖	0, 1	
+E	✖	0, 1	*, +, $
+B	✖	0, 1	*, +, $
+
+X -> Y
+X -> b Y a
+Y -> c
+Y -> c a
+---
+S'	✖	b, c	
+X	✖	b, c	$
+Y	✖	c	a, $
+
+S -> S a S b
+S ->
+---
+S'	✖	a, $	
+S	✔	a	b, a, $
+
+Z -> S
+Z -> L = R
+S -> R
+L -> * R
+L -> i
+R -> L
+---
+S'	✖	*, i
+Z	✖	*, i	$
+S	✖	*, i	$
+L	✖	*, i	=, $
+R	✖	*, i	=, $
+
+S -> a A d
+S -> b B d
+S -> a B e
+S -> b A e
+A -> c
+B -> c
+---
+S'	✖	a, b	
+S	✖	a, b	$
+A	✖	c	d, e
+B	✖	c	d, e
+
+E -> d H F B
+H -> H h
+H ->
+F -> F f
+F ->
+B -> B b
+B ->
+---
+S'	✖	d	
+E	✖	d	$
+H	✔	h	b, f, h, $
+F	✔	f	b, f, $
+B	✔	b	b, $
+
+E -> + E
+E ->
+---
+S'	✖	+, $	
+E	✔	+	$
+
+E -> E +
+E ->
+---
+S'	✖	+, $	
+E	✔	+	+, $
+
+E -> C
+E -> E | C
+C -> F
+C -> C F
+F -> U
+F -> U *
+F -> U +
+U -> c
+U -> ( E )
+---
+S'	✖	c, (	
+E	✖	c, (	|, ), $
+C	✖	c, (	c, (, |, ), $
+F	✖	c, (	c, (, |, ), $
+U	✖	c, (	*, +, c, (, |, ), $
+
+E -> b C e
+C -> C ; R
+C -> R
+R -> i = S
+S -> S + i
+S -> i
+---
+S'	✖	b	
+E	✖	b	$
+C	✖	i	e, ;
+R	✖	i	e, ;
+S	✖	i	e, ;, +
+
+E -> b C e
+C -> C ; i
+C -> i
+---
+S'	✖	b	
+E	✖	b	$
+C	✖	i	e, ;
+
+E -> a C b
+E -> b C a
+C -> C c
+C ->
+---
+S'	✖	a, b	
+E	✖	a, b	$
+C	✔	c	b, a, c
+
+E -> i a t a e a
+---
+S'	✖	i	
+E	✖	i	$
+
+E -> D B
+D ->
+D -> L ;
+L -> i
+L -> L , i
+B -> { C }
+C ->
+C -> C S
+S -> i = X
+X -> T
+X -> X + T
+X -> X - T
+T -> F
+T -> T * F
+T -> T / F
+F -> i
+F -> n
+---
+S'	✖	{, i	
+E	✖	{, i	$
+D	✔	i	{
+L	✖	i	;, ,
+B	✖	{	$
+C	✔	i	}, i
+S	✖	i	}, i
+X	✖	i, n	}, +, -, i
+T	✖	i, n	}, +, *, /, -, i
+F	✖	i, n	}, +, *, /, -, i
+
+E -> & E
+E -> E + E
+E -> i
+---
+S'	✖	&, i	
+E	✖	&, i	+, $
+
+E -> & E
+E -> ^ E
+E -> i
+---
+S'	✖	&, ^, i	
+E	✖	&, ^, i	$
+
+E -> E O E
+E -> i
+O -> +
+O -> -
+O -> *
+O -> ^
+---
+S'	✖	i	
+E	✖	i	+, -, *, ^, $
+O	✖	+, -, *, ^	i
+
+E -> E + E
+E -> E - E
+E -> E * E
+E -> E ^ E
+E -> i
+---
+S'	✖	i	
+E	✖	i	+, -, *, ^, $
+
+E -> E + E
+E -> E - E
+E -> i
+---
+S'	✖	i	
+E	✖	i	+, -, $
+
+E -> E + E
+E -> i
+---
+S'	✖	i	
+E	✖	i	+, $
+
+S -> S S
+S -> i
+---
+S'	✖	i	
+S	✖	i	i, $
+
+E -> E + T
+E -> E - T
+E -> E | T
+E -> E \ T
+E -> T
+T -> T * F
+T -> T / F
+T -> T _ F
+T -> T % F
+T -> T & F
+T -> T # F
+T -> T @ F
+T -> T ^ F
+T -> F
+F -> - F
+F -> ( E )
+F -> i
+F -> i ( E )
+F -> c
+---
+S'	✖	-, (, i, c
+E	✖	-, (, i, c	+, -, |, \, ), $
+T	✖	-, (, i, c	+, -, |, \, *, /, _, %, &, #, @, ^, ), $
+F	✖	-, (, i, c	+, -, |, \, *, /, _, %, &, #, @, ^, ), $
+
+C -> C i
+C -> i
+---
+S'	✖	i	
+C	✖	i	i, $
+
+S -> S E
+S -> E
+E -> F
+F -> T
+T -> i
+---
+S'	✖	i	
+S	✖	i	i, $
+E	✖	i	i, $
+F	✖	i	i, $
+T	✖	i	i, $
+
+S -> S i
+S -> i
+---
+S'	✖	i	
+S	✖	i	i, $
+
+E -> E + F
+E -> F
+F -> i
+F -> ( E )
+---
+S'	✖	i, (	
+E	✖	i, (	+, ), $
+F	✖	i, (	+, ), $
+
+E -> E + T
+E -> E - T
+E -> E | T
+E -> E \ T
+E -> T
+T -> T * F
+T -> T / F
+T -> T _ F
+T -> T % F
+T -> T & F
+T -> T # F
+T -> T @ F
+T -> T ^ F
+T -> F
+F -> - F
+F -> ( E )
+F -> i
+F -> i ( E )
+F -> c
+---
+S'	✖	-, (, i, c
+E	✖	-, (, i, c	+, -, |, \, ), $
+T	✖	-, (, i, c	+, -, |, \, *, /, _, %, &, #, @, ^, ), $
+F	✖	-, (, i, c	+, -, |, \, *, /, _, %, &, #, @, ^, ), $
+
+S -> i S
+---
+S'	✖	i	
+S	✖	i	$
+
+S -> S i
+---
+S'	✖		
+S	✖		i, $
+
+A -> B +
+B -> A *
+B ->
+---
+S'	✖	+	
+A	✖	+	*, $
+B	✔	+	+
