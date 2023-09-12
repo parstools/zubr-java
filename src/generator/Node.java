@@ -65,9 +65,18 @@ public class Node {
     private void generateChilds(int start, int maxLen) {
         assert (!symbol.terminal);
         Rule rule = generator.getRule(symbol.index, ruleIndex);
+        int minLens[] = new int[rule.size()];
+        int sumBackMinLens[] = new int[rule.size()];
+        int sum = 0;
+        for (int i = rule.size() - 1; i >= 0; i--) {
+            minLens[i] = generator.getMinLen(rule.get(i));
+            sum += minLens[i];
+            sumBackMinLens[i] = sum;
+        }
         for (int i = start; i < rule.size(); i++) {
             Node child = new Node(generator, rule.get(i));
-            child.next(maxLen);
+            if (child.next(maxLen - (i < rule.size() - 1 ? sumBackMinLens[i + 1] : 0)) == -2)
+                return;
             maxLen -= child.getLen();
             childs.add(child);
         }
@@ -103,8 +112,10 @@ public class Node {
         if (nextRuleIndexOK()) {
             NTInfo ntINfo = generator.ntInfos.get(symbol.index);
             RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);
-            if (maxLen < ruleInfo.minLen)
+            if (maxLen < ruleInfo.minLen) {
+                ruleIndex++;
                 return -2;
+            }
         }
         int lens[] = new int[childs.size()];
         int sumlens[] = new int[childs.size()];
