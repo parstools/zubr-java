@@ -1,6 +1,7 @@
 package generator;
 
 import grammar.Grammar;
+import grammar.Rule;
 import grammar.Symbol;
 
 import java.util.ArrayList;
@@ -57,8 +58,9 @@ public class Node1 {
     void initSuffixForChild(int start, int maxLen) {
         Node1 child = childs.get(start);
         int reservedLen = maxLen;
-        for (int i = ruleInfos.size() - 1; i > start; i--)
-            reservedLen -= ruleInfos.get(i).minLen;
+        Rule rule = ruleInfos.get(ruleIndex).rule;
+        for (int i = rule.size() - 1; i > start; i--)
+            reservedLen -= generator.getMinLen(rule.get(i));
         if (!child.symbol.terminal)
             child.next(reservedLen);
         if (start + 1 < ruleInfos.get(ruleIndex).rule.size())
