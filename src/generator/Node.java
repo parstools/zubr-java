@@ -84,6 +84,10 @@ public class Node {
         }
     }
 
+    public boolean nextFit(int maxLen) {
+        return next(maxLen);
+    }
+
     public boolean next(int maxLen) {
         if (symbol.terminal)
             return false;
