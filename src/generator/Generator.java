@@ -19,6 +19,7 @@ public class Generator {
     List<NTInfo> ntInfos = new ArrayList<>();
     int maxLen;
     Node root;
+    boolean reverse = false;
 
     int getMinLen(Symbol symbol) {
         if (symbol.terminal)

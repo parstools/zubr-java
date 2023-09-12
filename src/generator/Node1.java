@@ -23,7 +23,8 @@ public class Node1 {
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             ruleInfos = new ArrayList<>(generator.ntInfos.get(symbol.index).ruleInfos);
-            //Collections.reverse(ruleInfos);
+            if (generator.reverse)
+                Collections.reverse(ruleInfos);
         }
     }
 
@@ -55,25 +56,34 @@ public class Node1 {
         return ruleIndex < ruleInfos.size();
     }
 
-    void initSuffixForChild(int start, int maxLen) {
+    boolean nextRuleIndexOK() {
+        return ruleIndex + 1 < ruleInfos.size();
+    }
+
+    boolean initSuffixForChild(int start, int maxLen) {
         Node1 child = childs.get(start);
         int reservedLen = maxLen;
         Rule rule = ruleInfos.get(ruleIndex).rule;
         for (int i = rule.size() - 1; i > start; i--)
             reservedLen -= generator.getMinLen(rule.get(i));
         if (!child.symbol.terminal)
-            child.next(reservedLen);
+            if (!child.next(reservedLen))
+                return false;
         if (start + 1 < ruleInfos.get(ruleIndex).rule.size())
             initSuffix(start + 1, maxLen - childs.get(start).getLen());
+        return true;
     }
 
     void initSuffix(int start, int maxLen) {
+        assert (childs.size() == start);
+        if (start >= ruleInfos.get(ruleIndex).rule.size())
+            return;
         Node1 child = new Node1(generator, ruleInfos.get(ruleIndex).rule.get(start));
         childs.add(child);
         initSuffixForChild(start, maxLen);
     }
 
-    void removeChildFrom(int start) {
+    void removeChildsFrom(int start) {
         for (int i = childs.size() - 1; i >= start; i--)
             childs.remove(i);
     }
@@ -89,22 +99,85 @@ public class Node1 {
         }
     }
 
+
     boolean nextSuffix(int start, int maxLen) {
-        assert (start <= ruleInfos.size());
-        if (start == ruleInfos.size()) return true;
+        Rule rule = ruleInfos.get(ruleIndex).rule;
+        assert (start <= rule.size());
+        if (start == rule.size())
+            return false;
         if (!nextSuffix(start + 1, maxLen - childs.get(start).getLen())) {
-            removeChildFrom(start + 1);
-            initSuffixForChild(start, maxLen);
+            removeChildsFrom(start + 1);
+            return initSuffixForChild(start, maxLen);
         }
         return true;
     }
 
+    public boolean nextTry(int maxLen) {
+        if (symbol.terminal)
+            return false;
+        if (!ruleIndexOK())
+            return false;
+        if (nextRuleIndexOK()) {
+            NTInfo ntINfo = generator.ntInfos.get(symbol.index);
+            RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);
+            if (maxLen < ruleInfo.minLen) {
+                ruleIndex++;
+                return false;
+            }
+        }
+        int lens[] = new int[childs.size()];
+        int sumlens[] = new int[childs.size()];
+        int sum = 0;
+        for (int i = 0; i < childs.size(); i++) {
+            lens[i] = childs.get(i).getLen();
+            sum += lens[i];
+            sumlens[i] = sum;
+        }
+
+        int minLens[] = new int[childs.size()];
+        int sumBackMinLens[] = new int[childs.size()];
+        sum = 0;
+        for (int i = childs.size() - 1; i >= 0; i--) {
+            minLens[i] = generator.getMinLen(childs.get(i).symbol);
+            sum += minLens[i];
+            sumBackMinLens[i] = sum;
+        }
+
+        int canNextIndex = -1;
+        for (int i = childs.size() - 1; i >= 0; i--) {
+            int newMaxLen = maxLen;
+            if (i > 0)
+                newMaxLen -= sumlens[i - 1];
+            if (i < sumBackMinLens.length - 1)
+                newMaxLen -= sumBackMinLens[i + 1];
+            if (childs.get(i).nextTry(newMaxLen)) {
+                int len = childs.get(i).getLen();
+                canNextIndex = i;
+                break;
+            } else {
+                childs.remove(i);
+            }
+        }
+
+        if (canNextIndex < 0)
+            ruleIndex++;
+        if (ruleIndexOK()) {
+            initSuffix(canNextIndex + 1, maxLen);
+            if (getLen() > maxLen)
+                return false;
+            else
+                return true;
+        } else
+            return false;
+    }
+
+
     boolean next(int maxLen) {
         assert (maxLen >= 0);
-        if (maxLen==0)
+        if (maxLen == 0)
             return false;
         assert (!symbol.terminal);
-        if (ruleIndex < 0 || !nextSuffix(0, maxLen)) {
+        if (ruleIndex < 0 || !nextTry(maxLen)) {
             ruleIndex++;
             while (ruleIndex < ruleInfos.size() && ruleInfos.get(ruleIndex).minLen > maxLen)
                 ruleIndex++;
