@@ -85,19 +85,26 @@ public class Node {
     }
 
     public boolean nextFit(int maxLen) {
-        return next(maxLen);
+        while (true) {
+            int result = next(maxLen);
+            if (result == 0)
+                return true;
+            else if (result == -1)
+                return false;
+        }
     }
 
-    public boolean next(int maxLen) {
+    //retuns: 0: ok, -1: end of rules, -2: not enough space
+    public int next(int maxLen) {
         if (symbol.terminal)
-            return false;
+            return -1;
         if (!ruleIndexOK())
-            return false;
+            return -1;
         if (nextRuleIndexOK()) {
             NTInfo ntINfo = generator.ntInfos.get(symbol.index);
             RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);
             if (maxLen < ruleInfo.minLen)
-                return false;
+                return -2;
         }
         int lens[] = new int[childs.size()];
         int sumlens[] = new int[childs.size()];
@@ -124,7 +131,7 @@ public class Node {
                 newMaxLen -= sumlens[i - 1];
             if (i < sumBackMinLens.length - 1)
                 newMaxLen -= sumBackMinLens[i + 1];
-            if (childs.get(i).next(newMaxLen)) {
+            if (childs.get(i).next(newMaxLen) == 0) {
                 int len = childs.get(i).getLen();
                 canNextIndex = i;
                 break;
@@ -138,11 +145,11 @@ public class Node {
         if (ruleIndexOK()) {
             generateChilds(canNextIndex + 1, maxLen);
             if (getLen() > maxLen)
-                return false;
+                return -2;
             else
-                return true;
+                return 0;
         } else
-            return false;
+            return -1;
     }
 
     public void collectFirst(int ntNumber, int k, SequenceSet sset) {
