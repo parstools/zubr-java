@@ -12,6 +12,6 @@ public class Node1Test {
         Symbol symbol = generator.getNT(0);
         Node1 node = new Node1(generator, symbol);
         node.next(3);
-        assertEquals("dd", node.string());
+        assertEquals("edd", node.string());
     }
 }

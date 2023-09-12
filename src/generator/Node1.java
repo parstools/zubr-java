@@ -4,6 +4,7 @@ import grammar.Grammar;
 import grammar.Symbol;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Node1 {
@@ -21,6 +22,7 @@ public class Node1 {
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             ruleInfos = new ArrayList<>(generator.ntInfos.get(symbol.index).ruleInfos);
+            Collections.reverse(ruleInfos);
         }
     }
 
@@ -96,7 +98,9 @@ public class Node1 {
     }
 
     boolean next(int maxLen) {
-        assert (maxLen >= 1);
+        assert (maxLen >= 0);
+        if (maxLen==0)
+            return false;
         assert (!symbol.terminal);
         if (ruleIndex < 0 || !nextSuffix(0, maxLen)) {
             ruleIndex++;
