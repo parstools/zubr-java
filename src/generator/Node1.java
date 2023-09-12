@@ -23,7 +23,7 @@ public class Node1 {
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             ruleInfos = new ArrayList<>(generator.ntInfos.get(symbol.index).ruleInfos);
-            Collections.reverse(ruleInfos);
+            //Collections.reverse(ruleInfos);
         }
     }
 
