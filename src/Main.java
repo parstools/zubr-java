@@ -15,6 +15,7 @@ public class Main {
     static void testFF1(List<String> lines) {
         int n = 0;
         int counter = 0;
+        long start = System.nanoTime();
         while (n<lines.size()) {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
@@ -28,6 +29,8 @@ public class Main {
             n++;
         }
         out.println(counter);
+        long duration = System.nanoTime()-start;
+        out.println("duration="+duration/1e9);
     }
 
     private static int readExpect1Lines(List<String> lines, int n) {
