@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Rule extends ArrayList<Symbol> {
     Grammar grammar;
     Nonterminal owner;
-    public int originIndex;
+    public int globalIndex;
 
     public boolean hasNt = false;
     public int minLen = -1;
@@ -30,7 +30,8 @@ public class Rule extends ArrayList<Symbol> {
     public Rule(Grammar grammar, Nonterminal owner) {
         this.grammar = grammar;
         this.owner = owner;
-        originIndex = owner.ruleCount();
+        globalIndex = grammar.globalRuleCounter;
+        grammar.globalRuleCounter++;
     }
 
     public void parse(String input) {

@@ -307,9 +307,9 @@ public class Node {
                     return -1;
                 else if (r1.minLen > r2.minLen)
                     return 1;
-                else if (r1.originIndex < r2.originIndex)
+                else if (r1.globalIndex < r2.globalIndex)
                     return -1;
-                else if (r1.originIndex > r2.originIndex)
+                else if (r1.globalIndex > r2.globalIndex)
                     return 1;
                 else
                     return 0;

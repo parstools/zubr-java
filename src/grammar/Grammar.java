@@ -14,6 +14,8 @@ public class Grammar {
     Map<String, Integer> tNamesToInt = new HashMap<>();
     List<String> tNames = new ArrayList<>();
 
+    int globalRuleCounter = 0;
+
     public String getTerminalName(int t) {
         if (t==-1)
             return "$"; //end of stream
