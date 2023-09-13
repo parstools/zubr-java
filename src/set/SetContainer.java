@@ -8,10 +8,9 @@ import util.Hash;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.out;
-
 public class SetContainer {
     Grammar grammar;
+    public int nextLimit = 10 * 1000;
 
     List<TokenSet> firstSets = new ArrayList<>();
     List<TokenSet> followSets = new ArrayList<>();
@@ -63,7 +62,7 @@ public class SetContainer {
                 generator.collectFollow(i, k, sset);
                 followSets.get(i).addAllSSeq(sset);
             }
-            if (counter >= generator.limit)
+            if (counter >= nextLimit)
                 break;
         }
     }

@@ -16,7 +16,6 @@ import static java.lang.Character.*;
 
 public class Generator {
     Grammar grammar;
-    public int limit = 10 * 1000;
     Node root;
 
     RuleOrder ruleOrder;
@@ -61,21 +60,6 @@ public class Generator {
         return result;
     }
 
-    public TokenSet collectFirstAllGenerated(int ntNumber, int k) {
-        TokenSet result = new TokenSet(grammar, k);
-        int counter = 0;
-        restart();
-        while (next()) {
-            counter++;
-            SequenceSet sset = new SequenceSet();
-            root.collectFirst(ntNumber, k, sset);
-            result.addAllSSeq(sset);
-            if (counter >= limit)
-                return result;
-        }
-        return result;
-    }
-
     public void collectFollow(int ntNumber, int k, SequenceSet sset) {
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
@@ -88,25 +72,6 @@ public class Generator {
         collectFollow(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
         result.addAllSSeq(sset);
-        return result;
-    }
-
-    public TokenSet collectFollowAllGenerated(int ntNumber, int k) {
-        Sequence upSeq = new Sequence(grammar, "$");
-        TokenSet result = new TokenSet(grammar, k);
-        Stack<Sequence> stackSeq = new Stack<>();
-        stackSeq.add(upSeq);
-        int counter = 0;
-        restart();
-        while (next()) {
-            counter++;
-            SequenceSet sset = new SequenceSet();
-            assert (stackSeq.size() == 1);
-            root.collectFollow(ntNumber, k, stackSeq, sset);
-            result.addAllSSeq(sset);
-            if (counter >= limit)
-                return result;
-        }
         return result;
     }
 
