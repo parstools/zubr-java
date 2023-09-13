@@ -1,3 +1,5 @@
+import generator.Generator;
+import generator.RuleOrder;
 import grammar.Grammar;
 import set.SetContainer;
 import util.NoMinLenGrammarException;
@@ -22,7 +24,7 @@ public class Main {
         long start = System.nanoTime();
         FileWriter fileWriter = new FileWriter("k4.dat");
         PrintWriter printWriter = new PrintWriter(fileWriter);
-        while (n<lines.size()) {
+        while (n < lines.size()) {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
@@ -36,18 +38,18 @@ public class Main {
             n = readExpect1Lines(lines, n, expectLines);
             SetContainer sc2 = new SetContainer(grammar);
             sc2.readTest1(expectLines);
-            if (sc1.hashCode()==sc2.hashCode()) {
+            if (sc1.hashCode() == sc2.hashCode()) {
                 out.println("OK");
-                for (String line: gramLines)
+                for (String line : gramLines)
                     printWriter.println(line);
                 int limit = 2000;
-                for (int k=1; k<=4; k++) {
-                    printWriter.println("==="+k);
+                for (int k = 1; k <= 4; k++) {
+                    printWriter.println("===" + k);
                     SetContainer sc = new SetContainer(grammar);
                     sc.reset(k);
                     sc.computeSetsByRangeGeneration(k, 4, 20, limit);
                     sc.dump(printWriter);
-                    limit *=2;
+                    limit *= 2;
                 }
                 printWriter.println();
             } else {
@@ -60,16 +62,57 @@ public class Main {
         }
         printWriter.close();
         out.println(counter);
-        out.println("failed "+counterFailed);
-        long duration = System.nanoTime()-start;
-        out.println("duration="+duration/1e9);
+        out.println("failed " + counterFailed);
+        long duration = System.nanoTime() - start;
+        out.println("duration=" + duration / 1e9);
+    }
+
+    static void nextCounter(List<String> lines) {
+        int n = 0;
+        int count = 0;
+        int countNoMin = 0;
+        long start = System.nanoTime();
+        while (n < lines.size()) {
+            List<String> gramLines = new ArrayList<>();
+            n = readGramLines(lines, n, gramLines);
+            try {
+                Grammar grammar = new Grammar(gramLines);
+                int limit = 10* 1000 * 1000;
+                for (String line : gramLines)
+                    out.println(line);
+                out.println("---");
+                for (int maxLen = 1; maxLen <= 64; maxLen++) {
+                    Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
+                    int nc = 0;
+                    while (generator.next()) {
+                        nc++;
+                        if (nc >= limit)
+                            break;
+                    }
+                    out.println(maxLen + ": " + nc);
+                    if (nc==limit)
+                        break;
+                }
+                out.println();
+            } catch (NoMinLenGrammarException e) {
+                countNoMin++;
+            }
+            n++;
+            count++;
+            List<String> expectLines = new ArrayList<>();
+            n = readExpect1Lines(lines, n, expectLines);
+            n++;
+        }
+        out.println(count + " grammars, " + countNoMin + " exceptions");
+        long duration = System.nanoTime() - start;
+        out.println("duration=" + duration / 1e9);
     }
 
     static void testBad(List<String> lines) {
         int n = 0;
         int count = 0;
         int countNoMin = 0;
-        while (n<lines.size()) {
+        while (n < lines.size()) {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
             try {
@@ -84,11 +127,11 @@ public class Main {
             n = readExpect1Lines(lines, n, expectLines);
             n++;
         }
-        out.println(count + " grammars, "+countNoMin+" exceptions");
+        out.println(count + " grammars, " + countNoMin + " exceptions");
     }
 
     private static int readExpect1Lines(List<String> lines, int n, List<String> expectLines) {
-        while(n<lines.size()) {
+        while (n < lines.size()) {
             String line = lines.get(n).trim();
             if (line.isEmpty()) break;
             expectLines.add(line);
@@ -98,10 +141,9 @@ public class Main {
     }
 
     private static int readGramLines(List<String> lines, int n, List<String> gramLines) {
-        while(n<lines.size()) {
+        while (n < lines.size()) {
             String line = lines.get(n).trim();
-            if (!line.isEmpty() && line.charAt(0)==';')
-            {
+            if (!line.isEmpty() && line.charAt(0) == ';') {
                 n++;
                 continue;
             }
@@ -113,12 +155,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("res/badGrammars.dat");
+        Path path = Paths.get("res/test1.dat");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-             testBad(lines);
-        }
-        catch (IOException e) {
+            nextCounter(lines);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
