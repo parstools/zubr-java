@@ -45,7 +45,7 @@ public class Generator {
     }
 
     public boolean next() {
-        return root.next(maxLen);
+        return root.next();
     }
 
     public void collectFirst(int ntNumber, int k, SequenceSet sset) {

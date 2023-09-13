@@ -86,7 +86,7 @@ public class Node {
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
         childs.add(child);
         if (!child.symbol.terminal)
-            if (!child.next(reservedLen))
+            if (!child.next())
                 return false;
         if (start + 1 < rules.get(ruleIndex).size())
             initSuffix(start + 1, maxLen - childs.get(start).getLen());
@@ -169,17 +169,17 @@ public class Node {
     }
 
 
-    boolean next(int maxLen) {
-        assert (maxLen >= 0);
+    boolean next() {
+        assert (nodeMaxLen >= 0);
         assert (!symbol.terminal);
-        if (ruleIndex < 0 || !nextTry(maxLen)) {
+        if (ruleIndex < 0 || !nextTry(nodeMaxLen)) {
             ruleIndex++;
-            while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > maxLen)
+            while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
                 ruleIndex++;
             if (!ruleIndexOK())
                 return false;
             childs.clear();
-            initSuffix(0, maxLen);
+            initSuffix(0, nodeMaxLen);
         }
         assert (ruleIndex >= 0);
         return true;
