@@ -163,8 +163,6 @@ public class Node1 {
 
     boolean next(int maxLen) {
         assert (maxLen >= 0);
-        if (maxLen == 0)
-            return false;
         assert (!symbol.terminal);
         if (ruleIndex < 0 || !nextTry(maxLen)) {
             ruleIndex++;
@@ -175,6 +173,7 @@ public class Node1 {
             childs.clear();
             initSuffix(0, maxLen);
         }
+        assert(ruleIndex>=0);
         return true;
     }
 
