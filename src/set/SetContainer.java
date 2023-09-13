@@ -1,6 +1,7 @@
 package set;
 
 import generator.Generator;
+import generator.RuleOrder;
 import grammar.Grammar;
 import util.Hash;
 
@@ -44,7 +45,7 @@ public class SetContainer {
     public void computeSetsByGeneration(int k, int maxLen) {
         firstSets.clear();
         followSets.clear();
-        Generator generator = new Generator(grammar, maxLen);
+        Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
         for (int i=0; i<grammar.nonterminals.size(); i++) {
             TokenSet firstSet = generator.collectFirstAllGenerated(i, k);
             firstSets.add(firstSet);

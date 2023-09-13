@@ -16,7 +16,7 @@ public class CollectTest {
     @Test
     void collectFirst() {
         Grammar grammar = TestGrammars.grammar2();
-        Generator generator = new Generator(grammar, 5);
+        Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
         generator.createFromString("S(aS()S(b))");
         SequenceSet sset1 = new SequenceSet();
         SequenceSet expected1 = new SequenceSet();
@@ -37,7 +37,7 @@ public class CollectTest {
     @Test
     void terminalsFrom() {
         Grammar grammar = TestGrammars.grammar2();
-        Generator generator = new Generator(grammar, 5);
+        Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
         generator.createFromString("S(aS()S(b)a)");
         Sequence seq = generator.root.terminalsFrom(2,1);
         assertEquals("b", seq.toString());
@@ -58,7 +58,7 @@ public class CollectTest {
     @Test
     void collectFollow() {
         Grammar grammar = TestGrammars.grammar2();
-        Generator generator = new Generator(grammar, 5);
+        Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
@@ -96,7 +96,7 @@ public class CollectTest {
     @Test
     void collectFollow2() {
         Grammar grammar = TestGrammars.grammar2();
-        Generator generator = new Generator(grammar, 5);
+        Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
@@ -115,7 +115,7 @@ public class CollectTest {
     void grammar2Collect() {
         TokenSet firstS,firstA;
         TokenSet followS, followA;
-        Generator generator = new Generator(TestGrammars.grammar2(), 5);
+        Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         assertTrue(generator.next());
         assertEquals("",generator.string());
         assertEquals("S()",generator.parenString());

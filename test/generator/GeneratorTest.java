@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GeneratorTest {
     @Test
     void grammar3Test() {
-        Generator generator = new Generator(TestGrammars.grammar3(), 5);
+        Generator generator = new Generator(TestGrammars.grammar3(), 5, RuleOrder.roSort);
         assertTrue(generator.next());
         assertEquals("aaa", generator.string());
         assertTrue(generator.next());
@@ -30,7 +30,7 @@ public class GeneratorTest {
 
     @Test
     void creationFromString() {
-        Generator generator = new Generator(TestGrammars.grammar2(), 5);
+        Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         String parenStr = "A(S()a)";
         generator.createFromString(parenStr);
         assertEquals(parenStr, generator.parenString());
@@ -44,7 +44,7 @@ public class GeneratorTest {
 
     @Test
     void grammar4Test() {
-        Generator generator = new Generator(TestGrammars.grammar4(), 5);
+        Generator generator = new Generator(TestGrammars.grammar4(), 5, RuleOrder.roSort);
         assertTrue(generator.next());
         assertEquals("S()", generator.parenString());
         assertTrue(generator.next());
@@ -62,7 +62,7 @@ public class GeneratorTest {
 
     @Test
     void grammar6Test3() {
-        Generator generator = new Generator(TestGrammars.grammar6(), 3);
+        Generator generator = new Generator(TestGrammars.grammar6(), 3, RuleOrder.roSort);
         int counter = 0;
         while(generator.next()) {
             counter++;
@@ -71,7 +71,7 @@ public class GeneratorTest {
 
     @Test
     void grammar6Test() {
-        Generator generator = new Generator(TestGrammars.grammar6(), 5);
+        Generator generator = new Generator(TestGrammars.grammar6(), 5, RuleOrder.roSort);
         int counter = 0;
         while(generator.next()) {
             counter++;

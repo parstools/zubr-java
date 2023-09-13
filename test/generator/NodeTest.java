@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class NodeTest {
     @Test
     void grammar1CTest() {
-        Generator generator = new Generator(TestGrammars.grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol);
         node.next(5);
@@ -31,7 +31,7 @@ class NodeTest {
 
     @Test
     void grammar1Test() {
-        Generator generator = new Generator(TestGrammars.grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);
         node.next(5);
@@ -60,7 +60,7 @@ class NodeTest {
 
     @Test
     void grammar2ATest() {
-        Generator generator = new Generator(TestGrammars.grammar2(), 5);
+        Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol);
         node.next(5);
@@ -80,7 +80,7 @@ class NodeTest {
 
     @Test
     void grammar2Test() {
-        Generator generator = new Generator(TestGrammars.grammar2(), 5);
+        Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);
         node.next(5);

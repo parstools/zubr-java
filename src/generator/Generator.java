@@ -18,12 +18,14 @@ public class Generator {
     Grammar grammar;
     int limit = 40 * 1000;
     Node root;
-    boolean reverse = false;
+
+    RuleOrder ruleOrder;
     int maxLen;
 
-    public Generator(Grammar grammar, int maxLen) {
+    public Generator(Grammar grammar, int maxLen, RuleOrder ruleOrder) {
         this.grammar = grammar;
         this.maxLen = maxLen;
+        this.ruleOrder = ruleOrder;
         root = new Node(this, getNT(0));
     }
 

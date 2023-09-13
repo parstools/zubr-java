@@ -30,9 +30,13 @@ public class Node {
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             rules = new ArrayList<>(grammar.getNTRules(symbol.index));
-            sortRules();
-            if (generator.reverse)
+            if (generator.ruleOrder == RuleOrder.roSort
+                    || generator.ruleOrder == RuleOrder.roRevereSort)
+                sortRules();
+            if (generator.ruleOrder == RuleOrder.roRevereSort)
                 Collections.reverse(rules);
+            else if (generator.ruleOrder == RuleOrder.roShuffle)
+                Collections.shuffle(rules);
         }
     }
 

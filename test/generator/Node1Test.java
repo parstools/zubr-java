@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Node1Test {
     @Test
     void reverse() {
-        Generator generator = new Generator(TestGrammars.grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);
         Stack<String> stack = new Stack<>();
         while (node.next(5))
             stack.push(node.string());
 
-        generator.reverse = true;
+        generator.ruleOrder = RuleOrder.roRevereSort;
         node = new Node(generator, symbol);
         while (node.next(5)) {
             assertEquals(stack.peek(), node.string());
@@ -29,7 +29,7 @@ public class Node1Test {
 
     @Test
     void grammar1CTest() {
-        Generator generator = new Generator(TestGrammars.grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(1);
         Node node = new Node(generator, symbol);
         node.next(5);
@@ -48,7 +48,7 @@ public class Node1Test {
 
     @Test
     void grammar1Test() {
-        Generator generator = new Generator(TestGrammars.grammar1(), 5);
+        Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
         Node node = new Node(generator, symbol);
         node.next(5);
