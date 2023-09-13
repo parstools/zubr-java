@@ -62,7 +62,6 @@ public class SetContainer {
             String[] parts = line.split("\t");
             assert(parts.length==4);
             int nt = grammar.findSymbol(parts[0]).index;
-            out.println(nt);
             boolean nullable = parts[1].equals("✔");
             TokenSet first = new TokenSet(grammar,1);
             if (nullable) {

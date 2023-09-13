@@ -16,7 +16,7 @@ import static java.lang.Character.*;
 
 public class Generator {
     Grammar grammar;
-    int limit = 40 * 1000;
+    int limit = 10 * 1000;
     Node root;
 
     RuleOrder ruleOrder;
