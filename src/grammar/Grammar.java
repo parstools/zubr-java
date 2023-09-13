@@ -19,6 +19,10 @@ public class Grammar {
             return tNames.get(t);
     }
 
+    public String getNonTerminalName(int t) {
+        return ntNames.get(t);
+    }
+
     public String getSymbolName(Symbol symbol) {
         if (symbol.terminal)
             return getTerminalName(symbol.index);

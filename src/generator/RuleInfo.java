@@ -7,12 +7,17 @@ public class RuleInfo {
     Rule rule;
     int originIndex;
     boolean hasNt = false;
-    int minLen = 0;
+    int minLen = -1;
     Generator generator;
 
     boolean computeMinLen() {
         int old = minLen;
         minLen = 0;
+        for (Symbol symbol : rule)
+            if (!symbol.terminal && generator.ntInfos.get(symbol.index).minLen<0) {
+                minLen = -1;
+                return minLen != old;
+            }
         for (Symbol symbol : rule)
             if (symbol.terminal)
                 minLen++;

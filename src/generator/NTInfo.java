@@ -11,7 +11,7 @@ public class NTInfo {
     Nonterminal nonterminal;
     List<RuleInfo> ruleInfos = new ArrayList<>();
 
-    int minLen = 0;
+    int minLen = -1;
 
     boolean computeMinLen() {
         int old = minLen;
@@ -22,7 +22,8 @@ public class NTInfo {
         }
         minLen = Integer.MAX_VALUE;
         for (RuleInfo ruleInfo : ruleInfos) {
-            minLen = Math.min(minLen, ruleInfo.minLen);
+            if (ruleInfo.minLen >= 0)
+                minLen = Math.min(minLen, ruleInfo.minLen);
         }
         return minLen != old || changed;
     }

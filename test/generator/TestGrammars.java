@@ -49,4 +49,11 @@ public class TestGrammars {
         lines.add("B -> a A");
         return new Grammar(lines);
     }
+
+    static Grammar grammar6() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> S S");
+        lines.add("S -> i");
+        return new Grammar(lines);
+    }
 }

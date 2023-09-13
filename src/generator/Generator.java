@@ -18,7 +18,7 @@ public class Generator {
     Grammar grammar;
     List<NTInfo> ntInfos = new ArrayList<>();
     int maxLen;
-    int limit = 40*1000;
+    int limit = 40 * 1000;
     Node root;
     boolean reverse = false;
 
@@ -42,6 +42,15 @@ public class Generator {
                 if (ntInfo.computeMinLen())
                     changed = true;
             }
+        }
+        int index = 0;
+        for (NTInfo ntInfo : ntInfos) {
+            if (ntInfo.minLen < 0)
+                throw new RuntimeException("not computed minLen for " + grammar.getNonTerminalName(index));
+            for (RuleInfo ruleInfo: ntInfo.ruleInfos)
+                if (ruleInfo.minLen < 0)
+                    throw new RuntimeException("not computed minLen for " + ruleInfo.rule.toString());
+            index++;
         }
         for (NTInfo ntInfo : ntInfos)
             ntInfo.sortRules();
@@ -97,7 +106,7 @@ public class Generator {
             SequenceSet sset = new SequenceSet();
             root.collectFirst(ntNumber, k, sset);
             result.addAllSSeq(sset);
-            if (counter>=limit)
+            if (counter >= limit)
                 return result;
         }
         return result;
@@ -108,7 +117,7 @@ public class Generator {
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
-        root.collectFollow(ntNumber,k, stackSeq, sset);
+        root.collectFollow(ntNumber, k, stackSeq, sset);
         TokenSet result = new TokenSet(grammar, k);
         result.addAllSSeq(sset);
         return result;
@@ -124,10 +133,10 @@ public class Generator {
         while (next()) {
             counter++;
             SequenceSet sset = new SequenceSet();
-            assert(stackSeq.size()==1);
-            root.collectFollow(ntNumber,k, stackSeq, sset);
+            assert (stackSeq.size() == 1);
+            root.collectFollow(ntNumber, k, stackSeq, sset);
             result.addAllSSeq(sset);
-            if (counter>=limit)
+            if (counter >= limit)
                 return result;
         }
         return result;
@@ -135,13 +144,13 @@ public class Generator {
 
     static int afterParen(String parenStr, int start) {
         char c = parenStr.charAt(start);
-        assert(c=='(');
+        assert (c == '(');
         int depth = 1;
-        int pos = start+1;
-        while (pos < parenStr.length() && depth>0) {
+        int pos = start + 1;
+        while (pos < parenStr.length() && depth > 0) {
             c = parenStr.charAt(pos);
-            if (c=='(') depth++;
-            else if (c==')') depth--;
+            if (c == '(') depth++;
+            else if (c == ')') depth--;
             pos++;
         }
         return pos;
@@ -153,19 +162,18 @@ public class Generator {
             char c = parenStr.charAt(pos);
             Node child;
             if (isUpperCase(c)) {
-                int pos1 = afterParen(parenStr, pos+1);
-                String sub =  parenStr.substring(pos,pos1);
+                int pos1 = afterParen(parenStr, pos + 1);
+                String sub = parenStr.substring(pos, pos1);
                 pos = pos1;
                 child = new Node(this, new Symbol(grammar, false, 0));
                 createFromString(sub, child);
-            }
-            else {
+            } else {
                 pos++;
                 Symbol symbol = grammar.findSymbol(Character.toString(c));
                 child = new Node(this, symbol);
             }
             node.addChild(child);
-       }
+        }
     }
 
     public void createFromString(String parenStr) {
@@ -181,7 +189,7 @@ public class Generator {
         if (isUpperCase(c)) {
             assert (parenStr.charAt(1) == '(');
             int pos = afterParen(parenStr, 1);
-            String sub =  parenStr.substring(2,pos-1);
+            String sub = parenStr.substring(2, pos - 1);
             if (!sub.isEmpty())
                 createChildsFromString(sub, node);
         }

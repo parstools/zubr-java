@@ -2,6 +2,7 @@ package generator;
 
 import org.junit.jupiter.api.Test;
 
+import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GeneratorTest {
@@ -57,5 +58,23 @@ public class GeneratorTest {
         assertEquals("S(aS(aS()A(c))A(c))", generator.parenString());
         while (generator.next())
             assertTrue(generator.string().length() <= 5);
+    }
+
+    @Test
+    void grammar6Test3() {
+        Generator generator = new Generator(TestGrammars.grammar6(), 3);
+        int counter = 0;
+        while(generator.next()) {
+            counter++;
+        }
+    }
+
+    @Test
+    void grammar6Test() {
+        Generator generator = new Generator(TestGrammars.grammar6(), 5);
+        int counter = 0;
+        while(generator.next()) {
+            counter++;
+        }
     }
 }
