@@ -153,10 +153,7 @@ public class Node1 {
         if (ruleIndexOK()) {
             initSuffix(canNextIndex + 1, maxLen-(canNextIndex>=0?sumlens[canNextIndex]:0));
             assert(getLen() <= maxLen);
-            if (getLen() > maxLen) //todo
-                return false;
-            else
-                return true;
+            return true;
         } else
             return false;
     }
