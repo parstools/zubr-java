@@ -23,7 +23,10 @@ public class Node {
         childs.add(child);
     }
 
-    public Node(Generator generator, Symbol symbol) {
+    final int nodeMaxLen;
+
+    public Node(Generator generator, Symbol symbol, int nodeMaxLen) {
+        this.nodeMaxLen = nodeMaxLen;
         this.generator = generator;
         this.grammar = generator.grammar;
         this.symbol = symbol;
@@ -72,27 +75,22 @@ public class Node {
         return ruleIndex + 1 < rules.size();
     }
 
-    boolean initSuffixForChild(int start, int maxLen) {
-        Node child = childs.get(start);
+    boolean initSuffix(int start, int maxLen) {
+        assert (childs.size() == start);
+        if (start >= rules.get(ruleIndex).size())
+            return false;
         int reservedLen = maxLen;
         Rule rule = rules.get(ruleIndex);
         for (int i = rule.size() - 1; i > start; i--)
             reservedLen -= grammar.getMinLen(rule.get(i));
+        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
+        childs.add(child);
         if (!child.symbol.terminal)
             if (!child.next(reservedLen))
                 return false;
         if (start + 1 < rules.get(ruleIndex).size())
             initSuffix(start + 1, maxLen - childs.get(start).getLen());
         return true;
-    }
-
-    void initSuffix(int start, int maxLen) {
-        assert (childs.size() == start);
-        if (start >= rules.get(ruleIndex).size())
-            return;
-        Node child = new Node(generator, rules.get(ruleIndex).get(start));
-        childs.add(child);
-        initSuffixForChild(start, maxLen);
     }
 
     void removeChildsFrom(int start) {

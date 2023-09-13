@@ -17,7 +17,7 @@ public class CollectTest {
     void collectFirst() {
         Grammar grammar = TestGrammars.grammar2();
         Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
-        generator.createFromString("S(aS()S(b))");
+        generator.createRootFromString("S(aS()S(b))");
         SequenceSet sset1 = new SequenceSet();
         SequenceSet expected1 = new SequenceSet();
         expected1.add(new Sequence(grammar, "a"));
@@ -38,7 +38,7 @@ public class CollectTest {
     void terminalsFrom() {
         Grammar grammar = TestGrammars.grammar2();
         Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
-        generator.createFromString("S(aS()S(b)a)");
+        generator.createRootFromString("S(aS()S(b)a)");
         Sequence seq = generator.root.terminalsFrom(2,1);
         assertEquals("b", seq.toString());
         seq = generator.root.terminalsFrom(3,1);
@@ -62,7 +62,7 @@ public class CollectTest {
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
-        generator.createFromString("S(A(S(c)ab))");
+        generator.createRootFromString("S(A(S(c)ab))");
 
         SequenceSet sset1 = new SequenceSet();
         SequenceSet expected1 = new SequenceSet();
@@ -100,7 +100,7 @@ public class CollectTest {
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
-        generator.createFromString("S(A(S(c)ab)S(S(c))b)");
+        generator.createRootFromString("S(A(S(c)ab)S(S(c))b)");
 
         SequenceSet sset2 = new SequenceSet();
         SequenceSet expected2 = new SequenceSet();

@@ -13,13 +13,13 @@ public class Node1Test {
     void reverse() {
         Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         Stack<String> stack = new Stack<>();
         while (node.next(5))
             stack.push(node.string());
 
         generator.ruleOrder = RuleOrder.roRevereSort;
-        node = new Node(generator, symbol);
+        node = new Node(generator, symbol, 5);
         while (node.next(5)) {
             assertEquals(stack.peek(), node.string());
             stack.pop();
@@ -31,7 +31,7 @@ public class Node1Test {
     void grammar1CTest() {
         Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(1);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         node.next(5);
         assertEquals("d",node.string());
         assertTrue(node.next(5));
@@ -50,7 +50,7 @@ public class Node1Test {
     void grammar1Test() {
         Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         node.next(5);
         assertEquals("dd",node.string());
         assertTrue(node.next(5));

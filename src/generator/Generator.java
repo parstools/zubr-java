@@ -25,11 +25,11 @@ public class Generator {
         this.grammar = grammar;
         this.maxLen = maxLen;
         this.ruleOrder = ruleOrder;
-        root = new Node(this, getNT(0));
+        root = new Node(this, getNT(0), maxLen);
     }
 
     void restart() {
-        root = new Node(this, getNT(0));
+        root = new Node(this, getNT(0), maxLen);
     }
 
     Symbol getNT(int ntIndex) {
@@ -102,7 +102,7 @@ public class Generator {
             } else {
                 pos++;
                 Symbol symbol = grammar.findSymbol(Character.toString(c));
-                child = new Node(this, symbol);
+                child = new Node(this, symbol, maxLen); //maxLen is not important here
             }
             node.addChild(child);
         }
@@ -117,7 +117,7 @@ public class Generator {
         char c = parenStr.charAt(0);
         assert (isAlphabetic(c));
         Symbol symbol = grammar.findSymbol(Character.toString(c));
-        Node node = new Node(this, symbol);
+        Node node = new Node(this, symbol, maxLen);
         if (!symbol.terminal) {
             assert (parenStr.charAt(1) == '(');
             int pos = afterParen(parenStr, 1);

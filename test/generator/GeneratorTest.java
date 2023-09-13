@@ -32,13 +32,13 @@ public class GeneratorTest {
     void creationFromString() {
         Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         String parenStr = "A(S()a)";
-        generator.createFromString(parenStr);
+        generator.createRootFromString(parenStr);
         assertEquals(parenStr, generator.parenString());
         parenStr = "S(aA(b)aA(S()a)b)";
-        generator.createFromString(parenStr);
+        generator.createRootFromString(parenStr);
         assertEquals(parenStr, generator.parenString());
         parenStr = "S(aA(a)b)";
-        generator.createFromString(parenStr);
+        generator.createRootFromString(parenStr);
         assertEquals(parenStr, generator.parenString());
     }
 

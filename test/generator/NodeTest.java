@@ -14,7 +14,7 @@ class NodeTest {
     void grammar1CTest() {
         Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(1);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         node.next(5);
         assertEquals("d",node.string());
         assertTrue(node.next(5));
@@ -33,7 +33,7 @@ class NodeTest {
     void grammar1Test() {
         Generator generator = new Generator(TestGrammars.grammar1(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         node.next(5);
         assertEquals("dd",node.string());
         assertTrue(node.next(5));
@@ -62,7 +62,7 @@ class NodeTest {
     void grammar2ATest() {
         Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(1);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         node.next(5);
         assertEquals("c",node.string());
         assertEquals("A(c)",node.parenString());
@@ -82,7 +82,7 @@ class NodeTest {
     void grammar2Test() {
         Generator generator = new Generator(TestGrammars.grammar2(), 5, RuleOrder.roSort);
         Symbol symbol = generator.getNT(0);
-        Node node = new Node(generator, symbol);
+        Node node = new Node(generator, symbol, 5);
         node.next(5);
         assertEquals("",node.string());
         assertEquals("S()",node.parenString());
