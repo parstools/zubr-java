@@ -15,9 +15,9 @@ public class Node {
     List<Node> childs = null;
     List<Rule> rules = null;
     int ruleIndex = -1;
-    Symbol symbol;
-    Generator generator;
-    Grammar grammar;
+    final Symbol symbol;
+    final Generator generator;
+    final Grammar grammar;
 
     void addChild(Node child) {
         childs.add(child);

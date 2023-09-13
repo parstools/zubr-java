@@ -96,10 +96,9 @@ public class Generator {
             Node child;
             if (isUpperCase(c)) {
                 int pos1 = afterParen(parenStr, pos + 1);
-                String sub = parenStr.substring(pos, pos1);
+                String substring = parenStr.substring(pos, pos1);
                 pos = pos1;
-                child = new Node(this, new Symbol(grammar, false, 0));
-                createFromString(sub, child);
+                child = createFromString(substring);
             } else {
                 pos++;
                 Symbol symbol = grammar.findSymbol(Character.toString(c));
@@ -109,22 +108,23 @@ public class Generator {
         }
     }
 
-    public void createFromString(String parenStr) {
-        root = new Node(this, getNT(0));
-        createFromString(parenStr, root);
+    public void createRootFromString(String parenStr) {
+        root = createFromString(parenStr);
     }
 
-    private void createFromString(String parenStr, Node node) {
+    private Node createFromString(String parenStr) {
         assert (!parenStr.isEmpty());
         char c = parenStr.charAt(0);
         assert (isAlphabetic(c));
-        node.symbol = grammar.findSymbol(Character.toString(c));
-        if (isUpperCase(c)) {
+        Symbol symbol = grammar.findSymbol(Character.toString(c));
+        Node node = new Node(this, symbol);
+        if (!symbol.terminal) {
             assert (parenStr.charAt(1) == '(');
             int pos = afterParen(parenStr, 1);
             String sub = parenStr.substring(2, pos - 1);
             if (!sub.isEmpty())
                 createChildsFromString(sub, node);
         }
+        return node;
     }
 }

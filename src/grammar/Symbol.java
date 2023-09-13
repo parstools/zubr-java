@@ -1,8 +1,8 @@
 package grammar;
 
 public class Symbol {
-    public boolean terminal;
-    public int index;
+    public final boolean terminal;
+    public final int index;
     private Grammar grammar;
     public Symbol(Grammar grammar, boolean terminal, int index) {
         this.grammar = grammar;
