@@ -46,11 +46,25 @@ public class SetContainer {
         firstSets.clear();
         followSets.clear();
         Generator generator = new Generator(grammar, maxLen, RuleOrder.roShuffle);
+        int counter = 0;
         for (int i=0; i<grammar.nonterminals.size(); i++) {
-            TokenSet firstSet = generator.collectFirstAllGenerated(i, k);
+            TokenSet firstSet = new TokenSet(grammar, k);
             firstSets.add(firstSet);
-            TokenSet followSet = generator.collectFollowAllGenerated(i, k);
+            TokenSet followSet = new TokenSet(grammar, k);
             followSets.add(followSet);
+        }
+        while (generator.next()) {
+            counter++;
+            for (int i=0; i<grammar.nonterminals.size(); i++) {
+                SequenceSet sset = new SequenceSet();
+                generator.collectFirst(i, k, sset);
+                firstSets.get(i).addAllSSeq(sset);
+                sset = new SequenceSet();
+                generator.collectFollow(i, k, sset);
+                followSets.get(i).addAllSSeq(sset);
+            }
+            if (counter >= generator.limit)
+                break;
         }
     }
 

@@ -16,7 +16,7 @@ import static java.lang.Character.*;
 
 public class Generator {
     Grammar grammar;
-    int limit = 10 * 1000;
+    public int limit = 10 * 1000;
     Node root;
 
     RuleOrder ruleOrder;
@@ -49,6 +49,10 @@ public class Generator {
         return root.next(maxLen);
     }
 
+    public void collectFirst(int ntNumber, int k, SequenceSet sset) {
+        root.collectFirst(ntNumber, k, sset);
+    }
+
     public TokenSet collectFirst(int ntNumber, int k) {
         SequenceSet sset = new SequenceSet();
         root.collectFirst(ntNumber, k, sset);
@@ -72,12 +76,16 @@ public class Generator {
         return result;
     }
 
-    public TokenSet collectFollow(int ntNumber, int k) {
-        SequenceSet sset = new SequenceSet();
+    public void collectFollow(int ntNumber, int k, SequenceSet sset) {
         Sequence upSeq = new Sequence(grammar, "$");
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
         root.collectFollow(ntNumber, k, stackSeq, sset);
+    }
+
+    public TokenSet collectFollow(int ntNumber, int k) {
+        SequenceSet sset = new SequenceSet();
+        collectFollow(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
         result.addAllSSeq(sset);
         return result;
