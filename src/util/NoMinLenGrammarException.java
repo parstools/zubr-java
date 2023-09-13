@@ -1,7 +1,7 @@
 package util;
 
 public class NoMinLenGrammarException extends GrammarException {
-    public NoMinLenGrammarException(String errorMessage, Throwable err) {
-        super(errorMessage, err);
+    public NoMinLenGrammarException(String errorMessage) {
+        super(errorMessage, new Throwable());
     }
 }

@@ -1,5 +1,7 @@
 package grammar;
 
+import util.NoMinLenGrammarException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +32,16 @@ public class Grammar {
             return ntNames.get(symbol.index);
     }
 
+    public Nonterminal getNT(int ntIndex) {
+        return nonterminals.get(ntIndex);
+    }
+
+    public List<Rule> getNTRules(int ntIndex) {
+        return getNT(ntIndex).rules;
+    }
+
     public Rule getNTRule(int ntIndex, int ruleIdx) {
-        return nonterminals.get(ntIndex).rules.get(ruleIdx);
+        return getNTRules(ntIndex).get(ruleIdx);
     }
 
     void addNT(String ntName) {
@@ -70,6 +80,23 @@ public class Grammar {
             rule.parse(ruleString);
             nt.addRule(rule);
         }
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            for (Nonterminal nt : nonterminals) {
+                if (nt.computeMinLen())
+                    changed = true;
+            }
+        }
+        int index = 0;
+        for (Nonterminal nt : nonterminals) {
+            if (nt.minLen < 0)
+                throw new NoMinLenGrammarException("not computed minLen for " + getNonTerminalName(index));
+            for (Rule ruleInfo: nt.rules)
+                if (ruleInfo.minLen < 0)
+                    throw new NoMinLenGrammarException("not computed minLen for " + ruleInfo.toString());
+            index++;
+        }
     }
 
     public int findTerminal(String name) {
@@ -95,5 +122,12 @@ public class Grammar {
                 addT(name);
             return new Symbol(this, true, tNamesToInt.get(name));
         }
+    }
+
+    public int getMinLen(Symbol symbol) {
+        if (symbol.terminal)
+            return 1;
+        else
+            return getNT(symbol.index).minLen;
     }
 }

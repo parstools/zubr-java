@@ -1,21 +1,19 @@
 package generator;
 
 import grammar.Grammar;
+import grammar.Nonterminal;
 import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import static java.lang.System.out;
 
 public class Node {
     List<Node> childs = null;
-    List<RuleInfo> ruleInfos = null;
+    List<Rule> rules = null;
     int ruleIndex = -1;
     Symbol symbol;
     Generator generator;
@@ -31,9 +29,10 @@ public class Node {
         this.symbol = symbol;
         if (!symbol.terminal) {
             childs = new ArrayList<>();
-            ruleInfos = new ArrayList<>(generator.ntInfos.get(symbol.index).ruleInfos);
+            rules = new ArrayList<>(grammar.getNTRules(symbol.index));
+            sortRules();
             if (generator.reverse)
-                Collections.reverse(ruleInfos);
+                Collections.reverse(rules);
         }
     }
 
@@ -62,32 +61,32 @@ public class Node {
     }
 
     boolean ruleIndexOK() {
-        return ruleIndex < ruleInfos.size();
+        return ruleIndex < rules.size();
     }
 
     boolean nextRuleIndexOK() {
-        return ruleIndex + 1 < ruleInfos.size();
+        return ruleIndex + 1 < rules.size();
     }
 
     boolean initSuffixForChild(int start, int maxLen) {
         Node child = childs.get(start);
         int reservedLen = maxLen;
-        Rule rule = ruleInfos.get(ruleIndex).rule;
+        Rule rule = rules.get(ruleIndex);
         for (int i = rule.size() - 1; i > start; i--)
-            reservedLen -= generator.getMinLen(rule.get(i));
+            reservedLen -= grammar.getMinLen(rule.get(i));
         if (!child.symbol.terminal)
             if (!child.next(reservedLen))
                 return false;
-        if (start + 1 < ruleInfos.get(ruleIndex).rule.size())
+        if (start + 1 < rules.get(ruleIndex).size())
             initSuffix(start + 1, maxLen - childs.get(start).getLen());
         return true;
     }
 
     void initSuffix(int start, int maxLen) {
         assert (childs.size() == start);
-        if (start >= ruleInfos.get(ruleIndex).rule.size())
+        if (start >= rules.get(ruleIndex).size())
             return;
-        Node child = new Node(generator, ruleInfos.get(ruleIndex).rule.get(start));
+        Node child = new Node(generator, rules.get(ruleIndex).get(start));
         childs.add(child);
         initSuffixForChild(start, maxLen);
     }
@@ -114,9 +113,9 @@ public class Node {
         if (!ruleIndexOK())
             return false;
         if (nextRuleIndexOK()) {
-            NTInfo ntINfo = generator.ntInfos.get(symbol.index);
-            RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);
-            if (maxLen < ruleInfo.minLen) {
+            Nonterminal nt = grammar.getNT(symbol.index);
+            Rule rule = rules.get(ruleIndex + 1);
+            if (maxLen < rule.minLen) {
                 ruleIndex++;
                 return false;
             }
@@ -134,7 +133,7 @@ public class Node {
         int sumBackMinLens[] = new int[childs.size()];
         sum = 0;
         for (int i = childs.size() - 1; i >= 0; i--) {
-            minLens[i] = generator.getMinLen(childs.get(i).symbol);
+            minLens[i] = grammar.getMinLen(childs.get(i).symbol);
             sum += minLens[i];
             sumBackMinLens[i] = sum;
         }
@@ -173,7 +172,7 @@ public class Node {
         assert (!symbol.terminal);
         if (ruleIndex < 0 || !nextTry(maxLen)) {
             ruleIndex++;
-            while (ruleIndex < ruleInfos.size() && ruleInfos.get(ruleIndex).minLen > maxLen)
+            while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > maxLen)
                 ruleIndex++;
             if (!ruleIndexOK())
                 return false;
@@ -289,5 +288,28 @@ public class Node {
                 child.collectFollow(ntNumber, k, stackSeq, sset);
                 stackSeq.pop();
             }
+    }
+
+
+    void sortRules() {
+        Collections.sort(rules, new Comparator<Rule>() {
+            @Override
+            public int compare(Rule r1, Rule r2) {
+                if (r1.hasNt && !r2.hasNt)
+                    return 1;
+                else if (!r1.hasNt && r2.hasNt)
+                    return -1;
+                else if (r1.minLen < r2.minLen)
+                    return -1;
+                else if (r1.minLen > r2.minLen)
+                    return 1;
+                else if (r1.originIndex < r2.originIndex)
+                    return -1;
+                else if (r1.originIndex > r2.originIndex)
+                    return 1;
+                else
+                    return 0;
+            }
+        });
     }
 }

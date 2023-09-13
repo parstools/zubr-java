@@ -17,4 +17,25 @@ public class Nonterminal {
     Nonterminal(Grammar grammar) {
         this.grammar = grammar;
     }
+
+    public int minLen = -1;
+
+    boolean computeMinLen() {
+        int old = minLen;
+        boolean changed = false;
+        for (Rule rule : rules) {
+            if (rule.computeMinLen())
+                changed = true;
+        }
+        for (Rule rule : rules) {
+            if (rule.minLen >= 0) {
+                if (minLen<0)
+                    minLen = rule.minLen;
+                else
+                    minLen = Math.min(minLen, rule.minLen);
+            }
+        }
+        return minLen != old || changed;
+    }
+
 }

@@ -16,44 +16,14 @@ import static java.lang.Character.*;
 
 public class Generator {
     Grammar grammar;
-    List<NTInfo> ntInfos = new ArrayList<>();
-    int maxLen;
     int limit = 40 * 1000;
     Node root;
     boolean reverse = false;
-
-    int getMinLen(Symbol symbol) {
-        if (symbol.terminal)
-            return 1;
-        else
-            return ntInfos.get(symbol.index).minLen;
-    }
+    int maxLen;
 
     public Generator(Grammar grammar, int maxLen) {
         this.grammar = grammar;
         this.maxLen = maxLen;
-        for (Nonterminal nt : grammar.nonterminals) {
-            ntInfos.add(new NTInfo(this, nt));
-        }
-        boolean changed = true;
-        while (changed) {
-            changed = false;
-            for (NTInfo ntInfo : ntInfos) {
-                if (ntInfo.computeMinLen())
-                    changed = true;
-            }
-        }
-        int index = 0;
-        for (NTInfo ntInfo : ntInfos) {
-            if (ntInfo.minLen < 0)
-                throw new RuntimeException("not computed minLen for " + grammar.getNonTerminalName(index));
-            for (RuleInfo ruleInfo: ntInfo.ruleInfos)
-                if (ruleInfo.minLen < 0)
-                    throw new RuntimeException("not computed minLen for " + ruleInfo.rule.toString());
-            index++;
-        }
-        for (NTInfo ntInfo : ntInfos)
-            ntInfo.sortRules();
         root = new Node(this, getNT(0));
     }
 
@@ -63,18 +33,6 @@ public class Generator {
 
     Symbol getNT(int ntIndex) {
         return new Symbol(grammar, false, ntIndex);
-    }
-
-    Rule getRule(int ntIndex, int sortedIndex) {
-        return ntInfos.get(ntIndex).ruleInfos.get(sortedIndex).rule;
-    }
-
-    int ruleCount(Symbol symbol) {
-        if (symbol.terminal)
-            return 0;
-        else {
-            return ntInfos.get(symbol.index).ruleInfos.size();
-        }
     }
 
     public String string() {
