@@ -77,7 +77,7 @@ public class Generator {
     }
 
     public boolean next() {
-        return root.nextFit(maxLen);
+        return root.next(maxLen);
     }
 
     public TokenSet collectFirst(int ntNumber, int k) {

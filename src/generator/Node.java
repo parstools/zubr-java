@@ -7,27 +7,34 @@ import set.Sequence;
 import set.SequenceSet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+import static java.lang.System.out;
+
 public class Node {
-    final List<Node> childs = new ArrayList<>();
+    List<Node> childs = null;
+    List<RuleInfo> ruleInfos = null;
+    int ruleIndex = -1;
+    Symbol symbol;
+    Generator generator;
+    Grammar grammar;
 
     void addChild(Node child) {
         childs.add(child);
     }
 
-    int ruleIndex = -1;
-    int ruleCount;
-    Symbol symbol;
-    Generator generator;
-    Grammar grammar;
-
     public Node(Generator generator, Symbol symbol) {
         this.generator = generator;
         this.grammar = generator.grammar;
         this.symbol = symbol;
-        this.ruleCount = generator.ruleCount(symbol);
+        if (!symbol.terminal) {
+            childs = new ArrayList<>();
+            ruleInfos = new ArrayList<>(generator.ntInfos.get(symbol.index).ruleInfos);
+            if (generator.reverse)
+                Collections.reverse(ruleInfos);
+        }
     }
 
     public String string() {
@@ -55,31 +62,39 @@ public class Node {
     }
 
     boolean ruleIndexOK() {
-        return ruleIndex < ruleCount;
+        return ruleIndex < ruleInfos.size();
     }
 
     boolean nextRuleIndexOK() {
-        return ruleIndex + 1 < ruleCount;
+        return ruleIndex + 1 < ruleInfos.size();
     }
 
-    private void generateChilds(int start, int maxLen) {
-        assert (!symbol.terminal);
-        Rule rule = generator.getRule(symbol.index, ruleIndex);
-        int minLens[] = new int[rule.size()];
-        int sumBackMinLens[] = new int[rule.size()];
-        int sum = 0;
-        for (int i = rule.size() - 1; i >= 0; i--) {
-            minLens[i] = generator.getMinLen(rule.get(i));
-            sum += minLens[i];
-            sumBackMinLens[i] = sum;
-        }
-        for (int i = start; i < rule.size(); i++) {
-            Node child = new Node(generator, rule.get(i));
-            if (child.next(maxLen - (i < rule.size() - 1 ? sumBackMinLens[i + 1] : 0)) == -2)
-                return;
-            maxLen -= child.getLen();
-            childs.add(child);
-        }
+    boolean initSuffixForChild(int start, int maxLen) {
+        Node child = childs.get(start);
+        int reservedLen = maxLen;
+        Rule rule = ruleInfos.get(ruleIndex).rule;
+        for (int i = rule.size() - 1; i > start; i--)
+            reservedLen -= generator.getMinLen(rule.get(i));
+        if (!child.symbol.terminal)
+            if (!child.next(reservedLen))
+                return false;
+        if (start + 1 < ruleInfos.get(ruleIndex).rule.size())
+            initSuffix(start + 1, maxLen - childs.get(start).getLen());
+        return true;
+    }
+
+    void initSuffix(int start, int maxLen) {
+        assert (childs.size() == start);
+        if (start >= ruleInfos.get(ruleIndex).rule.size())
+            return;
+        Node child = new Node(generator, ruleInfos.get(ruleIndex).rule.get(start));
+        childs.add(child);
+        initSuffixForChild(start, maxLen);
+    }
+
+    void removeChildsFrom(int start) {
+        for (int i = childs.size() - 1; i >= start; i--)
+            childs.remove(i);
     }
 
     int getLen() {
@@ -93,28 +108,17 @@ public class Node {
         }
     }
 
-    public boolean nextFit(int maxLen) {
-        while (true) {
-            int result = next(maxLen);
-            if (result == 0)
-                return true;
-            else if (result == -1)
-                return false;
-        }
-    }
-
-    //retuns: 0: ok, -1: end of rules, -2: not enough space
-    public int next(int maxLen) {
+    public boolean nextTry(int maxLen) {
         if (symbol.terminal)
-            return -1;
+            return false;
         if (!ruleIndexOK())
-            return -1;
+            return false;
         if (nextRuleIndexOK()) {
             NTInfo ntINfo = generator.ntInfos.get(symbol.index);
             RuleInfo ruleInfo = ntINfo.ruleInfos.get(ruleIndex + 1);
             if (maxLen < ruleInfo.minLen) {
                 ruleIndex++;
-                return -2;
+                return false;
             }
         }
         int lens[] = new int[childs.size()];
@@ -142,8 +146,10 @@ public class Node {
                 newMaxLen -= sumlens[i - 1];
             if (i < sumBackMinLens.length - 1)
                 newMaxLen -= sumBackMinLens[i + 1];
-            if (childs.get(i).next(newMaxLen) == 0) {
+            if (childs.get(i).nextTry(newMaxLen)) {
                 int len = childs.get(i).getLen();
+                sumlens[i] += len - lens[i];
+                lens[i] = len;
                 canNextIndex = i;
                 break;
             } else {
@@ -154,55 +160,56 @@ public class Node {
         if (canNextIndex < 0)
             ruleIndex++;
         if (ruleIndexOK()) {
-            generateChilds(canNextIndex + 1, maxLen);
-            if (getLen() > maxLen)
-                return -2;
-            else
-                return 0;
+            initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
+            assert (getLen() <= maxLen);
+            return true;
         } else
-            return -1;
+            return false;
     }
 
-    public void collectFirst(int ntNumber, int k, SequenceSet sset) {
-        if (!symbol.terminal && symbol.index == ntNumber) {
-            Sequence seq = appendTerminals(k);
-            sset.add(seq);
+
+    boolean next(int maxLen) {
+        assert (maxLen >= 0);
+        assert (!symbol.terminal);
+        if (ruleIndex < 0 || !nextTry(maxLen)) {
+            ruleIndex++;
+            while (ruleIndex < ruleInfos.size() && ruleInfos.get(ruleIndex).minLen > maxLen)
+                ruleIndex++;
+            if (!ruleIndexOK())
+                return false;
+            childs.clear();
+            initSuffix(0, maxLen);
         }
-        for (Node child : childs)
-            child.collectFirst(ntNumber, k, sset);
+        assert (ruleIndex >= 0);
+        return true;
     }
 
-    Sequence kSymbolsFromStack(int k, Stack<Sequence> stackSeq) {
-        int remaining = k;
-        Sequence seq = new Sequence(grammar);
-        for (int i = stackSeq.size() - 1; i >= 0; i--) {
-            Sequence stackItem = stackSeq.get(i);
-            if (remaining >= stackItem.size()) {
-                seq.addAll(stackItem);
-                remaining -= stackItem.size();
-            } else {
-                for (int j = 0; j < remaining; j++)
-                    seq.add(stackItem.get(j));
-                remaining = 0;
-                break;
+    private void printDotPart(String name) {
+        String shapeStr;
+        if (childs == null)
+            shapeStr = "; shape = doublecircle";
+        else
+            shapeStr = "";
+        out.println("  P" + name + " [label = " + grammar.getSymbolName(symbol) + shapeStr + "]");
+        if (!name.isEmpty()) {
+            String upName = name.substring(0, name.length() - 1);
+            out.println("  P" + upName + " -> P" + name);
+        }
+        if (childs != null)
+            for (int i = 0; i < childs.size(); i++) {
+                int as_int = 'a';
+                char c = (char) (as_int + i);
+                String s = name + String.valueOf(c);
+                childs.get(i).printDotPart(s);
             }
-            if (remaining == 0) break;
-        }
-        return seq;
     }
 
-    public void collectFollow(int ntNumber, int k, Stack<Sequence> stackSeq, SequenceSet sset) {
-        if (!symbol.terminal && symbol.index == ntNumber) {
-            Sequence seq = kSymbolsFromStack(k, stackSeq);
-            sset.add(seq);
-        }
-        for (int i = 0; i < childs.size(); i++) {
-            Node child = childs.get(i);
-            Sequence seq = terminalsFrom(i + 1, k);
-            stackSeq.push(seq);
-            child.collectFollow(ntNumber, k, stackSeq, sset);
-            stackSeq.pop();
-        }
+    public void printDot() {
+        if (childs.size() > 26)
+            throw new RuntimeException();
+        out.println("digraph {");
+        printDotPart("");
+        out.println("}");
     }
 
     private Sequence appendTerminals(int k) {
@@ -224,6 +231,35 @@ public class Node {
         return seq;
     }
 
+    public void collectFirst(int ntNumber, int k, SequenceSet sset) {
+        if (!symbol.terminal && symbol.index == ntNumber) {
+            Sequence seq = appendTerminals(k);
+            sset.add(seq);
+        }
+        if (childs != null)
+            for (Node child : childs)
+                child.collectFirst(ntNumber, k, sset);
+    }
+
+    Sequence kSymbolsFromStack(int k, Stack<Sequence> stackSeq) {
+        int remaining = k;
+        Sequence seq = new Sequence(grammar);
+        for (int i = stackSeq.size() - 1; i >= 0; i--) {
+            Sequence stackItem = stackSeq.get(i);
+            if (remaining >= stackItem.size()) {
+                seq.addAll(stackItem);
+                remaining -= stackItem.size();
+            } else {
+                for (int j = 0; j < remaining; j++)
+                    seq.add(stackItem.get(j));
+                remaining = 0;
+                break;
+            }
+            if (remaining == 0) break;
+        }
+        return seq;
+    }
+
     Sequence terminalsFrom(int start, int k) {
         assert (k > 0);
         Sequence seq = new Sequence(grammar);
@@ -238,5 +274,20 @@ public class Node {
                 break;
         }
         return seq;
+    }
+
+    public void collectFollow(int ntNumber, int k, Stack<Sequence> stackSeq, SequenceSet sset) {
+        if (!symbol.terminal && symbol.index == ntNumber) {
+            Sequence seq = kSymbolsFromStack(k, stackSeq);
+            sset.add(seq);
+        }
+        if (childs != null)
+            for (int i = 0; i < childs.size(); i++) {
+                Node child = childs.get(i);
+                Sequence seq = terminalsFrom(i + 1, k);
+                stackSeq.push(seq);
+                child.collectFollow(ntNumber, k, stackSeq, sset);
+                stackSeq.pop();
+            }
     }
 }
