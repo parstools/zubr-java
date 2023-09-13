@@ -5,6 +5,7 @@ import generator.RuleOrder;
 import grammar.Grammar;
 import util.Hash;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,5 +95,14 @@ public class SetContainer {
             firstSets.add(first);
             followSets.add(follow);
         }
+    }
+
+    public void dump(PrintWriter printWriter) {
+        printWriter.println("FIRST:");
+        for (int i=0; i<firstSets.size(); i++)
+            printWriter.println(grammar.getNonTerminalName(i)+" "+firstSets.get(i).toString());
+        printWriter.println("FOLLOW:");
+        for (int i=0; i<followSets.size(); i++)
+            printWriter.println(grammar.getNonTerminalName(i)+" "+followSets.get(i).toString());
     }
 }
