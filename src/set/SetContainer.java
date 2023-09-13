@@ -45,7 +45,7 @@ public class SetContainer {
     public void computeSetsByGeneration(int k, int maxLen) {
         firstSets.clear();
         followSets.clear();
-        Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
+        Generator generator = new Generator(grammar, maxLen, RuleOrder.roShuffle);
         for (int i=0; i<grammar.nonterminals.size(); i++) {
             TokenSet firstSet = generator.collectFirstAllGenerated(i, k);
             firstSets.add(firstSet);
