@@ -23,7 +23,7 @@ public class Main {
             Grammar grammar = new Grammar(gramLines);
             SetContainer sc1 = new SetContainer(grammar);
             out.println(counter);
-            sc1.computeSetsByGeneration(1, 12);
+            sc1.computeSetsByGeneration(1, 12, 100);
             counter++;
             n++;
             List<String> expectLines = new ArrayList<>();

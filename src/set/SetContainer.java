@@ -10,8 +10,6 @@ import java.util.List;
 
 public class SetContainer {
     Grammar grammar;
-    public int nextLimit = 10 * 1000;
-
     List<TokenSet> firstSets = new ArrayList<>();
     List<TokenSet> followSets = new ArrayList<>();
 
@@ -41,7 +39,7 @@ public class SetContainer {
         this.grammar = grammar;
     }
 
-    public void computeSetsByGeneration(int k, int maxLen) {
+    public void computeSetsByGeneration(int k, int maxLen, int nextLimit) {
         firstSets.clear();
         followSets.clear();
         Generator generator = new Generator(grammar, maxLen, RuleOrder.roShuffle);
