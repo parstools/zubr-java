@@ -18,6 +18,7 @@ public class Generator {
     Grammar grammar;
     List<NTInfo> ntInfos = new ArrayList<>();
     int maxLen;
+    int limit = 40*1000;
     Node root;
     boolean reverse = false;
 
@@ -44,6 +45,10 @@ public class Generator {
         }
         for (NTInfo ntInfo : ntInfos)
             ntInfo.sortRules();
+        root = new Node(this, getNT(0));
+    }
+
+    void restart() {
         root = new Node(this, getNT(0));
     }
 
@@ -85,10 +90,15 @@ public class Generator {
 
     public TokenSet collectFirstAllGenerated(int ntNumber, int k) {
         TokenSet result = new TokenSet(grammar, k);
+        int counter = 0;
+        restart();
         while (next()) {
+            counter++;
             SequenceSet sset = new SequenceSet();
             root.collectFirst(ntNumber, k, sset);
             result.addAllSSeq(sset);
+            if (counter>=limit)
+                return result;
         }
         return result;
     }
@@ -109,11 +119,16 @@ public class Generator {
         TokenSet result = new TokenSet(grammar, k);
         Stack<Sequence> stackSeq = new Stack<>();
         stackSeq.add(upSeq);
+        int counter = 0;
+        restart();
         while (next()) {
+            counter++;
             SequenceSet sset = new SequenceSet();
             assert(stackSeq.size()==1);
             root.collectFollow(ntNumber,k, stackSeq, sset);
             result.addAllSSeq(sset);
+            if (counter>=limit)
+                return result;
         }
         return result;
     }
