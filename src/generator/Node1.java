@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.System.out;
+
 public class Node1 {
     List<Node1> childs = null;
     List<RuleInfo> ruleInfos = null;
@@ -151,8 +153,8 @@ public class Node1 {
         if (canNextIndex < 0)
             ruleIndex++;
         if (ruleIndexOK()) {
-            initSuffix(canNextIndex + 1, maxLen-(canNextIndex>=0?sumlens[canNextIndex]:0));
-            assert(getLen() <= maxLen);
+            initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
+            assert (getLen() <= maxLen);
             return true;
         } else
             return false;
@@ -174,5 +176,33 @@ public class Node1 {
             initSuffix(0, maxLen);
         }
         return true;
+    }
+
+    private void printDotPart(String name) {
+        String shapeStr;
+        if (childs == null)
+            shapeStr = "; shape = doublecircle";
+        else
+            shapeStr = "";
+        out.println("  P" + name + " [label = " + grammar.getSymbolName(symbol) + shapeStr + "]");
+        if (!name.isEmpty()) {
+            String upName = name.substring(0, name.length() - 1);
+            out.println("  P" + upName + " -> P" + name);
+        }
+        if (childs != null)
+            for (int i = 0; i < childs.size(); i++) {
+                int as_int = 'a';
+                char c = (char) (as_int + i);
+                String s = name + String.valueOf(c);
+                childs.get(i).printDotPart(s);
+            }
+    }
+
+    public void printDot() {
+        if (childs.size() > 26)
+            throw new RuntimeException();
+        out.println("digraph {");
+        printDotPart("");
+        out.println("}");
     }
 }
