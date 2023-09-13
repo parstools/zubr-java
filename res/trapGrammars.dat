@@ -1,0 +1,15 @@
+;can call nested function infinitely without consummate any token
+A -> A
+A -> a
+
+A -> B
+A -> a
+B -> A
+B -> b
+
+A -> B C
+A -> a
+B -> A C
+B -> b
+C ->
+C -> c

@@ -1,0 +1,37 @@
+;A->B->A->B....
+A -> B
+A -> b B
+B -> A
+B -> a A
+---
+S'	✖	b, a	
+A	✖	b, a	$
+B	✖	b, a	$
+
+;L grows up infinitely
+G -> S
+G -> L
+G -> s
+S -> i b t G
+L -> i b t L e G
+---
+S'	✖	s, i	
+G	✖	s, i	$, e
+S	✖	i	$, e
+L	✖	i	e, $
+
+E -> E + i
+E -> E * i
+---
+S'	✖		
+E	✖		+, *, $
+
+S -> i S
+---
+S'	✖	i	
+S	✖	i	$
+
+S -> S i
+---
+S'	✖		
+S	✖		i, $

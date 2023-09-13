@@ -1,5 +1,6 @@
 import grammar.Grammar;
 import set.SetContainer;
+import util.NoMinLenGrammarException;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -64,6 +65,28 @@ public class Main {
         out.println("duration="+duration/1e9);
     }
 
+    static void testBad(List<String> lines) {
+        int n = 0;
+        int count = 0;
+        int countNoMin = 0;
+        while (n<lines.size()) {
+            List<String> gramLines = new ArrayList<>();
+            n = readGramLines(lines, n, gramLines);
+            try {
+                Grammar grammar = new Grammar(gramLines);
+                out.println(count);
+            } catch (NoMinLenGrammarException e) {
+                countNoMin++;
+            }
+            n++;
+            count++;
+            List<String> expectLines = new ArrayList<>();
+            n = readExpect1Lines(lines, n, expectLines);
+            n++;
+        }
+        out.println(count + " grammars, "+countNoMin+" exceptions");
+    }
+
     private static int readExpect1Lines(List<String> lines, int n, List<String> expectLines) {
         while(n<lines.size()) {
             String line = lines.get(n).trim();
@@ -77,18 +100,23 @@ public class Main {
     private static int readGramLines(List<String> lines, int n, List<String> gramLines) {
         while(n<lines.size()) {
             String line = lines.get(n).trim();
+            if (!line.isEmpty() && line.charAt(0)==';')
+            {
+                n++;
+                continue;
+            }
             if (line.isEmpty() || line.equals("---")) break;
-            n++;
             gramLines.add(line);
+            n++;
         }
         return n;
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("res/test1.dat");
+        Path path = Paths.get("res/badGrammars.dat");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-             makeKTest(lines);
+             testBad(lines);
         }
         catch (IOException e) {
             e.printStackTrace();
