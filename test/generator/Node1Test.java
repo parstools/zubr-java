@@ -15,11 +15,8 @@ public class Node1Test {
         Symbol symbol = generator.getNT(0);
         Node1 node = new Node1(generator, symbol);
         Stack<String> stack = new Stack<>();
-        while (node.next(5)) {
-            out.println(node.string());
+        while (node.next(5))
             stack.push(node.string());
-        }
-
 
         generator.reverse = true;
         node = new Node1(generator, symbol);
@@ -27,6 +24,7 @@ public class Node1Test {
             assertEquals(stack.peek(), node.string());
             stack.pop();
         }
+        assertTrue(stack.isEmpty());
     }
 
     @Test
@@ -55,9 +53,6 @@ public class Node1Test {
         Node1 node = new Node1(generator, symbol);
         node.next(5);
         assertEquals("dd",node.string());
-
-        node.next(5);
-
         assertTrue(node.next(5));
         assertEquals("ded",node.string());
         assertTrue(node.next(5));

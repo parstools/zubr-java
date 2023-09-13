@@ -99,19 +99,6 @@ public class Node1 {
         }
     }
 
-
-    boolean nextSuffix(int start, int maxLen) {
-        Rule rule = ruleInfos.get(ruleIndex).rule;
-        assert (start <= rule.size());
-        if (start == rule.size())
-            return false;
-        if (!nextSuffix(start + 1, maxLen - childs.get(start).getLen())) {
-            removeChildsFrom(start + 1);
-            return initSuffixForChild(start, maxLen);
-        }
-        return true;
-    }
-
     public boolean nextTry(int maxLen) {
         if (symbol.terminal)
             return false;
@@ -152,6 +139,8 @@ public class Node1 {
                 newMaxLen -= sumBackMinLens[i + 1];
             if (childs.get(i).nextTry(newMaxLen)) {
                 int len = childs.get(i).getLen();
+                sumlens[i] += len - lens[i];
+                lens[i] = len;
                 canNextIndex = i;
                 break;
             } else {
@@ -162,8 +151,9 @@ public class Node1 {
         if (canNextIndex < 0)
             ruleIndex++;
         if (ruleIndexOK()) {
-            initSuffix(canNextIndex + 1, maxLen);
-            if (getLen() > maxLen)
+            initSuffix(canNextIndex + 1, maxLen-(canNextIndex>=0?sumlens[canNextIndex]:0));
+            assert(getLen() <= maxLen);
+            if (getLen() > maxLen) //todo
                 return false;
             else
                 return true;
