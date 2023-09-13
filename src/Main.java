@@ -27,6 +27,7 @@ public class Main {
             Grammar grammar = new Grammar(gramLines);
             SetContainer sc1 = new SetContainer(grammar);
             out.println(counter);
+            sc1.reset(1);
             sc1.computeSetsByGeneration(1, 20, 1000);
             counter++;
             n++;
@@ -42,7 +43,8 @@ public class Main {
                 for (int k=1; k<=4; k++) {
                     printWriter.println("==="+k);
                     SetContainer sc = new SetContainer(grammar);
-                    sc.computeSetsByGeneration(k, 20, limit);
+                    sc.reset(k);
+                    sc.computeSetsByRangeGeneration(k, 4, 20, limit);
                     sc.dump(printWriter);
                     limit *=2;
                 }

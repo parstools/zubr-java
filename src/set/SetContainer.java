@@ -40,17 +40,20 @@ public class SetContainer {
         this.grammar = grammar;
     }
 
-    public void computeSetsByGeneration(int k, int maxLen, int nextLimit) {
+    public void reset(int k) {
         firstSets.clear();
         followSets.clear();
-        Generator generator = new Generator(grammar, maxLen, RuleOrder.roShuffle);
-        int counter = 0;
         for (int i=0; i<grammar.nonterminals.size(); i++) {
             TokenSet firstSet = new TokenSet(grammar, k);
             firstSets.add(firstSet);
             TokenSet followSet = new TokenSet(grammar, k);
             followSets.add(followSet);
         }
+    }
+
+    public void computeSetsByGeneration(int k, int maxLen, int nextLimit) {
+        Generator generator = new Generator(grammar, maxLen, RuleOrder.roShuffle);
+        int counter = 0;
         while (generator.next()) {
             counter++;
             for (int i=0; i<grammar.nonterminals.size(); i++) {
@@ -64,6 +67,11 @@ public class SetContainer {
             if (counter >= nextLimit)
                 break;
         }
+    }
+
+    public void computeSetsByRangeGeneration(int k, int maxLenStart, int maxLenEnd, int nextLimit) {
+        for (int maxLen =maxLenStart; maxLen<=maxLenEnd; maxLen++)
+            computeSetsByGeneration(k, maxLen, nextLimit);
     }
 
     public void readTest1(List<String> lines) {

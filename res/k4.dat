@@ -1,0 +1,1427 @@
+S -> a S A
+S ->
+A -> a b S
+A -> c
+===1
+FIRST:
+S {eps a}
+A {a c}
+FOLLOW:
+S {$ a c}
+A {$ a c}
+===2
+FIRST:
+S {eps aa ac}
+A {c ab}
+FOLLOW:
+S {$ ab c$ ca cc}
+A {$ ab c$ ca cc}
+===3
+FIRST:
+S {eps ac aaa aab aac}
+A {c ab aba}
+FOLLOW:
+S {$ ab$ aba abc c$ cab cc$ cca ccc}
+A {$ ab$ aba abc c$ cab cc$ cca ccc}
+===4
+FIRST:
+S {eps ac aab aaaa aaab aaac aaba aaca aacc}
+A {c ab abaa abac}
+FOLLOW:
+S {$ ab$ abaa abab abac abc$ abca abcc c$ cab$ caba cabc cc$ ccab ccc$ ccca cccc}
+A {$ ab$ abaa abab abac abc$ abca abcc c$ cab$ caba cabc cc$ ccab ccc$ ccca cccc}
+
+S -> a a A
+A -> a A c
+A -> b B c
+B -> b B c
+B -> b c
+===1
+FIRST:
+S {a}
+A {a b}
+B {b}
+FOLLOW:
+S {$}
+A {$ c}
+B {c}
+===2
+FIRST:
+S {aa}
+A {aa ab bb}
+B {bc bb}
+FOLLOW:
+S {$}
+A {$ c$ cc}
+B {c$ cc}
+===3
+FIRST:
+S {aaa aab}
+A {aaa aab abb bbc bbb}
+B {bc bbc bbb}
+FOLLOW:
+S {$}
+A {$ c$ cc$ ccc}
+B {c$ cc$ ccc}
+===4
+FIRST:
+S {aaaa aaab aabb}
+A {aaaa aaab aabb abbc abbb bbcc bbbc bbbb}
+B {bc bbcc bbbc bbbb}
+FOLLOW:
+S {$}
+A {$ c$ cc$ ccc$ cccc}
+B {c$ cc$ ccc$ cccc}
+
+S -> i e t S
+S -> i e t W e S
+S -> o
+W -> i e t W e W
+W -> o
+===1
+FIRST:
+S {i o}
+W {i o}
+FOLLOW:
+S {$}
+W {e}
+===2
+FIRST:
+S {o ie}
+W {o ie}
+FOLLOW:
+S {$}
+W {ei eo}
+===3
+FIRST:
+S {o iet}
+W {o iet}
+FOLLOW:
+S {$}
+W {eie eo$ eoe}
+===4
+FIRST:
+S {o ieti ieto}
+W {o ieti ieto}
+FOLLOW:
+S {$}
+W {eiet eo$ eoei eoeo}
+
+S -> M
+S -> U
+M -> i e t M e M
+M -> o
+U -> i e t S
+U -> i e t M e U
+===1
+FIRST:
+S {i o}
+M {i o}
+U {i}
+FOLLOW:
+S {$}
+M {$ e}
+U {$}
+===2
+FIRST:
+S {o ie}
+M {o ie}
+U {ie}
+FOLLOW:
+S {$}
+M {$ ei eo}
+U {$}
+===3
+FIRST:
+S {o iet}
+M {o iet}
+U {iet}
+FOLLOW:
+S {$}
+M {$ eie eo$ eoe}
+U {$}
+===4
+FIRST:
+S {o ieti ieto}
+M {o ieti ieto}
+U {ieti ieto}
+FOLLOW:
+S {$}
+M {$ eiet eo$ eoei eoeo}
+U {$}
+
+S -> i b t S e S
+S -> i b t S
+S -> s
+===1
+FIRST:
+S {i s}
+FOLLOW:
+S {$ e}
+===2
+FIRST:
+S {s ib}
+FOLLOW:
+S {$ ei es}
+===3
+FIRST:
+S {s ibt}
+FOLLOW:
+S {$ eib es$ ese}
+===4
+FIRST:
+S {s ibti ibts}
+FOLLOW:
+S {$ eibt es$ esei eses}
+
+E -> E + i
+E -> i * E
+E -> i
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$ +}
+===2
+FIRST:
+E {i i+ i*}
+FOLLOW:
+E {$ +i}
+===3
+FIRST:
+E {i i+i i*i}
+FOLLOW:
+E {$ +i$ +i+}
+===4
+FIRST:
+E {i i+i i*i i+i+ i*i+ i*i*}
+FOLLOW:
+E {$ +i$ +i+i}
+
+E -> E + i
+E -> E * i
+E -> i
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$ + *}
+===2
+FIRST:
+E {i i+ i*}
+FOLLOW:
+E {$ +i *i}
+===3
+FIRST:
+E {i i+i i*i}
+FOLLOW:
+E {$ +i$ +i+ +i* *i$ *i+ *i*}
+===4
+FIRST:
+E {i i+i i*i i+i+ i+i* i*i+ i*i*}
+FOLLOW:
+E {$ +i$ +i+i +i*i *i$ *i+i *i*i}
+
+E -> E + T
+E -> T
+T -> T * i
+T -> i
+===1
+FIRST:
+E {i}
+T {i}
+FOLLOW:
+E {$ +}
+T {$ + *}
+===2
+FIRST:
+E {i i+ i*}
+T {i i*}
+FOLLOW:
+E {$ +i}
+T {$ +i *i}
+===3
+FIRST:
+E {i i+i i*i}
+T {i i*i}
+FOLLOW:
+E {$ +i$ +i+ +i*}
+T {$ +i$ +i+ +i* *i$ *i+ *i*}
+===4
+FIRST:
+E {i i+i i*i i+i+ i+i* i*i+ i*i*}
+T {i i*i i*i*}
+FOLLOW:
+E {$ +i$ +i+i +i*i}
+T {$ +i$ +i+i +i*i *i$ *i+i *i*i}
+
+E -> E + T
+E -> T
+T -> T * F
+T -> F
+F -> ( E )
+F -> i
+===1
+FIRST:
+E {( i}
+T {( i}
+F {( i}
+FOLLOW:
+E {$ + )}
+T {$ + * )}
+F {$ + * )}
+===2
+FIRST:
+E {i (( (i i+ i*}
+T {i (( (i i*}
+F {i (( (i}
+FOLLOW:
+E {$ +( +i )$ )+ )* ))}
+T {$ +( +i *( *i )$ )+ )* ))}
+F {$ +( +i *( *i )$ )+ )* ))}
+===3
+FIRST:
+E {i ((( ((i (i+ (i* (i) i+( i+i i*( i*i}
+T {i ((( ((i (i+ (i* (i) i*( i*i}
+F {i ((( ((i (i+ (i* (i)}
+FOLLOW:
+E {$ +(( +(i +i$ +i+ +i* +i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+T {$ +(( +(i +i$ +i+ +i* +i) *(( *(i *i$ *i+ *i* *i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+F {$ +(( +(i +i$ +i+ +i* +i) *(( *(i *i$ *i+ *i* *i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+===4
+FIRST:
+E {i (i) i+i i*i (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i (i)+ (i)* i+(( i+(i i+i+ i+i* i*(( i*(i i*i+ i*i*}
+T {i (i) i*i (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i (i)* i*(( i*(i i*i*}
+F {i (i) (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i}
+FOLLOW:
+E {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+T {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) *((( *((i *(i+ *(i* *(i) *i$ *i+( *i+i *i*( *i*i *i)$ *i)+ *i)* *i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+F {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) *((( *((i *(i+ *(i* *(i) *i$ *i+( *i+i *i*( *i*i *i)$ *i)+ *i)* *i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+
+E -> E + E
+E -> E * E
+E -> i
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$ + *}
+===2
+FIRST:
+E {i i+ i*}
+FOLLOW:
+E {$ +i *i}
+===3
+FIRST:
+E {i i+i i*i}
+FOLLOW:
+E {$ +i$ +i+ +i* *i$ *i+ *i*}
+===4
+FIRST:
+E {i i+i i*i i+i+ i+i* i*i+ i*i*}
+FOLLOW:
+E {$ +i$ +i+i +i*i *i$ *i+i *i*i}
+
+E -> E + E
+E -> E * E
+E -> ( E )
+E -> i
+E -> n
+===1
+FIRST:
+E {( i n}
+FOLLOW:
+E {$ + * )}
+===2
+FIRST:
+E {i n (( (i (n i+ i* n+ n*}
+FOLLOW:
+E {$ +( +i +n *( *i *n )$ )+ )* ))}
+===3
+FIRST:
+E {i n ((( ((i ((n (i+ (i* (i) (n+ (n* (n) i+( i+i i+n i*( i*i i*n n+( n+i n+n n*( n*i n*n}
+FOLLOW:
+E {$ +(( +(i +(n +i$ +i+ +i* +i) +n$ +n+ +n* +n) *(( *(i *(n *i$ *i+ *i* *i) *n$ *n+ *n* *n) )$ )+( )+i )+n )*( )*i )*n ))$ ))+ ))* )))}
+===4
+FIRST:
+E {i n (i) (n) i+i i+n i*i i*n n+i n+n n*i n*n (((( (((i (((n ((i+ ((i* ((i) ((n+ ((n* ((n) (i+( (i+i (i+n (i*( (i*i (i*n (i)+ (i)* (n+( (n+i (n+n (n*( (n*i (n*n (n)+ (n)* i+(( i+(i i+(n i+i+ i+i* i+n+ i+n* i*(( i*(i i*(n i*i+ i*i* i*n+ i*n* n+(( n+(i n+(n n+i+ n+i* n+n+ n+n* n*(( n*(i n*(n n*i+ n*i* n*n+ n*n*}
+FOLLOW:
+E {$ +((( +((i +((n +(i+ +(i* +(i) +(n+ +(n* +(n) +i$ +i+( +i+i +i+n +i*( +i*i +i*n +i)$ +i)+ +i)* +i)) +n$ +n+( +n+i +n+n +n*( +n*i +n*n +n)$ +n)+ +n)* +n)) *((( *((i *((n *(i+ *(i* *(i) *(n+ *(n* *(n) *i$ *i+( *i+i *i+n *i*( *i*i *i*n *i)$ *i)+ *i)* *i)) *n$ *n+( *n+i *n+n *n*( *n*i *n*n *n)$ *n)+ *n)* *n)) )$ )+(( )+(i )+(n )+i$ )+i+ )+i* )+i) )+n$ )+n+ )+n* )+n) )*(( )*(i )*(n )*i$ )*i+ )*i* )*i) )*n$ )*n+ )*n* )*n) ))$ ))+( ))+i ))+n ))*( ))*i ))*n )))$ )))+ )))* ))))}
+
+S -> L = R
+S -> R
+L -> * R
+L -> i
+R -> L
+===1
+FIRST:
+S {* i}
+L {* i}
+R {* i}
+FOLLOW:
+S {$}
+L {$ =}
+R {$ =}
+===2
+FIRST:
+S {i ** *i i=}
+L {i ** *i}
+R {i ** *i}
+FOLLOW:
+S {$}
+L {$ =* =i}
+R {$ =* =i}
+===3
+FIRST:
+S {i *i *** **i *i= i=* i=i}
+L {i *i *** **i}
+R {i *i *** **i}
+FOLLOW:
+S {$}
+L {$ =** =*i =i$}
+R {$ =** =*i =i$}
+===4
+FIRST:
+S {i *i **i i=i **** ***i **i= *i=* *i=i i=** i=*i}
+L {i *i **i **** ***i}
+R {i *i **i **** ***i}
+FOLLOW:
+S {$}
+L {$ =*** =**i =*i$ =i$}
+R {$ =*** =**i =*i$ =i$}
+
+S -> S a
+S -> a
+===1
+FIRST:
+S {a}
+FOLLOW:
+S {$ a}
+===2
+FIRST:
+S {a aa}
+FOLLOW:
+S {$ a$ aa}
+===3
+FIRST:
+S {a aa aaa}
+FOLLOW:
+S {$ a$ aa$ aaa}
+===4
+FIRST:
+S {a aa aaa aaaa}
+FOLLOW:
+S {$ a$ aa$ aaa$ aaaa}
+
+A -> a B b
+A -> a d c
+A -> b B c
+A -> b d d
+B -> d
+===1
+FIRST:
+A {a b}
+B {d}
+FOLLOW:
+A {$}
+B {b c}
+===2
+FIRST:
+A {ad bd}
+B {d}
+FOLLOW:
+A {$}
+B {b$ c$}
+===3
+FIRST:
+A {adb adc bdd bdc}
+B {d}
+FOLLOW:
+A {$}
+B {b$ c$}
+===4
+FIRST:
+A {adb adc bdd bdc}
+B {d}
+FOLLOW:
+A {$}
+B {b$ c$}
+
+S -> C C
+C -> e C
+C -> d
+===1
+FIRST:
+S {e d}
+C {e d}
+FOLLOW:
+S {$}
+C {$ e d}
+===2
+FIRST:
+S {ee ed de dd}
+C {d ee ed}
+FOLLOW:
+S {$}
+C {$ ee ed d$}
+===3
+FIRST:
+S {dd eee eed ede edd dee ded}
+C {d ed eee eed}
+FOLLOW:
+S {$}
+C {$ eee eed ed$ d$}
+===4
+FIRST:
+S {dd edd ded eeee eeed eede eedd edee eded deee deed}
+C {d ed eed eeee eeed}
+FOLLOW:
+S {$}
+C {$ eeee eeed eed$ ed$ d$}
+
+E -> T G
+G -> + T G
+G ->
+T -> F U
+U -> * F U
+U ->
+F -> ( E )
+F -> i
+===1
+FIRST:
+E {( i}
+G {eps +}
+T {( i}
+U {eps *}
+F {( i}
+FOLLOW:
+E {$ )}
+G {$ )}
+T {$ + )}
+U {$ + )}
+F {$ + * )}
+===2
+FIRST:
+E {i (( (i i+ i*}
+G {eps +( +i}
+T {i (( (i i*}
+U {eps *( *i}
+F {i (( (i}
+FOLLOW:
+E {$ )$ )+ )* ))}
+G {$ )$ )+ )* ))}
+T {$ +( +i )$ )+ )* ))}
+U {$ +( +i )$ )+ )* ))}
+F {$ +( +i *( *i )$ )+ )* ))}
+===3
+FIRST:
+E {i ((( ((i (i+ (i* (i) i+( i+i i*( i*i}
+G {eps +i +(( +(i +i+ +i*}
+T {i ((( ((i (i+ (i* (i) i*( i*i}
+U {eps *i *(( *(i *i*}
+F {i ((( ((i (i+ (i* (i)}
+FOLLOW:
+E {$ )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+G {$ )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+T {$ +(( +(i +i$ +i+ +i* +i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+U {$ +(( +(i +i$ +i+ +i* +i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+F {$ +(( +(i +i$ +i+ +i* +i) *(( *(i *i$ *i+ *i* *i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+===4
+FIRST:
+E {i (i) i+i i*i (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i (i)+ (i)* i+(( i+(i i+i+ i+i* i*(( i*(i i*i+ i*i*}
+G {eps +i +((( +((i +(i+ +(i* +(i) +i+( +i+i +i*( +i*i}
+T {i (i) i*i (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i (i)* i*(( i*(i i*i*}
+U {eps *i *((( *((i *(i+ *(i* *(i) *i*( *i*i}
+F {i (i) (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i}
+FOLLOW:
+E {$ )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+G {$ )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+T {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+U {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+F {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) *((( *((i *(i+ *(i* *(i) *i$ *i+( *i+i *i*( *i*i *i)$ *i)+ *i)* *i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+
+E -> A 1
+E -> B 2
+A -> 1
+B -> 1
+===1
+FIRST:
+E {1}
+A {1}
+B {1}
+FOLLOW:
+E {$}
+A {1}
+B {2}
+===2
+FIRST:
+E {11 12}
+A {1}
+B {1}
+FOLLOW:
+E {$}
+A {1$}
+B {2$}
+===3
+FIRST:
+E {11 12}
+A {1}
+B {1}
+FOLLOW:
+E {$}
+A {1$}
+B {2$}
+===4
+FIRST:
+E {11 12}
+A {1}
+B {1}
+FOLLOW:
+E {$}
+A {1$}
+B {2$}
+
+E -> T G
+G -> + T G
+G ->
+T -> F U
+U -> * F U
+U ->
+F -> ( E )
+F -> i
+===1
+FIRST:
+E {( i}
+G {eps +}
+T {( i}
+U {eps *}
+F {( i}
+FOLLOW:
+E {$ )}
+G {$ )}
+T {$ + )}
+U {$ + )}
+F {$ + * )}
+===2
+FIRST:
+E {i (( (i i+ i*}
+G {eps +( +i}
+T {i (( (i i*}
+U {eps *( *i}
+F {i (( (i}
+FOLLOW:
+E {$ )$ )+ )* ))}
+G {$ )$ )+ )* ))}
+T {$ +( +i )$ )+ )* ))}
+U {$ +( +i )$ )+ )* ))}
+F {$ +( +i *( *i )$ )+ )* ))}
+===3
+FIRST:
+E {i ((( ((i (i+ (i* (i) i+( i+i i*( i*i}
+G {eps +i +(( +(i +i+ +i*}
+T {i ((( ((i (i+ (i* (i) i*( i*i}
+U {eps *i *(( *(i *i*}
+F {i ((( ((i (i+ (i* (i)}
+FOLLOW:
+E {$ )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+G {$ )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+T {$ +(( +(i +i$ +i+ +i* +i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+U {$ +(( +(i +i$ +i+ +i* +i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+F {$ +(( +(i +i$ +i+ +i* +i) *(( *(i *i$ *i+ *i* *i) )$ )+( )+i )*( )*i ))$ ))+ ))* )))}
+===4
+FIRST:
+E {i (i) i+i i*i (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i (i)+ (i)* i+(( i+(i i+i+ i+i* i*(( i*(i i*i+ i*i*}
+G {eps +i +((( +((i +(i+ +(i* +(i) +i+( +i+i +i*( +i*i}
+T {i (i) i*i (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i (i)* i*(( i*(i i*i*}
+U {eps *i *((( *((i *(i+ *(i* *(i) *i*( *i*i}
+F {i (i) (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i}
+FOLLOW:
+E {$ )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+G {$ )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+T {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+U {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+F {$ +((( +((i +(i+ +(i* +(i) +i$ +i+( +i+i +i*( +i*i +i)$ +i)+ +i)* +i)) *((( *((i *(i+ *(i* *(i) *i$ *i+( *i+i *i*( *i*i *i)$ *i)+ *i)* *i)) )$ )+(( )+(i )+i$ )+i+ )+i* )+i) )*(( )*(i )*i$ )*i+ )*i* )*i) ))$ ))+( ))+i ))*( ))*i )))$ )))+ )))* ))))}
+
+E -> 1 E
+E -> 1
+===1
+FIRST:
+E {1}
+FOLLOW:
+E {$}
+===2
+FIRST:
+E {1 11}
+FOLLOW:
+E {$}
+===3
+FIRST:
+E {1 11 111}
+FOLLOW:
+E {$}
+===4
+FIRST:
+E {1 11 111 1111}
+FOLLOW:
+E {$}
+
+E -> E * B
+E -> E + B
+E -> B
+B -> 0
+B -> 1
+===1
+FIRST:
+E {0 1}
+B {0 1}
+FOLLOW:
+E {$ * +}
+B {$ * +}
+===2
+FIRST:
+E {0 1 0* 0+ 1* 1+}
+B {0 1}
+FOLLOW:
+E {$ *0 *1 +0 +1}
+B {$ *0 *1 +0 +1}
+===3
+FIRST:
+E {0 1 0*0 0*1 0+0 0+1 1*0 1*1 1+0 1+1}
+B {0 1}
+FOLLOW:
+E {$ *0$ *0* *0+ *1$ *1* *1+ +0$ +0* +0+ +1$ +1* +1+}
+B {$ *0$ *0* *0+ *1$ *1* *1+ +0$ +0* +0+ +1$ +1* +1+}
+===4
+FIRST:
+E {0 1 0*0 0*1 0+0 0+1 1*0 1*1 1+0 1+1 0*0* 0*0+ 0*1* 0*1+ 0+0* 0+0+ 0+1* 0+1+ 1*0* 1*0+ 1*1* 1*1+ 1+0* 1+0+ 1+1* 1+1+}
+B {0 1}
+FOLLOW:
+E {$ *0$ *0*0 *0*1 *0+0 *0+1 *1$ *1*0 *1*1 *1+0 *1+1 +0$ +0*0 +0*1 +0+0 +0+1 +1$ +1*0 +1*1 +1+0 +1+1}
+B {$ *0$ *0*0 *0*1 *0+0 *0+1 *1$ *1*0 *1*1 *1+0 *1+1 +0$ +0*0 +0*1 +0+0 +0+1 +1$ +1*0 +1*1 +1+0 +1+1}
+
+X -> Y
+X -> b Y a
+Y -> c
+Y -> c a
+===1
+FIRST:
+X {b c}
+Y {c}
+FOLLOW:
+X {$}
+Y {$ a}
+===2
+FIRST:
+X {c bc ca}
+Y {c ca}
+FOLLOW:
+X {$}
+Y {$ a$}
+===3
+FIRST:
+X {c ca bca}
+Y {c ca}
+FOLLOW:
+X {$}
+Y {$ a$}
+===4
+FIRST:
+X {c ca bca bcaa}
+Y {c ca}
+FOLLOW:
+X {$}
+Y {$ a$}
+
+S -> S a S b
+S ->
+===1
+FIRST:
+S {eps a}
+FOLLOW:
+S {$ a b}
+===2
+FIRST:
+S {eps aa ab}
+FOLLOW:
+S {$ aa ab b$ ba bb}
+===3
+FIRST:
+S {eps ab aaa aab aba}
+FOLLOW:
+S {$ aaa aab ab$ aba abb b$ baa bab bb$ bba bbb}
+===4
+FIRST:
+S {eps ab aaaa aaab aaba aabb abaa abab}
+FOLLOW:
+S {$ aaaa aaab aaba aabb ab$ abaa abab abb$ abba abbb b$ baaa baab bab$ baba babb bb$ bbaa bbab bbb$ bbba bbbb}
+
+Z -> S
+Z -> L = R
+S -> R
+L -> * R
+L -> i
+R -> L
+===1
+FIRST:
+Z {* i}
+S {* i}
+L {* i}
+R {* i}
+FOLLOW:
+Z {$}
+S {$}
+L {$ =}
+R {$ =}
+===2
+FIRST:
+Z {i ** *i i=}
+S {i ** *i}
+L {i ** *i}
+R {i ** *i}
+FOLLOW:
+Z {$}
+S {$}
+L {$ =* =i}
+R {$ =* =i}
+===3
+FIRST:
+Z {i *i *** **i *i= i=* i=i}
+S {i *i *** **i}
+L {i *i *** **i}
+R {i *i *** **i}
+FOLLOW:
+Z {$}
+S {$}
+L {$ =** =*i =i$}
+R {$ =** =*i =i$}
+===4
+FIRST:
+Z {i *i **i i=i **** ***i **i= *i=* *i=i i=** i=*i}
+S {i *i **i **** ***i}
+L {i *i **i **** ***i}
+R {i *i **i **** ***i}
+FOLLOW:
+Z {$}
+S {$}
+L {$ =*** =**i =*i$ =i$}
+R {$ =*** =**i =*i$ =i$}
+
+S -> a A d
+S -> b B d
+S -> a B e
+S -> b A e
+A -> c
+B -> c
+===1
+FIRST:
+S {a b}
+A {c}
+B {c}
+FOLLOW:
+S {$}
+A {d e}
+B {d e}
+===2
+FIRST:
+S {ac bc}
+A {c}
+B {c}
+FOLLOW:
+S {$}
+A {d$ e$}
+B {d$ e$}
+===3
+FIRST:
+S {acd ace bcd bce}
+A {c}
+B {c}
+FOLLOW:
+S {$}
+A {d$ e$}
+B {d$ e$}
+===4
+FIRST:
+S {acd ace bcd bce}
+A {c}
+B {c}
+FOLLOW:
+S {$}
+A {d$ e$}
+B {d$ e$}
+
+E -> d H F B
+H -> H h
+H ->
+F -> F f
+F ->
+B -> B b
+B ->
+===1
+FIRST:
+E {d}
+H {eps h}
+F {eps f}
+B {eps b}
+FOLLOW:
+E {$}
+H {$ h f b}
+F {$ f b}
+B {$ b}
+===2
+FIRST:
+E {d dh df db}
+H {eps h hh}
+F {eps f ff}
+B {eps b bb}
+FOLLOW:
+E {$}
+H {$ h$ hh hf hb f$ ff fb b$ bb}
+F {$ f$ ff fb b$ bb}
+B {$ b$ bb}
+===3
+FIRST:
+E {d dh df db dhh dhf dhb dff dfb dbb}
+H {eps h hh hhh}
+F {eps f ff fff}
+B {eps b bb bbb}
+FOLLOW:
+E {$}
+H {$ h$ hh$ hhh hhf hhb hf$ hff hfb hb$ hbb f$ ff$ fff ffb fb$ fbb b$ bb$ bbb}
+F {$ f$ ff$ fff ffb fb$ fbb b$ bb$ bbb}
+B {$ b$ bb$ bbb}
+===4
+FIRST:
+E {d dh df db dhh dhf dhb dff dfb dbb dhhh dhhf dhhb dhff dhfb dhbb dfff dffb dfbb dbbb}
+H {eps h hh hhh hhhh}
+F {eps f ff fff ffff}
+B {eps b bb bbb bbbb}
+FOLLOW:
+E {$}
+H {$ h$ hh$ hhh$ hhhh hhhf hhhb hhf$ hhff hhfb hhb$ hhbb hf$ hff$ hfff hffb hfb$ hfbb hb$ hbb$ hbbb f$ ff$ fff$ ffff fffb ffb$ ffbb fb$ fbb$ fbbb b$ bb$ bbb$ bbbb}
+F {$ f$ ff$ fff$ ffff fffb ffb$ ffbb fb$ fbb$ fbbb b$ bb$ bbb$ bbbb}
+B {$ b$ bb$ bbb$ bbbb}
+
+E -> + E
+E ->
+===1
+FIRST:
+E {eps +}
+FOLLOW:
+E {$}
+===2
+FIRST:
+E {eps + ++}
+FOLLOW:
+E {$}
+===3
+FIRST:
+E {eps + ++ +++}
+FOLLOW:
+E {$}
+===4
+FIRST:
+E {eps + ++ +++ ++++}
+FOLLOW:
+E {$}
+
+E -> E +
+E ->
+===1
+FIRST:
+E {eps +}
+FOLLOW:
+E {$ +}
+===2
+FIRST:
+E {eps + ++}
+FOLLOW:
+E {$ +$ ++}
+===3
+FIRST:
+E {eps + ++ +++}
+FOLLOW:
+E {$ +$ ++$ +++}
+===4
+FIRST:
+E {eps + ++ +++ ++++}
+FOLLOW:
+E {$ +$ ++$ +++$ ++++}
+
+E -> b C e
+C -> C ; R
+C -> R
+R -> i = S
+S -> S + i
+S -> i
+===1
+FIRST:
+E {b}
+C {i}
+R {i}
+S {i}
+FOLLOW:
+E {$}
+C {e ;}
+R {e ;}
+S {e ; +}
+===2
+FIRST:
+E {bi}
+C {i=}
+R {i=}
+S {i i+}
+FOLLOW:
+E {$}
+C {e$ ;i}
+R {e$ ;i}
+S {e$ ;i +i}
+===3
+FIRST:
+E {bi=}
+C {i=i}
+R {i=i}
+S {i i+i}
+FOLLOW:
+E {$}
+C {e$ ;i=}
+R {e$ ;i=}
+S {e$ ;i= +ie +i; +i+}
+===4
+FIRST:
+E {bi=i}
+C {i=i i=i; i=i+}
+R {i=i i=i+}
+S {i i+i i+i+}
+FOLLOW:
+E {$}
+C {e$ ;i=i}
+R {e$ ;i=i}
+S {e$ ;i=i +ie$ +i;i +i+i}
+
+E -> b C e
+C -> C ; i
+C -> i
+===1
+FIRST:
+E {b}
+C {i}
+FOLLOW:
+E {$}
+C {e ;}
+===2
+FIRST:
+E {bi}
+C {i i;}
+FOLLOW:
+E {$}
+C {e$ ;i}
+===3
+FIRST:
+E {bie bi;}
+C {i i;i}
+FOLLOW:
+E {$}
+C {e$ ;ie ;i;}
+===4
+FIRST:
+E {bie bi;i}
+C {i i;i i;i;}
+FOLLOW:
+E {$}
+C {e$ ;ie$ ;i;i}
+
+E -> a C b
+E -> b C a
+C -> C c
+C ->
+===1
+FIRST:
+E {a b}
+C {eps c}
+FOLLOW:
+E {$}
+C {a b c}
+===2
+FIRST:
+E {ab ac ba bc}
+C {eps c cc}
+FOLLOW:
+E {$}
+C {a$ b$ ca cb cc}
+===3
+FIRST:
+E {ab ba acb acc bca bcc}
+C {eps c cc ccc}
+FOLLOW:
+E {$}
+C {a$ b$ ca$ cb$ cca ccb ccc}
+===4
+FIRST:
+E {ab ba acb bca accb accc bcca bccc}
+C {eps c cc ccc cccc}
+FOLLOW:
+E {$}
+C {a$ b$ ca$ cb$ cca$ ccb$ ccca cccb cccc}
+
+E -> i a t a e a
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$}
+===2
+FIRST:
+E {ia}
+FOLLOW:
+E {$}
+===3
+FIRST:
+E {iat}
+FOLLOW:
+E {$}
+===4
+FIRST:
+E {iata}
+FOLLOW:
+E {$}
+
+E -> & E
+E -> E + E
+E -> i
+===1
+FIRST:
+E {& i}
+FOLLOW:
+E {$ +}
+===2
+FIRST:
+E {i && &i i+}
+FOLLOW:
+E {$ +& +i}
+===3
+FIRST:
+E {i &i &&& &&i &i+ i+& i+i}
+FOLLOW:
+E {$ +&& +&i +i$ +i+}
+===4
+FIRST:
+E {i &i &&i i+i &&&& &&&i &&i+ &i+& &i+i i+&& i+&i i+i+}
+FOLLOW:
+E {$ +&&& +&&i +&i$ +&i+ +i$ +i+& +i+i}
+
+E -> & E
+E -> ^ E
+E -> i
+===1
+FIRST:
+E {& ^ i}
+FOLLOW:
+E {$}
+===2
+FIRST:
+E {i && &^ &i ^& ^^ ^i}
+FOLLOW:
+E {$}
+===3
+FIRST:
+E {i &i ^i &&& &&^ &&i &^& &^^ &^i ^&& ^&^ ^&i ^^& ^^^ ^^i}
+FOLLOW:
+E {$}
+===4
+FIRST:
+E {i &i ^i &&i &^i ^&i ^^i &&&& &&&^ &&&i &&^& &&^^ &&^i &^&& &^&^ &^&i &^^& &^^^ &^^i ^&&& ^&&^ ^&&i ^&^& ^&^^ ^&^i ^^&& ^^&^ ^^&i ^^^& ^^^^ ^^^i}
+FOLLOW:
+E {$}
+
+E -> E O E
+E -> i
+O -> +
+O -> -
+O -> *
+O -> ^
+===1
+FIRST:
+E {i}
+O {+ - * ^}
+FOLLOW:
+E {$ + - * ^}
+O {i}
+===2
+FIRST:
+E {i i+ i- i* i^}
+O {+ - * ^}
+FOLLOW:
+E {$ +i -i *i ^i}
+O {i$ i+ i- i* i^}
+===3
+FIRST:
+E {i i+i i-i i*i i^i}
+O {+ - * ^}
+FOLLOW:
+E {$ +i$ +i+ +i- +i* +i^ -i$ -i+ -i- -i* -i^ *i$ *i+ *i- *i* *i^ ^i$ ^i+ ^i- ^i* ^i^}
+O {i$ i+i i-i i*i i^i}
+===4
+FIRST:
+E {i i+i i-i i*i i^i i+i+ i+i- i+i* i+i^ i-i+ i-i- i-i* i-i^ i*i+ i*i- i*i* i*i^ i^i+ i^i- i^i* i^i^}
+O {+ - * ^}
+FOLLOW:
+E {$ +i$ +i+i +i-i +i*i +i^i -i$ -i+i -i-i -i*i -i^i *i$ *i+i *i-i *i*i *i^i ^i$ ^i+i ^i-i ^i*i ^i^i}
+O {i$ i+i$ i+i+ i+i- i+i* i+i^ i-i$ i-i+ i-i- i-i* i-i^ i*i$ i*i+ i*i- i*i* i*i^ i^i$ i^i+ i^i- i^i* i^i^}
+
+E -> E + E
+E -> E - E
+E -> E * E
+E -> E ^ E
+E -> i
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$ + - * ^}
+===2
+FIRST:
+E {i i+ i- i* i^}
+FOLLOW:
+E {$ +i -i *i ^i}
+===3
+FIRST:
+E {i i+i i-i i*i i^i}
+FOLLOW:
+E {$ +i$ +i+ +i- +i* +i^ -i$ -i+ -i- -i* -i^ *i$ *i+ *i- *i* *i^ ^i$ ^i+ ^i- ^i* ^i^}
+===4
+FIRST:
+E {i i+i i-i i*i i^i i+i+ i+i- i+i* i+i^ i-i+ i-i- i-i* i-i^ i*i+ i*i- i*i* i*i^ i^i+ i^i- i^i* i^i^}
+FOLLOW:
+E {$ +i$ +i+i +i-i +i*i +i^i -i$ -i+i -i-i -i*i -i^i *i$ *i+i *i-i *i*i *i^i ^i$ ^i+i ^i-i ^i*i ^i^i}
+
+E -> E + E
+E -> E - E
+E -> i
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$ + -}
+===2
+FIRST:
+E {i i+ i-}
+FOLLOW:
+E {$ +i -i}
+===3
+FIRST:
+E {i i+i i-i}
+FOLLOW:
+E {$ +i$ +i+ +i- -i$ -i+ -i-}
+===4
+FIRST:
+E {i i+i i-i i+i+ i+i- i-i+ i-i-}
+FOLLOW:
+E {$ +i$ +i+i +i-i -i$ -i+i -i-i}
+
+E -> E + E
+E -> i
+===1
+FIRST:
+E {i}
+FOLLOW:
+E {$ +}
+===2
+FIRST:
+E {i i+}
+FOLLOW:
+E {$ +i}
+===3
+FIRST:
+E {i i+i}
+FOLLOW:
+E {$ +i$ +i+}
+===4
+FIRST:
+E {i i+i i+i+}
+FOLLOW:
+E {$ +i$ +i+i}
+
+S -> S S
+S -> i
+===1
+FIRST:
+S {i}
+FOLLOW:
+S {$ i}
+===2
+FIRST:
+S {i ii}
+FOLLOW:
+S {$ i$ ii}
+===3
+FIRST:
+S {i ii iii}
+FOLLOW:
+S {$ i$ ii$ iii}
+===4
+FIRST:
+S {i ii iii iiii}
+FOLLOW:
+S {$ i$ ii$ iii$ iiii}
+
+C -> C i
+C -> i
+===1
+FIRST:
+C {i}
+FOLLOW:
+C {$ i}
+===2
+FIRST:
+C {i ii}
+FOLLOW:
+C {$ i$ ii}
+===3
+FIRST:
+C {i ii iii}
+FOLLOW:
+C {$ i$ ii$ iii}
+===4
+FIRST:
+C {i ii iii iiii}
+FOLLOW:
+C {$ i$ ii$ iii$ iiii}
+
+S -> S E
+S -> E
+E -> F
+F -> T
+T -> i
+===1
+FIRST:
+S {i}
+E {i}
+F {i}
+T {i}
+FOLLOW:
+S {$ i}
+E {$ i}
+F {$ i}
+T {$ i}
+===2
+FIRST:
+S {i ii}
+E {i}
+F {i}
+T {i}
+FOLLOW:
+S {$ i$ ii}
+E {$ i$ ii}
+F {$ i$ ii}
+T {$ i$ ii}
+===3
+FIRST:
+S {i ii iii}
+E {i}
+F {i}
+T {i}
+FOLLOW:
+S {$ i$ ii$ iii}
+E {$ i$ ii$ iii}
+F {$ i$ ii$ iii}
+T {$ i$ ii$ iii}
+===4
+FIRST:
+S {i ii iii iiii}
+E {i}
+F {i}
+T {i}
+FOLLOW:
+S {$ i$ ii$ iii$ iiii}
+E {$ i$ ii$ iii$ iiii}
+F {$ i$ ii$ iii$ iiii}
+T {$ i$ ii$ iii$ iiii}
+
+S -> S i
+S -> i
+===1
+FIRST:
+S {i}
+FOLLOW:
+S {$ i}
+===2
+FIRST:
+S {i ii}
+FOLLOW:
+S {$ i$ ii}
+===3
+FIRST:
+S {i ii iii}
+FOLLOW:
+S {$ i$ ii$ iii}
+===4
+FIRST:
+S {i ii iii iiii}
+FOLLOW:
+S {$ i$ ii$ iii$ iiii}
+
+E -> E + F
+E -> F
+F -> i
+F -> ( E )
+===1
+FIRST:
+E {i (}
+F {i (}
+FOLLOW:
+E {$ + )}
+F {$ + )}
+===2
+FIRST:
+E {i i+ (i ((}
+F {i (i ((}
+FOLLOW:
+E {$ +i +( )$ )+ ))}
+F {$ +i +( )$ )+ ))}
+===3
+FIRST:
+E {i i+i i+( (i+ (i) ((i (((}
+F {i (i+ (i) ((i (((}
+FOLLOW:
+E {$ +i$ +i+ +i) +(i +(( )$ )+i )+( ))$ ))+ )))}
+F {$ +i$ +i+ +i) +(i +(( )$ )+i )+( ))$ ))+ )))}
+===4
+FIRST:
+E {i i+i (i) i+i+ i+(i i+(( (i+i (i+( (i)+ ((i+ ((i) (((i ((((}
+F {i (i) (i+i (i+( ((i+ ((i) (((i ((((}
+FOLLOW:
+E {$ +i$ +i+i +i+( +i)$ +i)+ +i)) +(i+ +(i) +((i +((( )$ )+i$ )+i+ )+i) )+(i )+(( ))$ ))+i ))+( )))$ )))+ ))))}
+F {$ +i$ +i+i +i+( +i)$ +i)+ +i)) +(i+ +(i) +((i +((( )$ )+i$ )+i+ )+i) )+(i )+(( ))$ ))+i ))+( )))$ )))+ ))))}
+
+A -> B +
+B -> A *
+B ->
+===1
+FIRST:
+A {+}
+B {eps +}
+FOLLOW:
+A {$ *}
+B {+}
+===2
+FIRST:
+A {+ +*}
+B {eps +*}
+FOLLOW:
+A {$ *+}
+B {+$ +*}
+===3
+FIRST:
+A {+ +*+}
+B {eps +* +*+}
+FOLLOW:
+A {$ *+$ *+*}
+B {+$ +*+}
+===4
+FIRST:
+A {+ +*+ +*+*}
+B {eps +* +*+*}
+FOLLOW:
+A {$ *+$ *+*+}
+B {+$ +*+$ +*+*}
+
