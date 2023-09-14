@@ -6,6 +6,7 @@ import set.Sequence;
 import set.TokenSet;
 
 import static java.lang.System.out;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SetTest {
     @Test
@@ -17,6 +18,6 @@ public class SetTest {
         set.addSeq(new Sequence(grammar, "aa"));
         set.addSeq(new Sequence(grammar, "ab"));
         set.addSeq(new Sequence(grammar, "ac"));
-        out.println(set);
+        assertEquals("{eps aa ab ac}", set.toString());
     }
 }
