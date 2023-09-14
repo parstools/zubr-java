@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Grammar {
+public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
     Map<String, Integer> ntNamesToInt = new HashMap<>();
     List<String> ntNames = new ArrayList<>();
@@ -67,6 +67,10 @@ public class Grammar {
     String parseNTname(String line) {
         int n = line.indexOf("->");
         return line.substring(0, n).trim();
+    }
+
+    public Grammar() {
+
     }
 
     public Grammar(List<String> lines) {
@@ -163,5 +167,11 @@ public class Grammar {
             }
         }
         return lines;
+    }
+
+    public Object clone() {
+        Grammar newGrammar = new Grammar();
+        newGrammar.nonterminals = new ArrayList<>(nonterminals);
+        return newGrammar;
     }
 }
