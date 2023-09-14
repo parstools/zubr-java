@@ -1,7 +1,6 @@
 package generator;
 
 import grammar.Grammar;
-import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
 import set.TokenSet;
@@ -11,6 +10,7 @@ import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import grammar.TestGrammars;
 
 public class CollectTest {
     @Test

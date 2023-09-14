@@ -2,8 +2,8 @@ package generator;
 
 import org.junit.jupiter.api.Test;
 
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
+import grammar.TestGrammars;
 
 public class GeneratorTest {
     @Test

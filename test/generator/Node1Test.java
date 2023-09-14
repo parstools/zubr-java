@@ -1,11 +1,11 @@
 package generator;
 
 import grammar.Symbol;
+import grammar.TestGrammars;
 import org.junit.jupiter.api.Test;
 
 import java.util.Stack;
 
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Node1Test {

@@ -1,4 +1,4 @@
-package generator;
+package grammar;
 
 import grammar.Grammar;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestGrammars {
-    static Grammar grammar1() {
+    public static Grammar grammar1() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> C C");
         lines.add("C -> e C");
@@ -14,7 +14,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    static Grammar grammar2() {
+    public static Grammar grammar2() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> a S A");
         lines.add("S ->");
@@ -23,7 +23,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    static Grammar grammar3() {
+    public static Grammar grammar3() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> C C C");
         lines.add("C -> a");
@@ -31,7 +31,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    static Grammar grammar4() {
+    public static Grammar grammar4() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> a S A");
         lines.add("S ->");
@@ -41,7 +41,7 @@ public class TestGrammars {
     }
 
     // bad grammar
-    static Grammar grammar5() {
+    public static Grammar grammar5() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B");
         lines.add("A -> b B");
@@ -50,14 +50,14 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    static Grammar grammar6() {
+    public static Grammar grammar6() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> S S");
         lines.add("S -> i");
         return new Grammar(lines);
     }
 
-    static Grammar canonicalForm() {
+    public static Grammar canonicalForm() {
         List<String> lines = new ArrayList<>();
         lines.add("E -> E + T");
         lines.add("E -> T");
@@ -68,7 +68,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    static Grammar shuffled() {
+    public static Grammar shuffled() {
         List<String> lines = new ArrayList<>();
         lines.add("E -> T");
         lines.add("E -> E + T");

@@ -1,11 +1,9 @@
-package generator;
+package set;
 
+import grammar.TestGrammars;
 import grammar.Grammar;
 import org.junit.jupiter.api.Test;
-import set.Sequence;
-import set.TokenSet;
 
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SetTest {

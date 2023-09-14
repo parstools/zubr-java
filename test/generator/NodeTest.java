@@ -1,13 +1,10 @@
 package generator;
 
-import grammar.Grammar;
 import grammar.Symbol;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+import grammar.TestGrammars;
 
 class NodeTest {
     @Test
