@@ -56,4 +56,26 @@ public class TestGrammars {
         lines.add("S -> i");
         return new Grammar(lines);
     }
+
+    static Grammar canonicalForm() {
+        List<String> lines = new ArrayList<>();
+        lines.add("E -> E + T");
+        lines.add("E -> T");
+        lines.add("T -> T * F");
+        lines.add("T -> F");
+        lines.add("F -> ( E )");
+        lines.add("F -> i");
+        return new Grammar(lines);
+    }
+
+    static Grammar shuffled() {
+        List<String> lines = new ArrayList<>();
+        lines.add("E -> T");
+        lines.add("E -> E + T");
+        lines.add("F -> ( E )");
+        lines.add("F -> i");
+        lines.add("T -> F");
+        lines.add("T -> T * F");
+        return new Grammar(lines);
+    }
 }
