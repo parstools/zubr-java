@@ -47,8 +47,11 @@ public class Rule extends ArrayList<Symbol> {
     @Override
     public int hashCode() {
         Hash h = new Hash();
-        for (Symbol symbol: this)
+        for (Symbol symbol: this) {
             h.add(symbol.hashCode());
+            if (symbol.terminal)
+                h.add(grammar.getTerminalName(symbol.index).hashCode());
+        }
         return h.hash();
     }
 }
