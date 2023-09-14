@@ -1,5 +1,7 @@
 package grammar;
 
+import util.Hash;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,4 +40,11 @@ public class Nonterminal {
         return minLen != old || changed;
     }
 
+    @Override
+    public int hashCode() {
+        Hash h = new Hash();
+        for (Rule rule: rules)
+            h.add(rule.hashCode());
+        return h.hash();
+    }
 }

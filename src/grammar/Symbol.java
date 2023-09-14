@@ -1,5 +1,7 @@
 package grammar;
 
+import util.Hash;
+
 public class Symbol {
     public final boolean terminal;
     public final int index;
@@ -13,5 +15,13 @@ public class Symbol {
     @Override
     public String toString() {
         return grammar.getSymbolName(this);
+    }
+
+    @Override
+    public int hashCode() {
+        Hash h = new Hash();
+        h.add(terminal?1:0);
+        h.add(index);
+        return h.hash();
     }
 }

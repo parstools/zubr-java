@@ -1,5 +1,6 @@
 package grammar;
 
+import util.Hash;
 import util.NoMinLenGrammarException;
 
 import java.util.ArrayList;
@@ -131,5 +132,16 @@ public class Grammar {
             return 1;
         else
             return getNT(symbol.index).minLen;
+    }
+
+    @Override
+    public int hashCode() {
+        Hash h = new Hash();
+        for (int i=0; i<nonterminals.size(); i++) {
+            Nonterminal nt = nonterminals.get(i);
+            h.add(i);
+            h.add(nt.hashCode());
+        }
+        return h.hash();
     }
 }

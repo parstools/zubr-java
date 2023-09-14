@@ -1,5 +1,7 @@
 package grammar;
 
+import util.Hash;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -40,5 +42,13 @@ public class Rule extends ArrayList<Symbol> {
             String symbolName = scanner.next();
             add(grammar.findSymbolAddingTerminal(symbolName));
         }
+    }
+
+    @Override
+    public int hashCode() {
+        Hash h = new Hash();
+        for (Symbol symbol: this)
+            h.add(symbol.hashCode());
+        return h.hash();
     }
 }
