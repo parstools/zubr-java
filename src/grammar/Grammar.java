@@ -152,4 +152,16 @@ public class Grammar {
         }
         return h.hash();
     }
+
+    public List<String> lines() {
+        List<String> lines = new ArrayList<>();
+        for (int i=0; i<nonterminals.size(); i++) {
+            Nonterminal nt = nonterminals.get(i);
+            for (Rule rule: nt.rules) {
+                String line = this.getNonTerminalName(i)+ " -> " + rule.toString();
+                lines.add(line);
+            }
+        }
+        return lines;
+    }
 }
