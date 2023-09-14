@@ -83,14 +83,11 @@ public class Grammar {
             rule.parse(ruleString);
             nt.addRule(rule);
         }
-        boolean changed = true;
-        while (changed) {
-            changed = false;
-            for (Nonterminal nt : nonterminals) {
-                if (nt.computeMinLen())
-                    changed = true;
-            }
-        }
+        computeMinLen();
+        checkMinLen();
+    }
+
+    private void checkMinLen() {
         int index = 0;
         for (Nonterminal nt : nonterminals) {
             if (nt.minLen < 0)
@@ -99,6 +96,17 @@ public class Grammar {
                 if (ruleInfo.minLen < 0)
                     throw new NoMinLenGrammarException("not computed minLen for " + ruleInfo.toString());
             index++;
+        }
+    }
+
+    private void computeMinLen() {
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            for (Nonterminal nt : nonterminals) {
+                if (nt.computeMinLen())
+                    changed = true;
+            }
         }
     }
 
