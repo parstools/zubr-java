@@ -77,19 +77,24 @@ public class Node {
 
     boolean initSuffix(int start, int maxLen) {
         assert (childs.size() == start);
-        if (start >= rules.get(ruleIndex).size())
+        if (maxLen < 0)
             return false;
+        if (start >= rules.get(ruleIndex).size())
+            return true;
         int reservedLen = maxLen;
         Rule rule = rules.get(ruleIndex);
         for (int i = rule.size() - 1; i > start; i--)
             reservedLen -= grammar.getMinLen(rule.get(i));
+        if (reservedLen < 0)
+            return false;
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
         childs.add(child);
         if (!child.symbol.terminal)
             if (!child.next())
                 return false;
         if (start + 1 < rules.get(ruleIndex).size())
-            initSuffix(start + 1, maxLen - childs.get(start).getLen());
+            if (!initSuffix(start + 1, maxLen - childs.get(start).getLen()))
+                return false;
         return true;
     }
 
@@ -114,13 +119,6 @@ public class Node {
             return false;
         if (!ruleIndexOK())
             return false;
-        if (nextRuleIndexOK()) {
-            Rule rule = rules.get(ruleIndex + 1);
-            if (maxLen < rule.minLen) {
-                ruleIndex++;
-                return false;
-            }
-        }
         int lens[] = new int[childs.size()];
         int sumlens[] = new int[childs.size()];
         int sum = 0;
@@ -159,11 +157,9 @@ public class Node {
 
         if (canNextIndex < 0)
             ruleIndex++;
-        if (ruleIndexOK()) {
-            initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
-            assert (getLen() <= maxLen);
-            return true;
-        } else
+        if (ruleIndexOK())
+            return initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
+        else
             return false;
     }
 
