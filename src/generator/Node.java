@@ -144,7 +144,7 @@ public class Node {
                 childCycleRules = cycleRules;
             else
                 childCycleRules = new HashSet<>();
-            childCycleRules.add(ruleIndex);
+            childCycleRules.add(globalRuleIndex());
         } else childCycleRules = null;
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, childCycleRules);
         childs.add(child);
@@ -220,9 +220,17 @@ public class Node {
             return initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
     }
 
+    boolean isRuleCycle() {
+        if (cycleRules == null)
+            return false;
+        else
+            return cycleRules.contains(globalRuleIndex());
+    }
+
     private boolean initWithNextCorrectRule() {
         ruleIndex++;
-        while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
+        while (ruleIndex < rules.size() &&
+                ((rules.get(ruleIndex).minLen > nodeMaxLen) || isRuleCycle()))
             ruleIndex++;
         if (!ruleIndexOK())
             return false;
