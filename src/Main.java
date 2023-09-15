@@ -198,10 +198,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("res/to100K.txt");
+        Path path = Paths.get("res/trapGrammars.dat");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            testCount(lines);
+            nextCounter(lines);
         } catch (IOException e) {
             e.printStackTrace();
         }

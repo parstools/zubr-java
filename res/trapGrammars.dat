@@ -1,11 +1,18 @@
 ;can call nested function infinitely without consummate any token
 A -> A
 A -> a
+---
+S'	✖	a
+A	✖	a	$
 
 A -> B
 A -> a
 B -> A
 B -> b
+---
+S'	✖	a, b
+A	✖	a, b	$
+B	✖	a, b	$
 
 A -> B C
 A -> a
@@ -13,3 +20,8 @@ B -> A C
 B -> b
 C ->
 C -> c
+---
+S'	✖	a, b
+A	✖	a, b	, c, $
+B	✖	a, b	, c
+C	✖	, c	, c, $
