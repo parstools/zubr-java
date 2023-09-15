@@ -137,7 +137,16 @@ public class Node {
             reservedLen -= grammar.getMinLen(rule.get(i));
         if (reservedLen < grammar.getMinLen(rule.get(start)))
             return false;
-        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, cycleRules);
+        assert (reservedLen <= nodeMaxLen);
+        HashSet<Integer> childCycleRules;
+        if (reservedLen == nodeMaxLen) {
+            if (cycleRules != null)
+                childCycleRules = cycleRules;
+            else
+                childCycleRules = new HashSet<>();
+            childCycleRules.add(ruleIndex);
+        } else childCycleRules = null;
+        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, childCycleRules);
         childs.add(child);
         if (!child.symbol.terminal)
             if (!child.next())
@@ -211,32 +220,25 @@ public class Node {
             return initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
     }
 
+    private boolean initWithNextCorrectRule() {
+        ruleIndex++;
+        while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
+            ruleIndex++;
+        if (!ruleIndexOK())
+            return false;
+        childs.clear();
+        initSuffix(0, nodeMaxLen);
+        return true;
+    }
 
     boolean next() {
         assert (nodeMaxLen >= 0);
         if (symbol.terminal)
             return false;
-        if (ruleIndex < 0) {
-            ruleIndex = 0;
-            while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
-                ruleIndex++;
-            if (!ruleIndexOK())
-                return false;
-            childs.clear();
-            initSuffix(0, nodeMaxLen);
-        } else if (!nextWithTheSameRule(nodeMaxLen)) {
-            ruleIndex++;
-
-            while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
-                ruleIndex++;
-            if (!ruleIndexOK())
-                return false;
-
-            assert(childs.isEmpty());
-            initSuffix(0, nodeMaxLen);
-        }
-        assert (ruleIndex >= 0);
-        return true;
+        if (ruleIndex < 0 || !nextWithTheSameRule(nodeMaxLen))
+            return initWithNextCorrectRule();
+        else
+            return true;
     }
 
     private void printDotPart(String name) {
