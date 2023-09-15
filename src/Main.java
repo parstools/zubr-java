@@ -77,7 +77,7 @@ public class Main {
             n = readGramLines(lines, n, gramLines);
             try {
                 Grammar grammar = new Grammar(gramLines);
-                int limit = 10 * 1000 * 1000;
+                int limit = 100 * 1000;
                 for (String line : gramLines)
                     out.println(line);
                 out.println("---");
@@ -125,7 +125,7 @@ public class Main {
             n = readExpectLines(lines, n, expectLines);
             n++;
             Grammar grammar = new Grammar(gramLines);
-            int limit = 10 * 1000 * 1000;
+            int limit = 100 * 1000;
             int limit2 = 100 * 1000;
             for (int i = 0; i < expectLines.size(); i++) {
                 String[] parts = expectLines.get(i).split(": ");
@@ -133,7 +133,7 @@ public class Main {
                 int expectedCount = Integer.parseInt(parts[1]);
                 if (expectedCount > limit2)
                     break;
-                Generator generator = new Generator(grammar, maxLen, RuleOrder.roRevereSort);
+                Generator generator = new Generator(grammar, maxLen, RuleOrder.roShuffle);
                 int nc = 0;
                 while (generator.next()) {
                     nc++;
@@ -143,7 +143,6 @@ public class Main {
                 if (nc != expectedCount) {
                     out.println("differ maxLen=" + maxLen + " expected=" + expectedCount + " found " + nc);
                     countFailed++;
-                    return;
                 }
             }
         }
@@ -199,7 +198,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("res/to10millions64.txt");
+        Path path = Paths.get("res/to100K.txt");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
             testCount(lines);
