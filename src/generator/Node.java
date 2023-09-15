@@ -115,7 +115,6 @@ public class Node {
         if (!ruleIndexOK())
             return false;
         if (nextRuleIndexOK()) {
-            Nonterminal nt = grammar.getNT(symbol.index);
             Rule rule = rules.get(ruleIndex + 1);
             if (maxLen < rule.minLen) {
                 ruleIndex++;
