@@ -98,4 +98,14 @@ public class TestGrammars {
         lines.add("Y -> c a");
         return new Grammar(lines);
     }
+
+    public static Grammar grammar9() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> i e t S");
+        lines.add("S -> i e t W e S");
+        lines.add("S -> o");
+        lines.add("W -> i e t W e W");
+        lines.add("W -> o");
+        return new Grammar(lines);
+    }
 }

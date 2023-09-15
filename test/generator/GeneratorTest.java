@@ -105,15 +105,30 @@ public class GeneratorTest {
     void reverseTest2() {
         Stack<String> stack = new Stack<>();
         Generator generator = new Generator(TestGrammars.grammar8(), 3, RuleOrder.roSort);
-
         while (generator.next()) {
             stack.push(generator.parenString());
         }
-         generator = new Generator(TestGrammars.grammar8(), 3, RuleOrder.roRevereSort);
+
+        generator = new Generator(TestGrammars.grammar8(), 3, RuleOrder.roRevereSort);
         while (generator.next()) {
             assertEquals(stack.peek(), generator.parenString());
             stack.pop();
         }
         assertTrue(stack.isEmpty());
+    }
+
+    @Test
+    void shuffleTest() {
+        Generator generator = new Generator(TestGrammars.grammar9(), 8, RuleOrder.roSort);
+        int counter0 = 0;
+        while (generator.next()) {
+            counter0++;
+        }
+        generator = new Generator(TestGrammars.grammar9(), 8, RuleOrder.roShuffle, 0);
+        int counter1 = 0;
+        while (generator.next()) {
+            counter1++;
+        }
+        assertEquals(counter0, counter1);
     }
 }
