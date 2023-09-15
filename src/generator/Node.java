@@ -144,7 +144,8 @@ public class Node {
                 newMaxLen -= sumlens[i - 1];
             if (i < sumBackMinLens.length - 1)
                 newMaxLen -= sumBackMinLens[i + 1];
-            if (childs.get(i).nextTry(newMaxLen)) {
+            assert (childs.get(i).nodeMaxLen == newMaxLen);
+            if (childs.get(i).next()) {
                 int len = childs.get(i).getLen();
                 sumlens[i] += len - lens[i];
                 lens[i] = len;
@@ -166,7 +167,8 @@ public class Node {
 
     boolean next() {
         assert (nodeMaxLen >= 0);
-        assert (!symbol.terminal);
+        if (symbol.terminal)
+            return false;
         if (ruleIndex < 0 || !nextTry(nodeMaxLen)) {
             ruleIndex++;
             while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
