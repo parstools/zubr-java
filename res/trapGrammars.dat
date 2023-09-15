@@ -14,6 +14,26 @@ S'	✖	a, b
 A	✖	a, b	$
 B	✖	a, b	$
 
+A -> B
+A -> a
+A -> c B
+B -> A
+B -> b
+---
+S'	✖	a, cB, b
+A	✖	a, cB, b	$
+B	✖	a, cB, b	$
+
+A -> B
+B -> C
+C -> A
+C -> c
+---
+S'	✖	c	
+A	✖	c	$
+B	✖	c	$
+C	✖	c	$
+
 A -> B C
 A -> a
 B -> A C
