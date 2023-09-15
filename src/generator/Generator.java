@@ -10,6 +10,7 @@ import set.TokenSet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 import static java.lang.Character.*;
@@ -21,10 +22,22 @@ public class Generator {
     RuleOrder ruleOrder;
     int maxLen;
 
+    Random rand;
+
+
     public Generator(Grammar grammar, int maxLen, RuleOrder ruleOrder) {
         this.grammar = grammar;
         this.maxLen = maxLen;
         this.ruleOrder = ruleOrder;
+        rand = new Random();
+        root = new Node(this, getNT(0), maxLen);
+    }
+
+    public Generator(Grammar grammar, int maxLen, RuleOrder ruleOrder, long seed) {
+        this.grammar = grammar;
+        this.maxLen = maxLen;
+        this.ruleOrder = ruleOrder;
+        rand = new Random(seed);
         root = new Node(this, getNT(0), maxLen);
     }
 

@@ -39,7 +39,7 @@ public class Node {
             if (generator.ruleOrder == RuleOrder.roRevereSort)
                 Collections.reverse(rules);
             else if (generator.ruleOrder == RuleOrder.roShuffle)
-                Collections.shuffle(rules);
+                Collections.shuffle(rules, new Random(generator.rand.nextLong()));
         }
     }
 
