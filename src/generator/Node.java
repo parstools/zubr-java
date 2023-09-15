@@ -85,7 +85,7 @@ public class Node {
         Rule rule = rules.get(ruleIndex);
         for (int i = rule.size() - 1; i > start; i--)
             reservedLen -= grammar.getMinLen(rule.get(i));
-        if (reservedLen < 0)
+        if (reservedLen < grammar.getMinLen(rule.get(start)))
             return false;
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
         childs.add(child);
