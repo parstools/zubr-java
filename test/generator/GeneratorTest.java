@@ -87,13 +87,29 @@ public class GeneratorTest {
     }
 
     @Test
-    void reverseTest() {
+    void reverseTest1() {
         Stack<String> stack = new Stack<>();
         Generator generator = new Generator(TestGrammars.grammar7(), 7, RuleOrder.roSort);
         while (generator.next()) {
             stack.push(generator.parenString());
         }
         generator = new Generator(TestGrammars.grammar7(), 7, RuleOrder.roRevereSort);
+        while (generator.next()) {
+            assertEquals(stack.peek(), generator.parenString());
+            stack.pop();
+        }
+        assertTrue(stack.isEmpty());
+    }
+
+    @Test
+    void reverseTest2() {
+        Stack<String> stack = new Stack<>();
+        Generator generator = new Generator(TestGrammars.grammar8(), 3, RuleOrder.roSort);
+
+        while (generator.next()) {
+            stack.push(generator.parenString());
+        }
+         generator = new Generator(TestGrammars.grammar8(), 3, RuleOrder.roRevereSort);
         while (generator.next()) {
             assertEquals(stack.peek(), generator.parenString());
             stack.pop();

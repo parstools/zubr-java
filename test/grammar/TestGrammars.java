@@ -90,4 +90,12 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
+    public static Grammar grammar8() {
+        List<String> lines = new ArrayList<>();
+        lines.add("X -> Y");
+        lines.add("X -> b Y a");
+        lines.add("Y -> c");
+        lines.add("Y -> c a");
+        return new Grammar(lines);
+    }
 }
