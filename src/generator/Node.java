@@ -67,6 +67,51 @@ public class Node {
         }
     }
 
+    int globalRuleIndex() {
+        return rules.get(ruleIndex).globalIndex;
+    }
+
+    public String usedRules() {
+        if (symbol.terminal)
+            return "";
+        else {
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.valueOf(ruleIndex));
+            if (childs != null) {
+                sb.append(symbol.toString() + "(");
+                for (int i = 0; i < childs.size(); i++) {
+                    Node child = childs.get(i);
+                    if (i > 0)
+                        sb.append(",");
+                    sb.append(child.usedRules());
+                }
+                sb.append(")");
+            }
+            return sb.toString();
+        }
+    }
+
+    public String usedGlobalRules() {
+        if (symbol.terminal)
+            return "";
+        else {
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.valueOf(globalRuleIndex()));
+            if (childs != null) {
+                sb.append(symbol.toString() + "(");
+                for (int i = 0; i < childs.size(); i++) {
+                    Node child = childs.get(i);
+                    if (i > 0)
+                        sb.append(",");
+                    sb.append(child.usedGlobalRules());
+                }
+                sb.append(")");
+            }
+            return sb.toString();
+        }
+    }
+
+
     boolean ruleIndexOK() {
         return ruleIndex < rules.size();
     }
