@@ -3,10 +3,7 @@ package grammar;
 import util.Hash;
 import util.NoMinLenGrammarException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
@@ -171,7 +168,12 @@ public class Grammar implements Cloneable {
 
     public Object clone() {
         Grammar newGrammar = new Grammar();
-        newGrammar.nonterminals = new ArrayList<>(nonterminals);
+        newGrammar.nonterminals = new ArrayList<>();
+        for (Nonterminal nt: nonterminals) {
+            Nonterminal ntCloned = (Nonterminal) nt.clone();
+            ntCloned.grammar = newGrammar;
+            newGrammar.nonterminals.add(ntCloned);
+        }
         return newGrammar;
     }
 }
