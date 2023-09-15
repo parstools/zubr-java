@@ -1,7 +1,6 @@
 package generator;
 
 import grammar.Grammar;
-import grammar.Nonterminal;
 import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
@@ -18,6 +17,7 @@ public class Node {
     final Symbol symbol;
     final Generator generator;
     final Grammar grammar;
+    HashSet<Integer> cycleRules;
 
     void addChild(Node child) {
         childs.add(child);
@@ -26,10 +26,15 @@ public class Node {
     final int nodeMaxLen;
 
     public Node(Generator generator, Symbol symbol, int nodeMaxLen) {
+        this(generator, symbol, nodeMaxLen, null);
+    }
+
+    public Node(Generator generator, Symbol symbol, int nodeMaxLen, HashSet<Integer> cycleRules) {
         this.nodeMaxLen = nodeMaxLen;
         this.generator = generator;
         this.grammar = generator.grammar;
         this.symbol = symbol;
+        this.cycleRules = cycleRules;
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             rules = new ArrayList<>(grammar.getNTRules(symbol.index));
@@ -132,7 +137,7 @@ public class Node {
             reservedLen -= grammar.getMinLen(rule.get(i));
         if (reservedLen < grammar.getMinLen(rule.get(start)))
             return false;
-        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
+        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, cycleRules);
         childs.add(child);
         if (!child.symbol.terminal)
             if (!child.next())
@@ -159,7 +164,7 @@ public class Node {
         }
     }
 
-    public boolean nextTry(int maxLen) {
+    private boolean nextWithTheSameRule(int maxLen) {
         if (symbol.terminal)
             return false;
         if (!ruleIndexOK())
@@ -200,13 +205,10 @@ public class Node {
                 childs.remove(i);
             }
         }
-
         if (canNextIndex < 0)
-            ruleIndex++;
-        if (ruleIndexOK())
-            return initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
-        else
             return false;
+        else
+            return initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
     }
 
 
@@ -214,13 +216,23 @@ public class Node {
         assert (nodeMaxLen >= 0);
         if (symbol.terminal)
             return false;
-        if (ruleIndex < 0 || !nextTry(nodeMaxLen)) {
-            ruleIndex++;
+        if (ruleIndex < 0) {
+            ruleIndex = 0;
             while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
                 ruleIndex++;
             if (!ruleIndexOK())
                 return false;
             childs.clear();
+            initSuffix(0, nodeMaxLen);
+        } else if (!nextWithTheSameRule(nodeMaxLen)) {
+            ruleIndex++;
+
+            while (ruleIndex < rules.size() && rules.get(ruleIndex).minLen > nodeMaxLen)
+                ruleIndex++;
+            if (!ruleIndexOK())
+                return false;
+
+            assert(childs.isEmpty());
             initSuffix(0, nodeMaxLen);
         }
         assert (ruleIndex >= 0);
