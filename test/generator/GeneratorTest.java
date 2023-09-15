@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import grammar.TestGrammars;
 
+import java.util.Stack;
+
 public class GeneratorTest {
     @Test
     void grammar3Test() {
@@ -64,17 +66,38 @@ public class GeneratorTest {
     void grammar6Test3() {
         Generator generator = new Generator(TestGrammars.grammar6(), 3, RuleOrder.roSort);
         int counter = 0;
-        while(generator.next()) {
+        while (generator.next()) {
             counter++;
         }
     }
 
     @Test
     void grammar6Test() {
+        Stack<String> stack = new Stack<>();
         Generator generator = new Generator(TestGrammars.grammar6(), 5, RuleOrder.roSort);
-        int counter = 0;
-        while(generator.next()) {
-            counter++;
+        while (generator.next()) {
+            stack.push(generator.parenString());
         }
+        generator = new Generator(TestGrammars.grammar6(), 5, RuleOrder.roRevereSort);
+        while (generator.next()) {
+            assertEquals(stack.peek(), generator.parenString());
+            stack.pop();
+        }
+        assertTrue(stack.isEmpty());
+    }
+
+    @Test
+    void reverseTest() {
+        Stack<String> stack = new Stack<>();
+        Generator generator = new Generator(TestGrammars.grammar7(), 7, RuleOrder.roSort);
+        while (generator.next()) {
+            stack.push(generator.parenString());
+        }
+        generator = new Generator(TestGrammars.grammar7(), 7, RuleOrder.roRevereSort);
+        while (generator.next()) {
+            assertEquals(stack.peek(), generator.parenString());
+            stack.pop();
+        }
+        assertTrue(stack.isEmpty());
     }
 }

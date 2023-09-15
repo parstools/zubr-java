@@ -78,4 +78,16 @@ public class TestGrammars {
         lines.add("T -> T * F");
         return new Grammar(lines);
     }
+
+    public static Grammar grammar7() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> M");
+        lines.add("S -> U");
+        lines.add("M -> i e t M e M");
+        lines.add("M -> o");
+        lines.add("U -> i e t S");
+        lines.add("U -> i e t M e U");
+        return new Grammar(lines);
+    }
+
 }
