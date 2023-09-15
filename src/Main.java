@@ -35,7 +35,7 @@ public class Main {
             counter++;
             n++;
             List<String> expectLines = new ArrayList<>();
-            n = readExpect1Lines(lines, n, expectLines);
+            n = readExpectLines(lines, n, expectLines);
             SetContainer sc2 = new SetContainer(grammar);
             sc2.readTest1(expectLines);
             if (sc1.hashCode() == sc2.hashCode()) {
@@ -77,7 +77,7 @@ public class Main {
             n = readGramLines(lines, n, gramLines);
             try {
                 Grammar grammar = new Grammar(gramLines);
-                int limit = 10* 1000 * 1000;
+                int limit = 10 * 1000 * 1000;
                 for (String line : gramLines)
                     out.println(line);
                 out.println("---");
@@ -90,7 +90,7 @@ public class Main {
                             break;
                     }
                     out.println(maxLen + ": " + nc);
-                    if (nc==limit)
+                    if (nc == limit)
                         break;
                 }
                 out.println();
@@ -100,10 +100,54 @@ public class Main {
             n++;
             count++;
             List<String> expectLines = new ArrayList<>();
-            n = readExpect1Lines(lines, n, expectLines);
+            n = readExpectLines(lines, n, expectLines);
             n++;
         }
         out.println(count + " grammars, " + countNoMin + " exceptions");
+        long duration = System.nanoTime() - start;
+        out.println("duration=" + duration / 1e9);
+    }
+
+    static void testCount(List<String> lines) {
+        int n = 0;
+        int count = 0;
+        int countFailed = 0;
+        long start = System.nanoTime();
+        while (n < lines.size()) {
+            List<String> gramLines = new ArrayList<>();
+            n = readGramLines(lines, n, gramLines);
+            n++;
+            count++;
+            out.println(count);
+            for (String line : gramLines)
+                out.println(line);
+            List<String> expectLines = new ArrayList<>();
+            n = readExpectLines(lines, n, expectLines);
+            n++;
+            Grammar grammar = new Grammar(gramLines);
+            int limit = 10 * 1000 * 1000;
+            int limit2 = 100 * 1000;
+            for (int i = 0; i < expectLines.size(); i++) {
+                String[] parts = expectLines.get(i).split(": ");
+                int maxLen = Integer.parseInt(parts[0]);
+                int expectedCount = Integer.parseInt(parts[1]);
+                if (expectedCount > limit2)
+                    break;
+                Generator generator = new Generator(grammar, maxLen, RuleOrder.roRevereSort);
+                int nc = 0;
+                while (generator.next()) {
+                    nc++;
+                    if (nc >= limit)
+                        break;
+                }
+                if (nc != expectedCount) {
+                    out.println("differ maxLen=" + maxLen + " expected=" + expectedCount + " found " + nc);
+                    countFailed++;
+                    return;
+                }
+            }
+        }
+        out.println(count + " grammars, " + countFailed + " differ count");
         long duration = System.nanoTime() - start;
         out.println("duration=" + duration / 1e9);
     }
@@ -124,13 +168,13 @@ public class Main {
             n++;
             count++;
             List<String> expectLines = new ArrayList<>();
-            n = readExpect1Lines(lines, n, expectLines);
+            n = readExpectLines(lines, n, expectLines);
             n++;
         }
         out.println(count + " grammars, " + countNoMin + " exceptions");
     }
 
-    private static int readExpect1Lines(List<String> lines, int n, List<String> expectLines) {
+    private static int readExpectLines(List<String> lines, int n, List<String> expectLines) {
         while (n < lines.size()) {
             String line = lines.get(n).trim();
             if (line.isEmpty()) break;
@@ -155,10 +199,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("res/test1.dat");
+        Path path = Paths.get("res/to10millions64.txt");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            nextCounter(lines);
+            testCount(lines);
         } catch (IOException e) {
             e.printStackTrace();
         }
