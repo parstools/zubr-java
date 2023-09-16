@@ -14,7 +14,7 @@ public class HashTest {
         h0.xor(3);
         Hash h1 = new Hash();
         h1.xor(2);
-        h0.xor(3);
+        h1.xor(3);
         h1.xor(1);
         assertEquals(h0.hash(), h1.hash());
     }
