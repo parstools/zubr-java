@@ -124,7 +124,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar cycle1and2() {
+    public static Grammar cycle112() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> A");
         lines.add("B -> B");
@@ -147,7 +147,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar cycle3and2() {
+    public static Grammar cycle32() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B");
         lines.add("A -> D");
@@ -188,7 +188,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar cycle3with2a() {
+    public static Grammar cycle332() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B E");
         lines.add("A -> a");
@@ -203,7 +203,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar cycle3with2and1() {
+    public static Grammar cycle31() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B D");
         lines.add("A -> a");
@@ -220,7 +220,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar cycle3with2with1() {
+    public static Grammar cycle31a() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B D");
         lines.add("A -> a");
@@ -236,7 +236,7 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar cycle3with2with2() {
+    public static Grammar cycle322() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B D");
         lines.add("A -> a");

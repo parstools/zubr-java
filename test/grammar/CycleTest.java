@@ -24,8 +24,8 @@ public class CycleTest {
     }
 
     @Test
-    void cycle1and2() {
-        Grammar g = TestGrammars.cycle1and2();
+    void cycle112() {
+        Grammar g = TestGrammars.cycle112();
         assertEquals("[A -> A], [B -> B], [A -> B, B -> A]",g.cycles.toString());
     }
 
@@ -36,8 +36,8 @@ public class CycleTest {
     }
 
     @Test
-    void cycle3and2() {
-        Grammar g = TestGrammars.cycle3and2();
+    void cycle32() {
+        Grammar g = TestGrammars.cycle32();
         assertEquals("[A -> B, B -> C, C -> A], [D -> E, E -> D]",g.cycles.toString());
     }
 
@@ -54,25 +54,25 @@ public class CycleTest {
     }
 
     @Test
-    void cycle3with2a() {
-        Grammar g = TestGrammars.cycle3with2a();
+    void cycle332() {
+        Grammar g = TestGrammars.cycle332();
         assertEquals("[A -> B E, B -> C, C -> A], [A -> B E, E -> D C, C -> A], [D -> E, E -> D C]",g.cycles.toString());
     }
 
     @Test
-    void cycle3with2and1() {
-        Grammar g = TestGrammars.cycle3with2and1();
+    void cycle31() {
+        Grammar g = TestGrammars.cycle31();
         assertEquals("[A -> B D, B -> C, C -> A], [F -> F]",g.cycles.toString());
     }
 
     @Test
-    void cycle3with2with1() {
-        Grammar g = TestGrammars.cycle3with2with1();
+    void cycle31a() {
+        Grammar g = TestGrammars.cycle31a();
         assertEquals("[A -> B D, B -> C F, C -> A], [F -> F]",g.cycles.toString());
     }
 
-    void cycle3with2with2() {
-        Grammar g = TestGrammars.cycle3with2with2();
+    void cycle322() {
+        Grammar g = TestGrammars.cycle322();
         assertEquals("[A -> B D, B -> C F, C -> A], [D -> E, E -> D C],[B -> C F, F->B]",g.cycles.toString());
     }
 }
