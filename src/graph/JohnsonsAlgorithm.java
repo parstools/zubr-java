@@ -37,14 +37,14 @@ public class JohnsonsAlgorithm {
     private static boolean calculateCyclesSub(DG subGraph, VertexEdge startVertex, VertexEdge currentVertex) {
         boolean foundCycle = false;
         stack.push(currentVertex);
-        blockedSet.add(currentVertex.getVertex());
+        blockedSet.add(currentVertex.getN());
 
-        for (DG.Edge e : subGraph.getVertex(currentVertex.getVertex()).getEdges()) {
-            VertexEdge neighbour = new VertexEdge(e.getTo(), e.getLabel());
+        for (DG.Edge e : subGraph.getVertex(currentVertex.getN()).getEdges()) {
+            VertexEdge neighbour = new VertexEdge(e.getTo(), e.getEdge());
 
             // if neighbour is the same as start vertex -> cycle found
-            if (neighbour.getVertex() == startVertex.getVertex()) {
-                stack.push(new VertexEdge(startVertex.getVertex(), e.getLabel()));
+            if (neighbour.getN() == startVertex.getN()) {
+                stack.push(new VertexEdge(startVertex.getN(), e.getEdge()));
                 List<VertexEdge> cycle = new ArrayList<>(stack);
                 Collections.reverse(cycle);
                 stack.pop();
@@ -53,12 +53,12 @@ public class JohnsonsAlgorithm {
                 if (subGraph.hasLabel()) {
                     for (int i = 0; i < cycle.size(); i++) {
                         VertexEdge ith = cycle.get(i);
-                        cycle.set(i, new VertexEdge(subGraph.getLabel(ith.getVertex()), ith.getEdge()));
+                        cycle.set(i, new VertexEdge(subGraph.getLabel(ith.getN()), ith.getEdge()));
                     }
                 }
                 allCycles.add(cycle);
                 foundCycle = true;
-            } else if (!blockedSet.contains(neighbour.getVertex())) {
+            } else if (!blockedSet.contains(neighbour.getN())) {
                 boolean gotCycle = calculateCyclesSub(subGraph, startVertex, neighbour);
                 foundCycle = foundCycle || gotCycle;
             }
@@ -68,14 +68,14 @@ public class JohnsonsAlgorithm {
         // which depend on this vertex
         if (foundCycle) {
             // Remove from blockedSet, then remove all other vertices dependent on this vertex from blockedSet
-            unblock(currentVertex.getVertex());
+            unblock(currentVertex.getN());
         // if no cycle is found with current vertex then don't unblock it. But find all its neighbours and add this vertex
         // to their blockedMap. If any of those neighbours ever get unblocked then unblock current vertex as well
         } else {
-            for (DG.Edge e : subGraph.getVertex(currentVertex.getVertex()).getEdges()) {
+            for (DG.Edge e : subGraph.getVertex(currentVertex.getN()).getEdges()) {
                 int w = e.getTo();
                 Set<Integer> bSet = getBSet(w);
-                bSet.add(currentVertex.getVertex());
+                bSet.add(currentVertex.getN());
             }
         }
         // remove vertex from the stack
@@ -152,7 +152,7 @@ public class JohnsonsAlgorithm {
         for (int i : scc) {
             for (DG.Edge edge : graph.getVertex(i).getEdges()) {
                 if (scc.contains(edge.getTo())) {
-                    subGraph.addEdge(edge.getFrom(), edge.getTo(), edge.getLabel());
+                    subGraph.addEdge(edge.getFrom(), edge.getTo(), edge.getEdge());
                 }
             }
         }

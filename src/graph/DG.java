@@ -228,12 +228,12 @@ public class DG {
     public class Edge {
         private int from;
         private int to;
-        private int label;
+        private int edge;
 
         public Edge (int from, int to, int label) {
             this.from = from;
             this.to = to;
-            this.label = label;
+            this.edge = label;
         }
 
         public int getFrom() {
@@ -244,8 +244,8 @@ public class DG {
             return to;
         }
 
-        public int getLabel() {
-            return label;
+        public int getEdge() {
+            return edge;
         }
 
         @Override

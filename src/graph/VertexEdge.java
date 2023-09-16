@@ -3,18 +3,18 @@ package graph;
 import java.util.Objects;
 
 public class VertexEdge {
-    private final int vertex;
+    private final int n;
     private final int edge;
     private int hashCode;
 
     public VertexEdge(int vertex, int edge) {
-        this.vertex = vertex;
+        this.n = vertex;
         this.edge = edge;
         this.hashCode = Objects.hash(vertex, edge);
     }
 
-    public int getVertex() {
-        return vertex;
+    public int getN() {
+        return n;
     }
 
     public int getEdge() {
@@ -28,7 +28,7 @@ public class VertexEdge {
         if (o == null || getClass() != o.getClass())
             return false;
         VertexEdge that = (VertexEdge) o;
-        return vertex == that.vertex && edge == that.edge;
+        return n == that.n && edge == that.edge;
     }
 
     @Override
@@ -38,6 +38,6 @@ public class VertexEdge {
 
     @Override
     public String toString() {
-        return "[%d,%d]".formatted(vertex, edge);
+        return "[%d,%d]".formatted(n, edge);
     }
 }
