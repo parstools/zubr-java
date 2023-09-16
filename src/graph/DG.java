@@ -21,6 +21,22 @@ public class DG {
     private Map<Integer, Integer> labelToOriginal;
     private Map<FromTo, Set<Integer>> edgeLabels;
 
+    List<Set<Integer>> vertexAsEdgeCycle(List<Integer> vertexCycle) {
+        List<Set<Integer>> edgeCycle = new ArrayList<>();
+        for (int i=1; i<vertexCycle.size(); i++) {
+            FromTo fromTo = new FromTo(vertexCycle.get(i-1), vertexCycle.get(i));
+            Set<Integer> labels = edgeLabels.get(fromTo);
+            edgeCycle.add(labels);
+        }
+        return edgeCycle;
+    }
+
+    List<List<Set<Integer>>> vertexAsEdgeCycles(List<List<Integer>> vertexCycles) {
+        List<List<Set<Integer>>> edgeCycles = new ArrayList<>();
+        for (List<Integer> cycle: vertexCycles)
+            edgeCycles.add(vertexAsEdgeCycle(cycle));
+        return edgeCycles;
+    }
 
     public DG (int vertexCount) {
         if (vertexCount < 0) throw new IllegalArgumentException("Vertex count can't be smaller than 0.");
@@ -53,8 +69,10 @@ public class DG {
         Set<Integer> intSet;
         if (edgeLabels.containsKey(fromTo))
             intSet = edgeLabels.get(fromTo);
-        else
+        else {
             intSet = new HashSet<>();
+            edgeLabels.put(fromTo, intSet);
+        }
         intSet.add(label);
     }
 
