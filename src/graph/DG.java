@@ -19,24 +19,8 @@ public class DG {
     private boolean hasLabel = false;
     private Map<Integer, Integer> originalToLabel;
     private Map<Integer, Integer> labelToOriginal;
-    private Map<FromTo, Set<Integer>> edgeLabels;
 
-    List<Set<Integer>> vertexAsEdgeCycle(List<Integer> vertexCycle) {
-        List<Set<Integer>> edgeCycle = new ArrayList<>();
-        for (int i=1; i<vertexCycle.size(); i++) {
-            FromTo fromTo = new FromTo(vertexCycle.get(i-1), vertexCycle.get(i));
-            Set<Integer> labels = edgeLabels.get(fromTo);
-            edgeCycle.add(labels);
-        }
-        return edgeCycle;
-    }
 
-    List<List<Set<Integer>>> vertexAsEdgeCycles(List<List<Integer>> vertexCycles) {
-        List<List<Set<Integer>>> edgeCycles = new ArrayList<>();
-        for (List<Integer> cycle: vertexCycles)
-            edgeCycles.add(vertexAsEdgeCycle(cycle));
-        return edgeCycles;
-    }
 
     public DG (int vertexCount) {
         if (vertexCount < 0) throw new IllegalArgumentException("Vertex count can't be smaller than 0.");
@@ -44,7 +28,6 @@ public class DG {
         for (int i = 0; i < vertexCount; i++) {
             vertices.add(new Vertex(i));
         }
-        edgeLabels = new HashMap<>();
     }
 
     public DG (List<Integer> vertexLabels, int vertexCount) {
@@ -65,15 +48,6 @@ public class DG {
             to = labelToOriginal.get(to);
         }
         vertices.get(from).addEdge(from, to, label);
-        FromTo fromTo = new FromTo(from,to);
-        Set<Integer> intSet;
-        if (edgeLabels.containsKey(fromTo))
-            intSet = edgeLabels.get(fromTo);
-        else {
-            intSet = new HashSet<>();
-            edgeLabels.put(fromTo, intSet);
-        }
-        intSet.add(label);
     }
 
     public Vertex getVertex(int id) {
@@ -187,41 +161,6 @@ public class DG {
             return id == vertex.getId();
         }
 
-    }
-
-    class FromTo {
-        private final int from;
-        private final int to;
-        private int hashCode;
-
-        public FromTo(int from, int to) {
-            this.from = from;
-            this.to = to;
-            this.hashCode = Objects.hash(from, to);
-        }
-
-        public int getFrom() {
-            return from;
-        }
-
-        public int getTo() {
-            return to;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
-            FromTo that = (FromTo) o;
-            return from == that.from && to == that.to;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.hashCode;
-        }
     }
 
     // ### Edge ###
