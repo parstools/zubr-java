@@ -29,7 +29,7 @@ public class Node {
         this(generator, symbol, nodeMaxLen, 0);
     }
 
-    private final int ruleHash;
+    private int ruleHash;
     public Node(Generator generator, Symbol symbol, int nodeMaxLen, int ruleHash) {
         this.nodeMaxLen = nodeMaxLen;
         this.generator = generator;
@@ -141,11 +141,7 @@ public class Node {
         assert (reservedLen <= nodeMaxLen);
         int childRuleHash;
         if (reservedLen == nodeMaxLen) {
-            if (ruleHash != 0)
-                childRuleHash = ruleHash;
-            else
-                childRuleHash = Hash.intHash(-1);
-            childRuleHash = Hash.intXor(childRuleHash, globalRuleIndex());
+            childRuleHash = ruleHash;
         } else childRuleHash = 0;
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, childRuleHash);
         childs.add(child);
@@ -222,13 +218,11 @@ public class Node {
     }
 
     boolean isRuleCycle() {
+        int hash;
         if (ruleHash == 0)
-            return false;
-        else {
-            boolean b = grammar.cycles.xors.contains(ruleHash);
-            if (b) out.println("is rule cycle");
-            return b;
-        }
+            ruleHash = Hash.intHash(-1);
+        ruleHash = Hash.intXor(ruleHash, globalRuleIndex());
+        return grammar.cycles.xors.contains(ruleHash);
     }
 
     private boolean initWithNextCorrectRule() {
