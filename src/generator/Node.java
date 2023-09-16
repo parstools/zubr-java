@@ -5,6 +5,7 @@ import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
+import util.Hash;
 
 import java.util.*;
 
@@ -17,7 +18,6 @@ public class Node {
     final Symbol symbol;
     final Generator generator;
     final Grammar grammar;
-    HashSet<Integer> cycleRules;
 
     void addChild(Node child) {
         childs.add(child);
@@ -26,15 +26,16 @@ public class Node {
     final int nodeMaxLen;
 
     public Node(Generator generator, Symbol symbol, int nodeMaxLen) {
-        this(generator, symbol, nodeMaxLen, null);
+        this(generator, symbol, nodeMaxLen, 0);
     }
 
-    public Node(Generator generator, Symbol symbol, int nodeMaxLen, HashSet<Integer> cycleRules) {
+    private final int ruleHash;
+    public Node(Generator generator, Symbol symbol, int nodeMaxLen, int ruleHash) {
         this.nodeMaxLen = nodeMaxLen;
         this.generator = generator;
         this.grammar = generator.grammar;
         this.symbol = symbol;
-        this.cycleRules = cycleRules;
+        this.ruleHash = ruleHash;
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             rules = new ArrayList<>(grammar.getNTRules(symbol.index));
@@ -138,15 +139,15 @@ public class Node {
         if (reservedLen < grammar.getMinLen(rule.get(start)))
             return false;
         assert (reservedLen <= nodeMaxLen);
-        HashSet<Integer> childCycleRules;
+        int childRuleHash;
         if (reservedLen == nodeMaxLen) {
-            if (cycleRules != null)
-                childCycleRules = cycleRules;
+            if (ruleHash != 0)
+                childRuleHash = ruleHash;
             else
-                childCycleRules = new HashSet<>();
-            childCycleRules.add(globalRuleIndex());
-        } else childCycleRules = null;
-        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, childCycleRules);
+                childRuleHash = Hash.intHash(-1);
+            childRuleHash = Hash.intXor(childRuleHash, globalRuleIndex());
+        } else childRuleHash = 0;
+        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, childRuleHash);
         childs.add(child);
         if (!child.symbol.terminal)
             if (!child.next())
@@ -221,10 +222,13 @@ public class Node {
     }
 
     boolean isRuleCycle() {
-        if (cycleRules == null)
+        if (ruleHash == 0)
             return false;
-        else
-            return cycleRules.contains(globalRuleIndex());
+        else {
+            boolean b = grammar.cycles.xors.contains(ruleHash);
+            if (b) out.println("is rule cycle");
+            return b;
+        }
     }
 
     private boolean initWithNextCorrectRule() {

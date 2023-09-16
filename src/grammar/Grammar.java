@@ -196,7 +196,7 @@ public class Grammar implements Cloneable {
         return newGrammar;
     }
 
-    Cycles cycles;
+    public Cycles cycles;
 
     void detectCycles() {
         DG graph = new DG(nonterminals.size());

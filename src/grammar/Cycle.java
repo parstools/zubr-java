@@ -1,6 +1,7 @@
 package grammar;
 
 import graph.VertexEdge;
+import util.Hash;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,12 +10,17 @@ import java.util.List;
 
 public class Cycle extends ArrayList<Integer> {
     Grammar grammar;
+    int xorHash;
 
     Cycle(Grammar grammar, List<VertexEdge> johnsonCycle) {
         this.grammar = grammar;
         assert (johnsonCycle.size() >= 2 && johnsonCycle.get(0).getEdge() == -1);
-        for (int i = 1; i < johnsonCycle.size(); i++)
-            this.add(johnsonCycle.get(i).getEdge());
+        xorHash = Hash.intHash(-1);
+        for (int i = 1; i < johnsonCycle.size(); i++) {
+            int g = johnsonCycle.get(i).getEdge();
+            this.add(g);
+            xorHash = Hash.intXor(xorHash, g);
+        }
     }
 
     @Override
