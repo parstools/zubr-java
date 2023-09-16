@@ -34,7 +34,7 @@ public class JohnsonTest {
         DG graph = new DG(3);
         graph.addEdge(0,0,3);
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
-        assertEquals("[]",johnsonResult.toString());
+        assertEquals("[[[0,3]]]",johnsonResult.toString());
     }
 
     @Test
@@ -43,6 +43,6 @@ public class JohnsonTest {
         graph.addEdge(0,0,3);
         graph.addEdge(0,0,5);
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
-        assertEquals("[]",johnsonResult.toString());
+        assertEquals("[[[0,3]], [[0,5]]]",johnsonResult.toString());
     }
 }

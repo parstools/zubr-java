@@ -12,11 +12,31 @@ public class JohnsonsAlgorithm {
 
     private static List<List<VertexEdge>> allCycles;
 
+    private static void calculateZeroCycles(DG graph) {
+        for (DG.Vertex vertex: graph.getVertices()) {
+            for (DG.Edge edge : vertex.getEdges()) {
+                if (edge.getFrom() == edge.getTo()) {
+                    List<VertexEdge> cycle = new ArrayList<>();
+                    cycle.add(new VertexEdge(edge.getFrom(), edge.getLabel()));
+                    allCycles.add(cycle);
+                }
+            }
+        }
+/*
+* for (int i : scc) {
+            for (DG.Edge edge : graph.getVertex(i).getEdges()) {
+                if (scc.contains(edge.getTo())) {
+                    subGraph.addEdge(edge.getFrom(), edge.getTo(), edge.getEdge());
+                }
+            }
+        }
+* */
+    }
 
     public static List<List<VertexEdge>> calculateCycles(DG graph) {
         // Initialize arrays and calculate Tarjans algo
         setup(graph);
-
+        calculateZeroCycles(graph);
         // Always start with vertex 0
         VertexEdge startVertex = new VertexEdge(0,-1);
 
@@ -40,11 +60,11 @@ public class JohnsonsAlgorithm {
         blockedSet.add(currentVertex.getN());
 
         for (DG.Edge e : subGraph.getVertex(currentVertex.getN()).getEdges()) {
-            VertexEdge neighbour = new VertexEdge(e.getTo(), e.getEdge());
+            VertexEdge neighbour = new VertexEdge(e.getTo(), e.getLabel());
 
             // if neighbour is the same as start vertex -> cycle found
             if (neighbour.getN() == startVertex.getN()) {
-                stack.push(new VertexEdge(startVertex.getN(), e.getEdge()));
+                stack.push(new VertexEdge(startVertex.getN(), e.getLabel()));
                 List<VertexEdge> cycle = new ArrayList<>(stack);
                 Collections.reverse(cycle);
                 stack.pop();
@@ -152,7 +172,7 @@ public class JohnsonsAlgorithm {
         for (int i : scc) {
             for (DG.Edge edge : graph.getVertex(i).getEdges()) {
                 if (scc.contains(edge.getTo())) {
-                    subGraph.addEdge(edge.getFrom(), edge.getTo(), edge.getEdge());
+                    subGraph.addEdge(edge.getFrom(), edge.getTo(), edge.getLabel());
                 }
             }
         }
