@@ -116,6 +116,18 @@ public class Main {
             n = readGramLines(lines, n, gramLines);
             try {
                 Grammar grammar = new Grammar(gramLines);
+                gramLines.forEach(out::println);
+                Generator generator = new Generator(grammar, 5, RuleOrder.roOriginal);
+                int limit = 100;
+                int nc = 0;
+                while (generator.next()) {
+                    nc++;
+                    out.println(generator.string() + "  " + generator.parenString());
+                    if (nc >= limit)
+                        break;
+                }
+                out.println(nc);
+                out.println("===============");
             } catch (NoMinLenGrammarException e) {
                 countNoMin++;
             }
