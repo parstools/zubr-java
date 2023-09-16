@@ -31,8 +31,6 @@ public class JohnsonsAlgorithm {
                 subGraphs.set(i, subGraphFromSCCBlueprint(sccs.get(i), graph));
             }
         }
-
-        // return allCycles;
         return allCycles;
     }
 
