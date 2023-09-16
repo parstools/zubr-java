@@ -19,6 +19,7 @@ public class DG {
     private boolean hasLabel = false;
     private Map<Integer, Integer> originalToLabel;
     private Map<Integer, Integer> labelToOriginal;
+    private Map<FromTo, Set<Integer>> edgeLabels;
 
 
     public DG (int vertexCount) {
@@ -27,6 +28,7 @@ public class DG {
         for (int i = 0; i < vertexCount; i++) {
             vertices.add(new Vertex(i));
         }
+        edgeLabels = new HashMap<>();
     }
 
     public DG (List<Integer> vertexLabels, int vertexCount) {
@@ -47,6 +49,13 @@ public class DG {
             to = labelToOriginal.get(to);
         }
         vertices.get(from).addEdge(from, to, label);
+        FromTo fromTo = new FromTo(from,to);
+        Set<Integer> intSet;
+        if (edgeLabels.containsKey(fromTo))
+            intSet = edgeLabels.get(fromTo);
+        else
+            intSet = new HashSet<>();
+        intSet.add(label);
     }
 
     public Vertex getVertex(int id) {
@@ -162,6 +171,40 @@ public class DG {
 
     }
 
+    class FromTo {
+        private final int from;
+        private final int to;
+        private int hashCode;
+
+        public FromTo(int from, int to) {
+            this.from = from;
+            this.to = to;
+            this.hashCode = Objects.hash(from, to);
+        }
+
+        public int getFrom() {
+            return from;
+        }
+
+        public int getTo() {
+            return to;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+            FromTo that = (FromTo) o;
+            return from == that.from && to == that.to;
+        }
+
+        @Override
+        public int hashCode() {
+            return this.hashCode;
+        }
+    }
 
     // ### Edge ###
     public class Edge {
