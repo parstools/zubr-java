@@ -2,6 +2,7 @@ package grammar;
 
 import graph.DG;
 import graph.JohnsonsAlgorithm;
+import graph.VertexEdge;
 import util.Hash;
 import util.NoMinLenGrammarException;
 
@@ -200,8 +201,7 @@ public class Grammar implements Cloneable {
                         graph.addEdge(nt.index, symbol.index, rule.globalIndex);
                 }
         graph.display();
-        List<List<Integer>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
-        JohnsonsAlgorithm.outputJohnson(johnsonResult);
+        List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles();
         out.println("-----------------");
     }

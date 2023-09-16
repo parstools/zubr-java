@@ -6,19 +6,19 @@ public class JohnsonsAlgorithm {
     private static List<DG> subGraphs;
     private static List<List<Integer>> sccs;
 
-    private static Deque<Integer> stack;
+    private static Deque<VertexEdge> stack;
     private static Set<Integer> blockedSet;
     private static Map<Integer, Set<Integer>> blockedMap;
 
-    private static List<List<Integer>> allCycles;
+    private static List<List<VertexEdge>> allCycles;
 
 
-    public static List<List<Integer>> calculateCycles(DG graph) {
+    public static List<List<VertexEdge>> calculateCycles(DG graph) {
         // Initialize arrays and calculate Tarjans algo
         setup(graph);
 
         // Always start with vertex 0
-        int startVertex = 0;
+        VertexEdge startVertex = new VertexEdge(0,-1);
 
         for (int i = 0; i < subGraphs.size(); i++) {
             while (subGraphs.get(i).size() > 1) {
@@ -34,30 +34,31 @@ public class JohnsonsAlgorithm {
         return allCycles;
     }
 
-    private static boolean calculateCyclesSub(DG subGraph, int startVertex, int currentVertex) {
+    private static boolean calculateCyclesSub(DG subGraph, VertexEdge startVertex, VertexEdge currentVertex) {
         boolean foundCycle = false;
         stack.push(currentVertex);
-        blockedSet.add(currentVertex);
+        blockedSet.add(currentVertex.getVertex());
 
-        for (DG.Edge e : subGraph.getVertex(currentVertex).getEdges()) {
-            int neighbour = e.getTo();
+        for (DG.Edge e : subGraph.getVertex(currentVertex.getVertex()).getEdges()) {
+            VertexEdge neighbour = new VertexEdge(e.getTo(), e.getLabel());
 
             // if neighbour is the same as start vertex -> cycle found
-            if (neighbour == startVertex) {
-                stack.push(startVertex);
-                List<Integer> cycle = new ArrayList<>(stack);
+            if (neighbour.getVertex() == startVertex.getVertex()) {
+                stack.push(new VertexEdge(startVertex.getVertex(), e.getLabel()));
+                List<VertexEdge> cycle = new ArrayList<>(stack);
                 Collections.reverse(cycle);
                 stack.pop();
 
                 // Before adding the cycle to the final list of all cycles, the vertex id's converted to original label
                 if (subGraph.hasLabel()) {
                     for (int i = 0; i < cycle.size(); i++) {
-                        cycle.set(i, subGraph.getLabel(cycle.get(i)));
+                        VertexEdge ith = cycle.get(i);
+                        cycle.set(i, new VertexEdge(subGraph.getLabel(ith.getVertex()), ith.getEdge()));
                     }
                 }
                 allCycles.add(cycle);
                 foundCycle = true;
-            } else if (!blockedSet.contains(neighbour)) {
+            } else if (!blockedSet.contains(neighbour.getVertex())) {
                 boolean gotCycle = calculateCyclesSub(subGraph, startVertex, neighbour);
                 foundCycle = foundCycle || gotCycle;
             }
@@ -67,14 +68,14 @@ public class JohnsonsAlgorithm {
         // which depend on this vertex
         if (foundCycle) {
             // Remove from blockedSet, then remove all other vertices dependent on this vertex from blockedSet
-            unblock(currentVertex);
+            unblock(currentVertex.getVertex());
         // if no cycle is found with current vertex then don't unblock it. But find all its neighbours and add this vertex
         // to their blockedMap. If any of those neighbours ever get unblocked then unblock current vertex as well
         } else {
-            for (DG.Edge e : subGraph.getVertex(currentVertex).getEdges()) {
+            for (DG.Edge e : subGraph.getVertex(currentVertex.getVertex()).getEdges()) {
                 int w = e.getTo();
                 Set<Integer> bSet = getBSet(w);
-                bSet.add(currentVertex);
+                bSet.add(currentVertex.getVertex());
             }
         }
         // remove vertex from the stack
