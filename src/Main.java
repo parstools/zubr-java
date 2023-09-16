@@ -77,9 +77,9 @@ public class Main {
             n = readGramLines(lines, n, gramLines);
             try {
                 Grammar grammar = new Grammar(gramLines);
-                int limit = 100 * 1000;
-                for (String line : gramLines)
-                    out.println(line);
+                int limit = 1000 * 1000;
+                gramLines.forEach(out::println);
+                out.println("---");
                 for (int maxLen = 1; maxLen <= 64; maxLen++) {
                     Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
                     int nc = 0;
@@ -157,8 +157,8 @@ public class Main {
             n = readExpectLines(lines, n, expectLines);
             n++;
             Grammar grammar = new Grammar(gramLines);
-            int limit = 100 * 1000;
-            int limit2 = 100 * 1000;
+            int limit = 1000 * 1000;
+            int limit2 = 1000 * 1000;
             for (int i = 0; i < expectLines.size(); i++) {
                 String[] parts = expectLines.get(i).split(": ");
                 int maxLen = Integer.parseInt(parts[0]);
