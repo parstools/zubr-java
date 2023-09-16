@@ -153,7 +153,7 @@ public class JohnsonsAlgorithm {
         for (int i : scc) {
             for (DG.Edge edge : graph.getVertex(i).getEdges()) {
                 if (scc.contains(edge.getTo())) {
-                    subGraph.addEdge(edge.getFrom(), edge.getTo());
+                    subGraph.addEdge(edge.getFrom(), edge.getTo(), edge.getLabel());
                 }
             }
         }

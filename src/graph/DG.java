@@ -41,12 +41,12 @@ public class DG {
         }
     }
 
-    public void addEdge(int from, int to) {
+    public void addEdge(int from, int to, int label) {
         if (hasLabel) {
             from = labelToOriginal.get(from);
             to = labelToOriginal.get(to);
         }
-        vertices.get(from).addEdge(from, to);
+        vertices.get(from).addEdge(from, to, label);
     }
 
     public Vertex getVertex(int id) {
@@ -89,8 +89,10 @@ public class DG {
             int maxIndex = parseResult.stream().flatMapToInt(Arrays::stream).max().getAsInt();
             DG graph = new DG(maxIndex + 1);
 
+            int edgeCnt = 0;
             for(int[] arr : parseResult) {
-                graph.addEdge(arr[0], arr[1]);
+                graph.addEdge(arr[0], arr[1], edgeCnt);
+                edgeCnt++;
             }
 
             return graph;
@@ -130,8 +132,8 @@ public class DG {
             this.edges = new ArrayList<>();
         }
 
-        public void addEdge(int from, int to) {
-            edges.add(new Edge(from, to));
+        public void addEdge(int from, int to, int label) {
+            edges.add(new Edge(from, to, label));
         }
 
         public ArrayList<Vertex> getAdjacentVertices() {
@@ -165,10 +167,12 @@ public class DG {
     public class Edge {
         private int from;
         private int to;
+        private int label;
 
-        public Edge (int from, int to) {
+        public Edge (int from, int to, int label) {
             this.from = from;
             this.to = to;
+            this.label = label;
         }
 
         public int getFrom() {
@@ -177,6 +181,10 @@ public class DG {
 
         public int getTo() {
             return to;
+        }
+
+        public int getLabel() {
+            return label;
         }
 
         @Override

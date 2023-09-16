@@ -197,7 +197,7 @@ public class Grammar implements Cloneable {
                 if (rule.cycleSuspected()) {
                     out.println(rule);
                     for (Symbol symbol : rule)
-                        graph.addEdge(nt.index, symbol.index);
+                        graph.addEdge(nt.index, symbol.index, rule.globalIndex);
                 }
         graph.display();
         List<List<Integer>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
