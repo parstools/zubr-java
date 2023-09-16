@@ -7,6 +7,13 @@ import java.util.List;
 
 public class Nonterminal implements Cloneable {
     Grammar grammar;
+    int index;
+
+    @Override
+    public String toString() {
+        return grammar.getNonTerminalName(index);
+    }
+
     public List<Rule> rules = new ArrayList<>();
 
     public Object clone() {

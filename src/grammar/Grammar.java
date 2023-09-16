@@ -51,6 +51,7 @@ public class Grammar implements Cloneable {
         ntNamesToInt.put(ntName, n);
         ntNames.add(ntName);
         Nonterminal nt = new Nonterminal(this);
+        nt.index = n;
         nonterminals.add(nt);
     }
 
@@ -126,7 +127,7 @@ public class Grammar implements Cloneable {
         }
     }
 
-    public Symbol findSymbolAddingTerminal(String name) {
+    public Symbol findSymbolAndAddTerminal(String name) {
         if (ntNamesToInt.containsKey(name)) {
             return new Symbol(this, false, ntNamesToInt.get(name));
         } else {
@@ -158,10 +159,8 @@ public class Grammar implements Cloneable {
         List<String> lines = new ArrayList<>();
         for (int i=0; i<nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
-            for (Rule rule: nt.rules) {
-                String line = this.getNonTerminalName(i)+ " -> " + rule.toString();
-                lines.add(line);
-            }
+            for (Rule rule: nt.rules)
+                lines.add(rule.toString());
         }
         return lines;
     }

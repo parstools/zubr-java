@@ -40,7 +40,7 @@ public class Rule extends ArrayList<Symbol> {
         Scanner scanner = new Scanner(input);
         while (scanner.hasNext()) {
             String symbolName = scanner.next();
-            add(grammar.findSymbolAddingTerminal(symbolName));
+            add(grammar.findSymbolAndAddTerminal(symbolName));
         }
     }
 
@@ -58,6 +58,8 @@ public class Rule extends ArrayList<Symbol> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append(owner.toString());
+        sb.append(" -> ");
         for (int i=0; i<size() ; i++) {
             Symbol symbol = get(i);
             if (i>0)
