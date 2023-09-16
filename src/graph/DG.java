@@ -193,7 +193,6 @@ public class DG {
                 return originalToLabel.get(from) + " -> " + originalToLabel.get(to);
             } else {
                 return from + " -> " + to;
-
             }
         }
     }

@@ -19,4 +19,30 @@ public class JohnsonTest {
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         assertEquals("[[[0,-1], [1,3], [2,5], [0,7]], [[0,-1], [1,3], [2,11], [0,7]]]",johnsonResult.toString());
     }
+
+    @Test
+    void cycle2() {
+        DG graph = new DG(3);
+        graph.addEdge(0,1,3);
+        graph.addEdge(1,0,3);
+        List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
+        assertEquals("[[[0,-1], [1,3], [0,3]]]",johnsonResult.toString());
+    }
+
+    @Test
+    void cycle1empty1() {
+        DG graph = new DG(3);
+        graph.addEdge(0,0,3);
+        List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
+        assertEquals("[]",johnsonResult.toString());
+    }
+
+    @Test
+    void cycle1empty2() {
+        DG graph = new DG(3);
+        graph.addEdge(0,0,3);
+        graph.addEdge(0,0,5);
+        List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
+        assertEquals("[]",johnsonResult.toString());
+    }
 }
