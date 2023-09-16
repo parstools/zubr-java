@@ -146,6 +146,7 @@ public class TestGrammars {
         lines.add("C -> c");
         lines.add("D -> E");
         lines.add("D -> d");
+        lines.add("E -> D");
         lines.add("E -> e");
         return new Grammar(lines);
     }
@@ -177,15 +178,16 @@ public class TestGrammars {
 
     public static Grammar cycle3with2a() {
         List<String> lines = new ArrayList<>();
-        lines.add("A -> B D");
+        lines.add("A -> B E");
         lines.add("A -> a");
         lines.add("B -> C");
         lines.add("B -> b");
         lines.add("C -> A");
         lines.add("C -> c");
-        lines.add("D ->E");
-        lines.add("D ->");
+        lines.add("C ->");
+        lines.add("D -> E");
         lines.add("E ->D C");
+        lines.add("E ->");
         return new Grammar(lines);
     }
 

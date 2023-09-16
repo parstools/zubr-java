@@ -1,9 +1,13 @@
 package grammar;
 
+import graph.DG;
+import graph.JohnsonsAlgorithm;
 import util.Hash;
 import util.NoMinLenGrammarException;
 
 import java.util.*;
+
+import static java.lang.System.out;
 
 public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
@@ -187,10 +191,18 @@ public class Grammar implements Cloneable {
     Cycles cycles;
 
     void detectCycles() {
+        DG graph = new DG(nonterminals.size());
         for (Nonterminal nt : nonterminals)
             for (Rule rule: nt.rules)
-                if (rule.cycleSuspected())
-                    ;//out.println(rule);
+                if (rule.cycleSuspected()) {
+                    out.println(rule);
+                    for (Symbol symbol : rule)
+                        graph.addEdge(nt.index, symbol.index);
+                }
+        graph.display();
+        List<List<Integer>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
+        JohnsonsAlgorithm.outputJohnson(johnsonResult);
         cycles = new Cycles();
+        out.println("-----------------");
     }
 }
