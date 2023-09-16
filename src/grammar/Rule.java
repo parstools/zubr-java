@@ -84,4 +84,9 @@ public class Rule extends ArrayList<Symbol> {
         }
         return sb.toString();
     }
+
+    boolean cycleSuspected() {
+        assert (minLen >= owner.minLen);
+        return size() > 0 && !hasT && countNonNullableSymbols <= 1 && minLen == owner.minLen;
+    }
 }

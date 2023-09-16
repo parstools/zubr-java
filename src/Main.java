@@ -108,6 +108,27 @@ public class Main {
         out.println("duration=" + duration / 1e9);
     }
 
+    static void detectCycles(List<String> lines) {
+        int n = 0;
+        int count = 0;
+        int countNoMin = 0;
+        while (n < lines.size()) {
+            List<String> gramLines = new ArrayList<>();
+            n = readGramLines(lines, n, gramLines);
+            try {
+                Grammar grammar = new Grammar(gramLines);
+            } catch (NoMinLenGrammarException e) {
+                countNoMin++;
+            }
+            n++;
+            count++;
+            List<String> expectLines = new ArrayList<>();
+            n = readExpectLines(lines, n, expectLines);
+            n++;
+        }
+        out.println(count + " grammars, " + countNoMin + " exceptions");
+    }
+
     static void testCount(List<String> lines) {
         int n = 0;
         int count = 0;
@@ -201,7 +222,7 @@ public class Main {
         Path path = Paths.get("res/trapGrammars.dat");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            nextCounter(lines);
+            detectCycles(lines);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,5 @@
 package grammar;
 
-import grammar.Grammar;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +104,137 @@ public class TestGrammars {
         lines.add("S -> o");
         lines.add("W -> i e t W e W");
         lines.add("W -> o");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> A");
+        lines.add("A -> a");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle2() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B");
+        lines.add("A -> a");
+        lines.add("A -> c B");
+        lines.add("B -> A");
+        lines.add("B -> b");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B");
+        lines.add("A -> a");
+        lines.add("B -> C");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> c");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3and2() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B");
+        lines.add("A -> D");
+        lines.add("A -> a");
+        lines.add("B -> C");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> c");
+        lines.add("D -> E");
+        lines.add("D -> d");
+        lines.add("E -> e");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle2wide() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B C");
+        lines.add("A -> a");
+        lines.add("B -> A C");
+        lines.add("B -> b");
+        lines.add("C ->");
+        lines.add("C -> c");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3with2() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B D");
+        lines.add("A -> a");
+        lines.add("B -> C");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> c");
+        lines.add("D ->E");
+        lines.add("D ->");
+        lines.add("E ->D");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3with2a() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B D");
+        lines.add("A -> a");
+        lines.add("B -> C");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> c");
+        lines.add("D ->E");
+        lines.add("D ->");
+        lines.add("E ->D C");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3with2and1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B D");
+        lines.add("A -> a");
+        lines.add("B -> C");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> F");
+        lines.add("C -> c");
+        lines.add("D ->E");
+        lines.add("D ->");
+        lines.add("E ->D C");
+        lines.add("F ->F");
+        lines.add("F ->f");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3with2with1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B D");
+        lines.add("A -> a");
+        lines.add("B -> C F");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> c");
+        lines.add("D ->E");
+        lines.add("D ->");
+        lines.add("E ->D C");
+        lines.add("F -> F");
+        lines.add("F ->");
+        return new Grammar(lines);
+    }
+
+    public static Grammar cycle3with2with2() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B D");
+        lines.add("A -> a");
+        lines.add("B -> C F");
+        lines.add("B -> b");
+        lines.add("C -> A");
+        lines.add("C -> c");
+        lines.add("D ->E");
+        lines.add("D ->");
+        lines.add("E ->D C");
+        lines.add("F -> B");
+        lines.add("F ->");
         return new Grammar(lines);
     }
 }

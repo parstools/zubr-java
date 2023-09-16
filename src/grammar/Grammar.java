@@ -88,6 +88,7 @@ public class Grammar implements Cloneable {
         computeMinLen();
         checkMinLen();
         computeNonNullableCount();
+        detectCycles();
     }
 
     private void computeNonNullableCount() {
@@ -181,5 +182,15 @@ public class Grammar implements Cloneable {
             newGrammar.nonterminals.add(ntCloned);
         }
         return newGrammar;
+    }
+
+    Cycles cycles;
+
+    void detectCycles() {
+        for (Nonterminal nt : nonterminals)
+            for (Rule rule: nt.rules)
+                if (rule.cycleSuspected())
+                    ;//out.println(rule);
+        cycles = new Cycles();
     }
 }

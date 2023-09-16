@@ -124,11 +124,33 @@ public class GeneratorTest {
         while (generator.next()) {
             counter0++;
         }
-        generator = new Generator(TestGrammars.grammar9(), 8, RuleOrder.roShuffle, 0);
+        generator = new Generator(TestGrammars.grammar9(), 8, RuleOrder.roOriginal, 0);
         int counter1 = 0;
         while (generator.next()) {
             counter1++;
         }
         assertEquals(counter0, counter1);
+    }
+
+    @Test
+    void cycle1Test() {
+        Generator generator = new Generator(TestGrammars.cycle1(), 5, RuleOrder.roOriginal);
+        int counter0 = 0;
+        while (generator.next()) {
+            ;//out.println(generator.string() + " " + generator.parenString());
+            counter0++;
+        }
+        //out.println(counter0);
+    }
+
+    @Test
+    void cycle2Test() {
+        Generator generator = new Generator(TestGrammars.cycle2(), 5, RuleOrder.roOriginal);
+        int counter0 = 0;
+        while (generator.next()) {
+            ;//out.println(generator.string() + " " + generator.parenString());
+            counter0++;
+        }
+        //out.println(counter0);
     }
 }
