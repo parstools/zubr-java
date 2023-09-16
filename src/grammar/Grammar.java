@@ -87,6 +87,13 @@ public class Grammar implements Cloneable {
         }
         computeMinLen();
         checkMinLen();
+        computeNonNullableCount();
+    }
+
+    private void computeNonNullableCount() {
+        for (Nonterminal nt : nonterminals)
+            for (Rule rule: nt.rules)
+                rule.computeNonNullableCount();
     }
 
     private void checkMinLen() {
