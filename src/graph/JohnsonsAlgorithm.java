@@ -12,7 +12,7 @@ public class JohnsonsAlgorithm {
 
     private static List<List<VertexEdge>> allCycles;
 
-    private static void calculateZeroCycles(DG graph) {
+    private static void calculateUnitaryCycles(DG graph) {
         for (DG.Vertex vertex: graph.getVertices()) {
             for (DG.Edge edge : vertex.getEdges()) {
                 if (edge.getFrom() == edge.getTo()) {
@@ -36,7 +36,7 @@ public class JohnsonsAlgorithm {
     public static List<List<VertexEdge>> calculateCycles(DG graph) {
         // Initialize arrays and calculate Tarjans algo
         setup(graph);
-        calculateZeroCycles(graph);
+        calculateUnitaryCycles(graph);
         // Always start with vertex 0
         VertexEdge startVertex = new VertexEdge(0,-1);
 
