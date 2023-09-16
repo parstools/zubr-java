@@ -124,6 +124,18 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
+    public static Grammar cycle1and2() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> A");
+        lines.add("B -> B");
+        lines.add("A -> B");
+        lines.add("A -> a");
+        lines.add("A -> c B");
+        lines.add("B -> A");
+        lines.add("B -> b");
+        return new Grammar(lines);
+    }
+
     public static Grammar cycle3() {
         List<String> lines = new ArrayList<>();
         lines.add("A -> B");
@@ -239,4 +251,6 @@ public class TestGrammars {
         lines.add("F ->");
         return new Grammar(lines);
     }
+
+
 }

@@ -44,7 +44,6 @@ public class Rule extends ArrayList<Symbol> {
         this.grammar = grammar;
         this.owner = owner;
         globalIndex = grammar.globalRuleCounter;
-        grammar.globalRuleCounter++;
     }
 
     public void parse(String input) {

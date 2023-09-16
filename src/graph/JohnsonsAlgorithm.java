@@ -17,7 +17,8 @@ public class JohnsonsAlgorithm {
             for (DG.Edge edge : vertex.getEdges()) {
                 if (edge.getFrom() == edge.getTo()) {
                     List<VertexEdge> cycle = new ArrayList<>();
-                    cycle.add(new VertexEdge(edge.getFrom(), edge.getLabel()));
+                    cycle.add(new VertexEdge(edge.getFrom(), -1));
+                    cycle.add(new VertexEdge(edge.getTo(), edge.getLabel()));
                     allCycles.add(cycle);
                 }
             }
@@ -76,7 +77,8 @@ public class JohnsonsAlgorithm {
                         cycle.set(i, new VertexEdge(subGraph.getLabel(ith.getN()), ith.getEdge()));
                     }
                 }
-                allCycles.add(cycle);
+                if (cycle.size()>=3)
+                    allCycles.add(cycle); //sometimes add , sometimes no, for short cycles
                 foundCycle = true;
             } else if (!blockedSet.contains(neighbour.getN())) {
                 boolean gotCycle = calculateCyclesSub(subGraph, startVertex, neighbour);

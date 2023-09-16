@@ -30,19 +30,19 @@ public class JohnsonTest {
     }
 
     @Test
-    void cycle1empty1() {
+    void cycle1a() {
         DG graph = new DG(3);
         graph.addEdge(0,0,3);
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
-        assertEquals("[[[0,3]]]",johnsonResult.toString());
+        assertEquals("[[[0,-1], [0,3]]]",johnsonResult.toString());
     }
 
     @Test
-    void cycle1empty2() {
+    void cycle1b() {
         DG graph = new DG(3);
         graph.addEdge(0,0,3);
         graph.addEdge(0,0,5);
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
-        assertEquals("[[[0,3]], [[0,5]]]",johnsonResult.toString());
+        assertEquals("[[[0,-1], [0,3]], [[0,-1], [0,5]]]",johnsonResult.toString());
     }
 }

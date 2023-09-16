@@ -80,7 +80,6 @@ public class Main {
                 int limit = 100 * 1000;
                 for (String line : gramLines)
                     out.println(line);
-                out.println("---");
                 for (int maxLen = 1; maxLen <= 64; maxLen++) {
                     Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
                     int nc = 0;

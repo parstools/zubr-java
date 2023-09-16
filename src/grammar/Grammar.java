@@ -18,6 +18,11 @@ public class Grammar implements Cloneable {
     List<String> tNames = new ArrayList<>();
 
     int globalRuleCounter = 0;
+    List<Rule> globalRules = new ArrayList<>();
+
+    Rule getGlobalRule(int globalIndex) {
+        return globalRules.get(globalIndex);
+    }
 
     public String getTerminalName(int t) {
         if (t==-1)
@@ -87,6 +92,8 @@ public class Grammar implements Cloneable {
             String ruleString = line.substring(n+2).trim();
             Nonterminal nt = nonterminals.get(ntIndex);
             Rule rule = new Rule(this, nt);
+            globalRules.add(rule);
+            globalRuleCounter++;
             rule.parse(ruleString);
             nt.addRule(rule);
         }
@@ -196,13 +203,10 @@ public class Grammar implements Cloneable {
         for (Nonterminal nt : nonterminals)
             for (Rule rule: nt.rules)
                 if (rule.cycleSuspected()) {
-                    out.println(rule);
                     for (Symbol symbol : rule)
                         graph.addEdge(nt.index, symbol.index, rule.globalIndex);
                 }
-        graph.display();
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
-        cycles = new Cycles();
-        out.println("-----------------");
+        cycles = new Cycles(this, johnsonResult);
     }
 }
