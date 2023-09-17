@@ -65,10 +65,10 @@ public class SetContainer {
             for (int i = 0; i < grammar.nonterminals.size(); i++) {
                 SequenceSet sset = new SequenceSet();
                 generator.collectFirst(i, k, sset);
-                firstSets.get(i).addAllSSeq(sset);
+                firstSets.get(i).addAllSSeqDone(sset);
                 sset = new SequenceSet();
                 generator.collectFollow(i, k, sset);
-                followSets.get(i).addAllSSeq(sset);
+                followSets.get(i).addAllSSeqDone(sset);
             }
             if (counter >= nextLimit)
                 break;
@@ -92,19 +92,19 @@ public class SetContainer {
             TokenSet first = new TokenSet(grammar, 1);
             if (nullable) {
                 Sequence seq = new Sequence(grammar, "");
-                first.addSeq(seq);
+                first.addSeqDone(seq);
             }
 
             String[] parts2 = parts[2].split(", ");
             for (String part : parts2) {
                 Sequence seq = new Sequence(grammar, part);
-                first.addSeq(seq);
+                first.addSeqDone(seq);
             }
             TokenSet follow = new TokenSet(grammar, 1);
             String[] parts3 = parts[3].split(", ");
             for (String part : parts3) {
                 Sequence seq = new Sequence(grammar, part);
-                follow.addSeq(seq);
+                follow.addSeqDone(seq);
             }
             firstSets.add(first);
             followSets.add(follow);
@@ -128,7 +128,7 @@ public class SetContainer {
             if (symbol.terminal) {
                 isEpsilon = false;
                 Sequence seq = new Sequence(grammar, symbol);
-                if (outSet.addSeq(seq))
+                if (outSet.addSeqDone(seq))
                     changed = true;
                 break;
             } else {
@@ -142,7 +142,7 @@ public class SetContainer {
             }
         }
         if (isEpsilon) {
-            if (outSet.addEpsilon())
+            if (outSet.addEpsilonDone())
                 changed = true;
         }
         return changed;
@@ -150,21 +150,27 @@ public class SetContainer {
 
     boolean addFirstOfRuleK(TokenSet outSet, int k, Rule rule, int start) {
         TokenSet tempSet = new TokenSet(grammar, k);
-        tempSet.addEpsilon();
+        tempSet.addEpsilonBuild();
+        boolean canFinalize = true;
         for (int i = start; i < rule.size(); i++) {
             Symbol symbol = rule.get(i);
             if (symbol.terminal) {
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                if (!firstY.hasLen(Math.min(grammar.getNT(symbol.index).minLen, k - tempSet.minLen()))) {
+                if (firstY.isEmpty()) {
+                    canFinalize = false;
                     break;
                 }
                 tempSet.concatPrefixes(firstY);
             }
-            if (!tempSet.concatenable()) break;
+            if (tempSet.isEmptyBuild()) break;
         }
+        if (canFinalize)
+            tempSet.done();
         boolean changed = outSet.unionWith(tempSet);//at start tempSet) has epislon, but vcan be replaced by sequence
+        if (!canFinalize)
+            changed = true;
         return changed;
     }
 
@@ -203,21 +209,22 @@ public class SetContainer {
 
     public void makeFirstSetsK(int k) {
         boolean changed;
-        do {
+        // do {
             changed = false;
             for (int i = grammar.nonterminals.size() - 1; i >= 0; i--) {
                 Nonterminal X = grammar.getNT(i);
+                out.println(X);
                 for (int j = X.ruleCount() - 1; j >= 0; j--) {
                     Rule rule = X.rules.get(j);
                     boolean retChanged = addFirstOfRuleK(firstSetForIndex(i), k, rule, 0);
                     if (retChanged) changed = true;
                 }
             }
-        } while (changed);
+       // } while (changed);
     }
 
     public void makeFollowSets1() {
-        followSetForIndex(0).addSeq(new Sequence(grammar, "$"));
+        followSetForIndex(0).addSeqDone(new Sequence(grammar, "$"));
         boolean changed;
         do {
             changed = false;
@@ -244,7 +251,7 @@ public class SetContainer {
     }
 
     public void makeFollowSetsK() {
-        followSetForIndex(0).addSeq(new Sequence(grammar, "$"));
+        followSetForIndex(0).addSeqDone(new Sequence(grammar, "$"));
         boolean changed;
         do {
             changed = false;

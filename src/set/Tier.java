@@ -29,6 +29,13 @@ public class Tier {
         this.grammar = grammar;
     }
 
+    public Tier clone() {
+        Tier newTier = new Tier(grammar, len);
+        if (trie!=null)
+            newTier.trie = trie.clone();
+        return newTier;
+    }
+
     boolean addSeq(Sequence seq) {
         boolean modified = false;
         if (trie == null) {

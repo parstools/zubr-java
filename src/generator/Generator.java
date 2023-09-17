@@ -1,15 +1,11 @@
 package generator;
 
 import grammar.Grammar;
-import grammar.Nonterminal;
-import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
 import set.TokenSet;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
@@ -69,7 +65,7 @@ public class Generator {
         SequenceSet sset = new SequenceSet();
         root.collectFirst(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
-        result.addAllSSeq(sset);
+        result.addAllSSeqDone(sset);
         return result;
     }
 
@@ -84,7 +80,7 @@ public class Generator {
         SequenceSet sset = new SequenceSet();
         collectFollow(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
-        result.addAllSSeq(sset);
+        result.addAllSSeqDone(sset);
         return result;
     }
 

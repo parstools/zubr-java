@@ -202,7 +202,7 @@ public class CollectTest {
 
         assertEquals("{eps ac aab}", firstS.toString());
         assertEquals("{c aba}", firstA.toString());
-        assertEquals("{$ aba c$}", followS.toString());
+        assertEquals("{$ c$ aba}", followS.toString());
         assertEquals("{$}", followA.toString());
     }
 }

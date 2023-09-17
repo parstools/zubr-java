@@ -66,7 +66,7 @@ public class Trie {
         return h.hash();
     }
 
-    public Object clone() {
+    public Trie clone() {
         Trie newTrie = new Trie(grammar);
         Set<Integer> intSet = map.keySet();
         Iterator<Integer> iter = intSet.iterator();
