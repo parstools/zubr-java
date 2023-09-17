@@ -129,7 +129,7 @@ public class SetContainer {
                     changed = true;
                 break;
             } else {
-                TokenSet firstY = setForSymbol(symbol);
+                TokenSet firstY = firstSetForSymbol(symbol);
                 if (outSet.addTier(firstY.tiers.get(1)))
                     changed = true;
                 if (!firstY.hasEpsilon()) {
@@ -144,7 +144,8 @@ public class SetContainer {
         }
     }
 
-    private TokenSet setForSymbol(Symbol symbol) {
-        return null;
+    private TokenSet firstSetForSymbol(Symbol symbol) {
+        assert (!symbol.terminal);
+        return firstSets.get(symbol.index);
     }
 }
