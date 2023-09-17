@@ -34,4 +34,17 @@ public class SetTest {
         assertFalse(changed);
         assertEquals("{a b c}", set1.toString());
     }
+
+    @Test
+    void concatPrefixes() {
+        Grammar grammar = TestGrammars.testFirstFollow();
+        TokenSet set1 = new TokenSet(grammar, 2);
+        set1.addSeq(new Sequence(grammar, ""));
+        TokenSet set2 = new TokenSet(grammar, 2);
+        set2.addSeq(new Sequence(grammar, "("));
+        set2.addSeq(new Sequence(grammar, "i"));
+        assertEquals("{( i}",set2.toString());
+        set1.concatPrefixes(set2);
+        assertEquals("{( i}",set1.toString());
+    }
 }

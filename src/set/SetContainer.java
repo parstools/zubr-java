@@ -13,6 +13,8 @@ import java.util.List;
 
 import grammar.Rule;
 
+import static java.lang.System.out;
+
 public class SetContainer {
     Grammar grammar;
     List<TokenSet> firstSets = new ArrayList<>();
@@ -152,10 +154,15 @@ public class SetContainer {
         for (int i = start; i < rule.size(); i++) {
             Symbol symbol = rule.get(i);
             if (symbol.terminal) {
+                out.println("dodawanie do "+tempSet+" symbol "+symbol);
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                tempSet.concatPrefixes(firstY);
+                if (!firstY.toString().equals("{}"))
+                    out.println("konkatenacja "+tempSet+" z "+firstY);
+                if (!tempSet.concatPrefixes(firstY))
+                    if (grammar.getNT(symbol.index).minLen > 0)
+                        break;
             }
             if (!tempSet.concatenable()) break;
         }
@@ -216,11 +223,11 @@ public class SetContainer {
         boolean changed;
         do {
             changed = false;
-            for (int i = 0; i<grammar.nonterminals.size(); i++) {
+            for (int i = 0; i < grammar.nonterminals.size(); i++) {
                 Nonterminal X = grammar.getNT(i);
-                for (int j = 0; j<X.ruleCount(); j++) {
+                for (int j = 0; j < X.ruleCount(); j++) {
                     Rule rule = X.rules.get(j);
-                    for (int k=0; k<rule.size(); k++) {
+                    for (int k = 0; k < rule.size(); k++) {
                         Symbol symbol = rule.get(k);
                         if (!symbol.terminal) {
                             TokenSet tempSet = new TokenSet(grammar, 1);
@@ -243,11 +250,11 @@ public class SetContainer {
         boolean changed;
         do {
             changed = false;
-            for (int i = 0; i<grammar.nonterminals.size(); i++) {
+            for (int i = 0; i < grammar.nonterminals.size(); i++) {
                 Nonterminal X = grammar.getNT(i);
-                for (int j = 0; j<X.ruleCount(); j++) {
+                for (int j = 0; j < X.ruleCount(); j++) {
                     Rule rule = X.rules.get(j);
-                    for (int k=0; k<rule.size(); k++) {
+                    for (int k = 0; k < rule.size(); k++) {
                         Symbol symbol = rule.get(k);
                         if (!symbol.terminal) {
                             TokenSet tempSet = new TokenSet(grammar, 1);

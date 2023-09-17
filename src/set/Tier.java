@@ -20,7 +20,17 @@ public class Tier {
         return modified;
     }
 
-    static public class Trie extends TreeMap<Integer, Trie> {
+    static public class Trie {
+        private TreeMap<Integer, Trie> map = new TreeMap<>();
+
+        Trie get(int key) {
+            return map.get(key);
+        }
+
+        void put(int key, Trie value) {
+            map.put(key, value);
+        }
+
         Grammar grammar;
 
         Trie(Grammar grammar) {
@@ -28,7 +38,7 @@ public class Tier {
         }
 
         List<String> getSuffixes() {
-            Set<Integer> intSet = this.keySet();
+            Set<Integer> intSet = map.keySet();
             Iterator<Integer> iter = intSet.iterator();
             List<String> list = new ArrayList<>();
             while (iter.hasNext()) {
@@ -46,8 +56,20 @@ public class Tier {
         }
 
         @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            List<String> stringList = getSuffixes();
+            for (int i = 0; i < stringList.size(); i++) {
+                if (i > 0)
+                    sb.append(" ");
+                sb.append(stringList.get(i));
+            }
+            return sb.toString();
+        }
+
+        @Override
         public int hashCode() {
-            Set<Integer> intSet = this.keySet();
+            Set<Integer> intSet = map.keySet();
             Iterator<Integer> iter = intSet.iterator();
             Hash h = new Hash();
             while (iter.hasNext()) {
@@ -60,17 +82,17 @@ public class Tier {
 
         public Object clone() {
             Trie newTrie = new Trie(grammar);
-            Set<Integer> intSet = keySet();
+            Set<Integer> intSet = map.keySet();
             Iterator<Integer> iter = intSet.iterator();
             while (iter.hasNext()) {
                 int t = iter.next();
-                newTrie.put(t, (Trie) get(t).clone());
+                newTrie.put(t, (Trie)get(t).clone());
             }
             return newTrie;
         }
 
         public void appendStrings(int index) {
-            Set<Integer> intSet = keySet();
+            Set<Integer> intSet = map.keySet();
             Iterator<Integer> iter = intSet.iterator();
             if (iter.hasNext())
                 while (iter.hasNext()) {
@@ -89,12 +111,12 @@ public class Tier {
         }
 
         public boolean unionWith(Trie trie) {
-            Set<Integer> intSet = trie.keySet();
+            Set<Integer> intSet = trie.map.keySet();
             Iterator<Integer> iter = intSet.iterator();
             boolean modified = false;
             while (iter.hasNext()) {
                 int t = iter.next();
-                if (containsKey(t)) {
+                if (map.containsKey(t)) {
                     if (get(t).unionWith(trie.get(t)))
                         modified = true;
                 } else {
@@ -109,7 +131,7 @@ public class Tier {
             assert (prefixLen >= 0);
             if (prefixLen==0) return;
             if (trie == null) return;
-            Set<Integer> intSet = trie.keySet();
+            Set<Integer> intSet = trie.map.keySet();
             for (int t : intSet) {
                 appendStrings(t);
                 concatPrefixes(prefixLen-1, get(t));
@@ -152,14 +174,7 @@ public class Tier {
             return "";
         if (len == 0)
             return "eps";
-        StringBuilder sb = new StringBuilder();
-        List<String> stringList = trie.getSuffixes();
-        for (int i = 0; i < stringList.size(); i++) {
-            if (i > 0)
-                sb.append(" ");
-            sb.append(stringList.get(i));
-        }
-        return sb.toString();
+        return trie.toString();
     }
 
     @Override

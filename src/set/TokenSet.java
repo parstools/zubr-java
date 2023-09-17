@@ -103,20 +103,28 @@ public class TokenSet {
         return false;
     }
 
-    public void concatPrefixes(TokenSet firstY) {
+    public boolean concatPrefixes(TokenSet firstY) {
+        boolean changed = false;
         for (int i = maxLen - 1; i >= 0; i--) {
             Tier.Trie trie = tiers.get(i).trie;
             if (trie != null) {
                 int maxPrefixLen = maxLen - i;
-                tiers.get(i).trie = null;
                 for (int j = 1; j <= maxLen; j++) {
-                    trie.concatPrefixes(Math.min(maxPrefixLen, j), firstY.tiers.get(j).trie);
-                    if (tiers.get(i + 1).trie == null)
-                        tiers.get(i + 1).trie = trie;
+                    Tier.Trie ytrie = firstY.tiers.get(j).trie;
+                    if (ytrie==null)
+                        continue;
+                    int prefixLen = Math.min(maxPrefixLen, j);
+                    trie.concatPrefixes(prefixLen, ytrie);
+                    tiers.get(i).trie = null;
+                    changed = true;
+                    Tier tt = tiers.get(i + prefixLen);
+                    if (tt.trie == null)
+                        tt.trie = trie;
                     else
-                        tiers.get(i + 1).trie.unionWith(trie);
+                        tt.trie.unionWith(trie);
                 }
             }
         }
+        return changed;
     }
 }
