@@ -118,7 +118,7 @@ public class SetContainer {
             printWriter.println(grammar.getNonTerminalName(i) + " " + followSets.get(i).toString());
     }
 
-    boolean addRuleFirst1(TokenSet outSet, Rule rule, int start) {
+    boolean addFirstOfRule1(TokenSet outSet, Rule rule, int start) {
         boolean isEpsilon = true;
         boolean changed = false;
         for (int i = start; i < rule.size(); i++) {
@@ -150,9 +150,18 @@ public class SetContainer {
         return firstSets.get(index);
     }
 
+    TokenSet followSetForIndex(int index) {
+        return followSets.get(index);
+    }
+
     TokenSet firstSetForSymbol(Symbol symbol) {
         assert (!symbol.terminal);
         return firstSetForIndex(symbol.index);
+    }
+
+    TokenSet followSetForSymbol(Symbol symbol) {
+        assert (!symbol.terminal);
+        return followSetForIndex(symbol.index);
     }
 
     public void makeFirstSets1() {
@@ -163,8 +172,35 @@ public class SetContainer {
                 Nonterminal X = grammar.getNT(i);
                 for (int j = X.ruleCount() - 1; j >= 0; j--) {
                     Rule rule = X.rules.get(j);
-                    boolean retChanged = addRuleFirst1(firstSetForIndex(i), rule, 0);
+                    boolean retChanged = addFirstOfRule1(firstSetForIndex(i), rule, 0);
                     if (retChanged) changed = true;
+                }
+            }
+        } while (changed);
+    }
+
+    public void makeFollowSets1() {
+        followSetForIndex(0).addSeq(new Sequence(grammar, "$"));
+        boolean changed;
+        do {
+            changed = false;
+            for (int i = 0; i<grammar.nonterminals.size(); i++) {
+                Nonterminal X = grammar.getNT(i);
+                for (int j = 0; j<X.ruleCount(); j++) {
+                    Rule rule = X.rules.get(j);
+                    for (int k=0; k<rule.size(); k++) {
+                        Symbol symbol = rule.get(k);
+                        if (!symbol.terminal) {
+                            TokenSet tmpSet = new TokenSet(grammar, 1);
+                            addFirstOfRule1(tmpSet, rule, k + 1);
+                            boolean retChanged = followSetForSymbol(symbol).addTier(tmpSet.tiers.get(1));
+                            if (retChanged) changed = true;
+                            if (tmpSet.hasEpsilon()) {
+                                retChanged = followSetForSymbol(symbol).addTier(followSetForIndex(i).tiers.get(1));
+                                if (retChanged) changed = true;
+                            }
+                        }
+                    }
                 }
             }
         } while (changed);
