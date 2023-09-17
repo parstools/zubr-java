@@ -45,6 +45,7 @@ public class TokenSetTest {
         set2.addSeqDone(new Sequence(grammar, "i"));
         assertEquals("{( i}",set2.toString());
         set1.concatPrefixes(set2);
+        set1.done();
         assertEquals("{( i}",set1.toString());
     }
 
@@ -58,6 +59,7 @@ public class TokenSetTest {
         set2.addSeqDone(new Sequence(grammar, "()"));
         assertEquals("{i ()}",set2.toString());
         set1.concatPrefixes(set2);
+        set1.done();
         assertEquals("{i ()}",set1.toString());
     }
 
@@ -70,6 +72,7 @@ public class TokenSetTest {
         TokenSet set2 = new TokenSet(grammar, 2);
         set2.addSeqDone(new Sequence(grammar, ""));
         set1.concatPrefixes(set2);
+        set1.done();
         assertEquals("{() i}",set1.toString());
     }
 

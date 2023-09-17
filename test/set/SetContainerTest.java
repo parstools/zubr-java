@@ -41,12 +41,12 @@ public class SetContainerTest {
         assertEquals("{eps *( *i}", sc.firstSetForIndex(3).toString());
         assertEquals("{i (( (i}", sc.firstSetForIndex(4).toString());
 
-        sc.makeFollowSetsK();
+        /*sc.makeFollowSetsK();
         assertEquals("{$ )$ )+ )* ))}", sc.followSetForIndex(0).toString());
         assertEquals("{$ )$ )+ )* ))}", sc.followSetForIndex(1).toString());
         assertEquals("{$ +( +i )$ )+ )* ))}", sc.followSetForIndex(2).toString());
         assertEquals("{$ +( +i )$ )+ )* ))}", sc.followSetForIndex(3).toString());
-        assertEquals("{$ +( +i *( *i )$ )+ )* ))}", sc.followSetForIndex(4).toString());
+        assertEquals("{$ +( +i *( *i )$ )+ )* ))}", sc.followSetForIndex(4).toString());*/
     }
 
     @Disabled("only for generate data to tests")

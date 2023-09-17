@@ -158,7 +158,7 @@ public class SetContainer {
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                if (firstY.isEmpty()) {
+                if (firstY.isEmptyDone()) {
                     canFinalize = false;
                     break;
                 }
@@ -209,18 +209,17 @@ public class SetContainer {
 
     public void makeFirstSetsK(int k) {
         boolean changed;
-        // do {
+        do {
             changed = false;
             for (int i = grammar.nonterminals.size() - 1; i >= 0; i--) {
                 Nonterminal X = grammar.getNT(i);
-                out.println(X);
                 for (int j = X.ruleCount() - 1; j >= 0; j--) {
                     Rule rule = X.rules.get(j);
                     boolean retChanged = addFirstOfRuleK(firstSetForIndex(i), k, rule, 0);
                     if (retChanged) changed = true;
                 }
             }
-       // } while (changed);
+       } while (changed);
     }
 
     public void makeFollowSets1() {
@@ -262,7 +261,7 @@ public class SetContainer {
                     for (int k = 0; k < rule.size(); k++) {
                         Symbol symbol = rule.get(k);
                         if (!symbol.terminal) {
-                            TokenSet tempSet = new TokenSet(grammar, 1);
+                            TokenSet tempSet = new TokenSet(grammar, k);
                             addFirstOfRule1(tempSet, rule, k + 1);
                             boolean retChanged = followSetForSymbol(symbol).unionWithoutEps(tempSet);
                             if (retChanged) changed = true;

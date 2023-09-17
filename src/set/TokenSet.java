@@ -43,6 +43,15 @@ public class TokenSet {
         return true;
     }
 
+    public boolean isEmptyDone() {
+        for (int i = 0; i <= maxLen; i++) {
+            Tier tier = tiers[1][i];
+            if (tier.trie != null)
+                return false;
+        }
+        return true;
+    }
+
     public boolean addSeqBuild(Sequence seq) {
         assert (seq.isEmpty() || seq.get(seq.size() - 1) >= 0);
         return tiers[0][seq.size()].addSeq(seq);
@@ -188,7 +197,7 @@ public class TokenSet {
                         tt.trie = cloned;
                     else
                         tt.trie.unionWith(cloned);
-                    if (target==0) {
+                    if (target == 0) {
                         tt = tiers[0][targetIndex];
                         if (tt.trie == null)
                             tt.trie = cloned.clone();
