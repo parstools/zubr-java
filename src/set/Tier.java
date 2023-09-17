@@ -8,14 +8,14 @@ import java.util.*;
 public class Tier {
     public boolean unionWith(Tier tier) {
         boolean modified = false;
-        if (tier.trie==null)
+        if (tier.trie == null)
             return false;
         if (trie == null) {
             trie = new Trie(grammar);
-            modified= true;
+            modified = true;
         }
         if (trie.unionWith(tier.trie))
-            modified= true;
+            modified = true;
         return modified;
     }
 
@@ -38,9 +38,7 @@ public class Tier {
                     list.add(tName);
                 else
                     for (String s : subList) {
-                        StringBuilder sb = new StringBuilder(tName);
-                        sb.append(s);
-                        list.add(sb.toString());
+                        list.add(tName + s);
                     }
             }
             return list;
@@ -65,7 +63,7 @@ public class Tier {
             Iterator<Integer> iter = intSet.iterator();
             while (iter.hasNext()) {
                 int t = iter.next();
-                newTrie.put(t, (Trie)get(t).clone());
+                newTrie.put(t, (Trie) get(t).clone());
             }
             return newTrie;
         }
@@ -81,7 +79,7 @@ public class Tier {
                         modified = true;
                 } else {
                     modified = true;
-                    put(t, (Trie)trie.get(t).clone());
+                    put(t, (Trie) trie.get(t).clone());
                 }
             }
             return modified;
@@ -101,7 +99,7 @@ public class Tier {
         boolean modified = false;
         if (trie == null) {
             trie = new Trie(grammar); //for first addSeq, for example epsilon empty sequence;
-            modified= true;
+            modified = true;
         }
         assert (seq.size() == len || seq.size() < len && !seq.isEmpty() && seq.get(seq.size() - 1) == -1);
         Trie prior = trie;
@@ -110,7 +108,7 @@ public class Tier {
             if (tr == null) {
                 tr = new Trie(grammar);
                 prior.put(i, tr);
-                modified= true;
+                modified = true;
             }
             prior = tr;
         }
@@ -135,7 +133,7 @@ public class Tier {
 
     @Override
     public int hashCode() {
-        if (trie==null)
+        if (trie == null)
             return 0;
         else
             return trie.hashCode();

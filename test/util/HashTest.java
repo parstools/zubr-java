@@ -2,12 +2,11 @@ package util;
 
 import org.junit.jupiter.api.Test;
 
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HashTest {
     @Test
-    void permnutations() {
+    void permutations() {
         Hash h0 = new Hash();
         h0.xor(1);
         h0.xor(2);
