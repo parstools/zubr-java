@@ -6,6 +6,19 @@ import util.Hash;
 import java.util.*;
 
 public class Tier {
+    public boolean unionWith(Tier tier) {
+        boolean modified = false;
+        if (tier.trie==null)
+            return false;
+        if (trie == null) {
+            trie = new Trie(grammar);
+            modified= true;
+        }
+        if (trie.unionWith(tier.trie))
+            modified= true;
+        return modified;
+    }
+
     static public class Trie extends TreeMap<Integer, Trie> {
         Grammar grammar;
 
@@ -45,6 +58,34 @@ public class Tier {
             }
             return h.hash();
         }
+
+        public Object clone() {
+            Trie newTrie = new Trie(grammar);
+            Set<Integer> intSet = keySet();
+            Iterator<Integer> iter = intSet.iterator();
+            while (iter.hasNext()) {
+                int t = iter.next();
+                newTrie.put(t, (Trie)get(t).clone());
+            }
+            return newTrie;
+        }
+
+        public boolean unionWith(Trie trie) {
+            Set<Integer> intSet = trie.keySet();
+            Iterator<Integer> iter = intSet.iterator();
+            boolean modified = false;
+            while (iter.hasNext()) {
+                int t = iter.next();
+                if (containsKey(t)) {
+                    if (get(t).unionWith(trie.get(t)))
+                        modified = true;
+                } else {
+                    modified = true;
+                    put(t, (Trie)trie.get(t).clone());
+                }
+            }
+            return modified;
+        }
     }
 
     int len;
@@ -56,9 +97,12 @@ public class Tier {
         this.grammar = grammar;
     }
 
-    void addSeq(Sequence seq) {
-        if (trie == null)
+    boolean addSeq(Sequence seq) {
+        boolean modified = false;
+        if (trie == null) {
             trie = new Trie(grammar); //for first addSeq, for example epsilon empty sequence;
+            modified= true;
+        }
         assert (seq.size() == len || seq.size() < len && !seq.isEmpty() && seq.get(seq.size() - 1) == -1);
         Trie prior = trie;
         for (Integer i : seq) {
@@ -66,9 +110,11 @@ public class Tier {
             if (tr == null) {
                 tr = new Trie(grammar);
                 prior.put(i, tr);
+                modified= true;
             }
             prior = tr;
         }
+        return modified;
     }
 
     @Override

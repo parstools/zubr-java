@@ -1,6 +1,7 @@
 package set;
 
 import grammar.Grammar;
+import grammar.Symbol;
 
 import java.util.ArrayList;
 
@@ -10,9 +11,15 @@ public class Sequence extends ArrayList<Integer> {
         this.grammar = grammar;
     }
 
+    public Sequence(Grammar grammar, Symbol symbol) {
+        this.grammar = grammar;
+        assert (symbol.terminal);
+        add(symbol.index);
+    }
+
     public Sequence(Grammar grammar, String string) {
         this.grammar = grammar;
-        for (int i=0; i<string.length(); i++) {
+        for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
             int t = grammar.findTerminal(Character.toString(c));
             add(t);
@@ -25,7 +32,7 @@ public class Sequence extends ArrayList<Integer> {
             return "eps";
         else {
             StringBuilder sb = new StringBuilder();
-            for (int k: this)
+            for (int k : this)
                 sb.append(grammar.getTerminalName(k));
             return sb.toString();
         }

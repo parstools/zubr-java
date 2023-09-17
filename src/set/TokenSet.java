@@ -17,13 +17,13 @@ public class TokenSet {
             tiers.add(new Tier(grammar, i));
     }
 
-    public void addSeq(Sequence seq) {
+    public boolean addSeq(Sequence seq) {
         /*treat sequence ending with -1 ($) as alwaays ful sized
          * because will never expand to full size*/
         if (!seq.isEmpty() && seq.get(seq.size() - 1) == -1)
-            tiers.get(maxLen).addSeq(seq);
+            return tiers.get(maxLen).addSeq(seq);
         else
-            tiers.get(seq.size()).addSeq(seq);
+            return tiers.get(seq.size()).addSeq(seq);
     }
 
     public void addAllSSeq(SequenceSet sseq) {
@@ -58,5 +58,17 @@ public class TokenSet {
         for (Tier t: tiers)
             h.add(t.hashCode());
         return h.hash();
+    }
+
+    public boolean addEpsilon() {
+        return tiers.get(0).addSeq(new Sequence(grammar));
+    }
+
+    public boolean hasEpsilon() {
+        return tiers.get(0).trie != null;
+    }
+
+    public boolean addTier(Tier tier) {
+        return tiers.get(tier.len).unionWith(tier);
     }
 }
