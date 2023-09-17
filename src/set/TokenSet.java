@@ -84,7 +84,7 @@ public class TokenSet {
     public void appendStrings(Symbol symbol) {
         assert (maxLen > 0);
         for (int i = maxLen; i >= 1; i--) {
-            Tier.Trie trie = tiers.get(i - 1).trie;
+            Trie trie = tiers.get(i - 1).trie;
             if (trie != null) {
                 tiers.get(i - 1).trie = null;
                 trie.appendStrings(symbol);
@@ -106,11 +106,11 @@ public class TokenSet {
     public boolean concatPrefixes(TokenSet firstY) {
         boolean changed = false;
         for (int i = maxLen - 1; i >= 0; i--) {
-            Tier.Trie trie = tiers.get(i).trie;
+            Trie trie = tiers.get(i).trie;
             if (trie != null) {
                 int maxPrefixLen = maxLen - i;
                 for (int j = 1; j <= maxLen; j++) {
-                    Tier.Trie ytrie = firstY.tiers.get(j).trie;
+                    Trie ytrie = firstY.tiers.get(j).trie;
                     if (ytrie==null)
                         continue;
                     int prefixLen = Math.min(maxPrefixLen, j);
