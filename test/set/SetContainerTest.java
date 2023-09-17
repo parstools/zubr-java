@@ -2,6 +2,7 @@ package set;
 
 import grammar.Grammar;
 import grammar.TestGrammars;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.System.out;
@@ -48,6 +49,7 @@ public class SetContainerTest {
         assertEquals("{$ +( +i *( *i )$ )+ )* ))}", sc.followSetForIndex(4).toString());
     }
 
+    @Disabled("only for generate data to tests")
     @Test
     void FirstFollowK_2_gen() {
         Grammar g = TestGrammars.testFirstFollow();
