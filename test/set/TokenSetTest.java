@@ -36,7 +36,7 @@ public class TokenSetTest {
     }
 
     @Test
-    void concatPrefixes() {
+    void concatPrefixes1() {
         Grammar grammar = TestGrammars.testFirstFollow();
         TokenSet set1 = new TokenSet(grammar, 2);
         set1.addSeq(new Sequence(grammar, ""));
@@ -46,5 +46,18 @@ public class TokenSetTest {
         assertEquals("{( i}",set2.toString());
         set1.concatPrefixes(set2);
         assertEquals("{( i}",set1.toString());
+    }
+
+    @Test
+    void concatPrefixes2() {
+        Grammar grammar = TestGrammars.testFirstFollow();
+        TokenSet set1 = new TokenSet(grammar, 2);
+        set1.addSeq(new Sequence(grammar, ""));
+        TokenSet set2 = new TokenSet(grammar, 2);
+        set2.addSeq(new Sequence(grammar, "i"));
+        set2.addSeq(new Sequence(grammar, "()"));
+        assertEquals("{i ()}",set2.toString());
+        set1.concatPrefixes(set2);
+        assertEquals("{i ()}",set1.toString());
     }
 }

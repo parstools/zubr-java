@@ -154,15 +154,13 @@ public class SetContainer {
         for (int i = start; i < rule.size(); i++) {
             Symbol symbol = rule.get(i);
             if (symbol.terminal) {
-                out.println("dodawanie do "+tempSet+" symbol "+symbol);
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                if (!firstY.toString().equals("{}"))
-                    out.println("konkatenacja "+tempSet+" z "+firstY);
-                if (!tempSet.concatPrefixes(firstY))
-                    if (grammar.getNT(symbol.index).minLen > 0)
-                        break;
+                if (!firstY.hasLen(Math.min(grammar.getNT(symbol.index).minLen, k - tempSet.minLen()))) {
+                    break;
+                }
+                tempSet.concatPrefixes(firstY);
             }
             if (!tempSet.concatenable()) break;
         }

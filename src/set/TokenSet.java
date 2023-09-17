@@ -18,6 +18,37 @@ public class TokenSet {
             tiers.add(new Tier(grammar, i));
     }
 
+    public boolean isEmpty() {
+        for (int i = 0; i<=maxLen; i++) {
+            Tier tier = tiers.get(i);
+            if (tier.trie != null)
+                return false;
+        }
+        return true;
+    }
+
+    boolean hasLen(int requiredLen) {
+        for (int i = maxLen; i >= requiredLen; i--) {
+            Tier tier = tiers.get(i);
+            if (tier.trie != null) {
+                assert(i==0 || !tier.trie.map.isEmpty());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    int minLen() {
+        for (int i = 0; i<=maxLen; i++) {
+            Tier tier = tiers.get(i);
+            if (tier.trie != null) {
+                assert(i==0 || !tier.trie.map.isEmpty());
+                return i;
+            }
+        }
+        return maxLen;
+    }
+
     public boolean addSeq(Sequence seq) {
         /*treat sequence ending with -1 ($) as alwaays ful sized
          * because will never expand to full size*/
@@ -111,17 +142,18 @@ public class TokenSet {
                 int maxPrefixLen = maxLen - i;
                 for (int j = 1; j <= maxLen; j++) {
                     Trie ytrie = firstY.tiers.get(j).trie;
-                    if (ytrie==null)
+                    if (ytrie == null)
                         continue;
                     int prefixLen = Math.min(maxPrefixLen, j);
-                    trie.concatPrefixes(prefixLen, ytrie);
+                    Trie cloned = (Trie) trie.clone();
+                    cloned.concatPrefixes(prefixLen, ytrie);
                     tiers.get(i).trie = null;
                     changed = true;
                     Tier tt = tiers.get(i + prefixLen);
                     if (tt.trie == null)
-                        tt.trie = trie;
+                        tt.trie = cloned;
                     else
-                        tt.trie.unionWith(trie);
+                        tt.trie.unionWith(cloned);
                 }
             }
         }

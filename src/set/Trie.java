@@ -7,7 +7,7 @@ import util.Hash;
 import java.util.*;
 
 public class Trie {
-    private TreeMap<Integer, Trie> map = new TreeMap<>();
+    TreeMap<Integer, Trie> map = new TreeMap<>();
 
     Trie get(int key) {
         return map.get(key);
@@ -72,7 +72,20 @@ public class Trie {
         Iterator<Integer> iter = intSet.iterator();
         while (iter.hasNext()) {
             int t = iter.next();
-            newTrie.put(t, (Trie)get(t).clone());
+            newTrie.put(t, (Trie) get(t).clone());
+        }
+        return newTrie;
+    }
+
+    Trie clone(int prefixLen) {
+        Trie newTrie = new Trie(grammar);
+        if (prefixLen > 0) {
+            Set<Integer> intSet = map.keySet();
+            Iterator<Integer> iter = intSet.iterator();
+            while (iter.hasNext()) {
+                int t = iter.next();
+                newTrie.put(t, get(t).clone(prefixLen - 1));
+            }
         }
         return newTrie;
     }
@@ -115,12 +128,27 @@ public class Trie {
 
     public void concatPrefixes(int prefixLen, Trie trie) {
         assert (prefixLen >= 0);
-        if (prefixLen==0) return;
+        if (prefixLen == 0) return;
         if (trie == null) return;
-        Set<Integer> intSet = trie.map.keySet();
-        for (int t : intSet) {
-            appendStrings(t);
-            concatPrefixes(prefixLen-1, get(t));
+        if (map.isEmpty()) {
+            Set<Integer> intSet = trie.map.keySet();
+            for (int t : intSet) {
+                map.put(t, (Trie) trie.get(t).clone());
+            }
+        } else {
+            appendPrefixes(prefixLen, trie);
+        }
+    }
+
+    private void appendPrefixes(int prefixLen, Trie trie) {
+        Set<Integer> intSet1 = map.keySet();
+        assert (!intSet1.isEmpty());
+        for (int t1 : intSet1) {
+            Trie sub = get(t1);
+            if (sub.map.isEmpty())
+                put(t1, trie.clone(prefixLen));
+            else
+                sub.appendPrefixes(prefixLen - 1, trie);
         }
     }
 }

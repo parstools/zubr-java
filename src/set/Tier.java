@@ -32,7 +32,7 @@ public class Tier {
     boolean addSeq(Sequence seq) {
         boolean modified = false;
         if (trie == null) {
-            trie = new Trie(grammar); //for first addSeq, for example epsilon empty sequence;
+            trie = new Trie(grammar);
             modified = true;
         }
         assert (seq.size() == len || seq.size() < len && !seq.isEmpty() && seq.get(seq.size() - 1) == -1);
