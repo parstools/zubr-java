@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SetTest {
+public class TokenSetTest {
     @Test
     void addSeq() {
         Grammar grammar = TestGrammars.grammar2();
