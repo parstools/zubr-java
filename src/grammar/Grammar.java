@@ -25,7 +25,7 @@ public class Grammar implements Cloneable {
     }
 
     public String getTerminalName(int t) {
-        if (t==-1)
+        if (t == -1)
             return "$"; //end of stream
         else
             return tNames.get(t);
@@ -74,6 +74,8 @@ public class Grammar implements Cloneable {
 
     String parseNTname(String line) {
         int n = line.indexOf("->");
+        if (n < 0)
+            throw new RuntimeException("not found -> in grammar in line " + line);
         return line.substring(0, n).trim();
     }
 
@@ -89,7 +91,7 @@ public class Grammar implements Cloneable {
             String ntName = parseNTname(line);
             int ntIndex = ntNamesToInt.get(ntName);
             int n = line.indexOf("->");
-            String ruleString = line.substring(n+2).trim();
+            String ruleString = line.substring(n + 2).trim();
             Nonterminal nt = nonterminals.get(ntIndex);
             Rule rule = new Rule(this, nt);
             globalRules.add(rule);
@@ -105,7 +107,7 @@ public class Grammar implements Cloneable {
 
     private void computeNonNullableCount() {
         for (Nonterminal nt : nonterminals)
-            for (Rule rule: nt.rules)
+            for (Rule rule : nt.rules)
                 rule.computeNonNullableCount();
     }
 
@@ -114,7 +116,7 @@ public class Grammar implements Cloneable {
         for (Nonterminal nt : nonterminals) {
             if (nt.minLen < 0)
                 throw new NoMinLenGrammarException("not computed minLen for " + getNonTerminalName(index));
-            for (Rule ruleInfo: nt.rules)
+            for (Rule ruleInfo : nt.rules)
                 if (ruleInfo.minLen < 0)
                     throw new NoMinLenGrammarException("not computed minLen for " + ruleInfo.toString());
             index++;
@@ -167,7 +169,7 @@ public class Grammar implements Cloneable {
     @Override
     public int hashCode() {
         Hash h = new Hash();
-        for (int i=0; i<nonterminals.size(); i++) {
+        for (int i = 0; i < nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
             h.add(i);
             h.add(nt.hashCode());
@@ -177,9 +179,9 @@ public class Grammar implements Cloneable {
 
     public List<String> lines() {
         List<String> lines = new ArrayList<>();
-        for (int i=0; i<nonterminals.size(); i++) {
+        for (int i = 0; i < nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
-            for (Rule rule: nt.rules)
+            for (Rule rule : nt.rules)
                 lines.add(rule.toString());
         }
         return lines;
@@ -188,7 +190,7 @@ public class Grammar implements Cloneable {
     public Object clone() {
         Grammar newGrammar = new Grammar();
         newGrammar.nonterminals = new ArrayList<>();
-        for (Nonterminal nt: nonterminals) {
+        for (Nonterminal nt : nonterminals) {
             Nonterminal ntCloned = (Nonterminal) nt.clone();
             ntCloned.grammar = newGrammar;
             newGrammar.nonterminals.add(ntCloned);
@@ -201,7 +203,7 @@ public class Grammar implements Cloneable {
     void detectCycles() {
         DG graph = new DG(nonterminals.size());
         for (Nonterminal nt : nonterminals)
-            for (Rule rule: nt.rules)
+            for (Rule rule : nt.rules)
                 if (rule.cycleSuspected()) {
                     for (Symbol symbol : rule)
                         graph.addEdge(nt.index, symbol.index, rule.globalIndex);

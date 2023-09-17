@@ -3,6 +3,7 @@ package set;
 import generator.Generator;
 import generator.RuleOrder;
 import grammar.Grammar;
+import grammar.Nonterminal;
 import grammar.Symbol;
 import util.Hash;
 
@@ -117,7 +118,7 @@ public class SetContainer {
             printWriter.println(grammar.getNonTerminalName(i) + " " + followSets.get(i).toString());
     }
 
-    void addRuleFirst1(TokenSet outSet, Rule rule, int start) {
+    boolean addRuleFirst1(TokenSet outSet, Rule rule, int start) {
         boolean isEpsilon = true;
         boolean changed = false;
         for (int i = start; i < rule.size(); i++) {
@@ -142,10 +143,30 @@ public class SetContainer {
             if (outSet.addEpsilon())
                 changed = true;
         }
+        return changed;
     }
 
-    private TokenSet firstSetForSymbol(Symbol symbol) {
+    TokenSet firstSetForIndex(int index) {
+        return firstSets.get(index);
+    }
+
+    TokenSet firstSetForSymbol(Symbol symbol) {
         assert (!symbol.terminal);
-        return firstSets.get(symbol.index);
+        return firstSetForIndex(symbol.index);
+    }
+
+    public void makeFirstSets1() {
+        boolean changed;
+        do {
+            changed = false;
+            for (int i = grammar.nonterminals.size() - 1; i >= 0; i--) {
+                Nonterminal X = grammar.getNT(i);
+                for (int j = X.ruleCount() - 1; j >= 0; j--) {
+                    Rule rule = X.rules.get(j);
+                    boolean retChanged = addRuleFirst1(firstSetForIndex(i), rule, 0);
+                    if (retChanged) changed = true;
+                }
+            }
+        } while (changed);
     }
 }

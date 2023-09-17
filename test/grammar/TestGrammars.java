@@ -252,5 +252,16 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-
+    public static Grammar testFirstFollow() {
+        List<String> lines = new ArrayList<>();
+        lines.add("E -> T E'");
+        lines.add("E' -> + T E'");
+        lines.add("E' ->");
+        lines.add("T -> F T'");
+        lines.add("T' -> * F T'");
+        lines.add("T' ->");
+        lines.add("F -> ( E )");
+        lines.add("F -> i");
+        return new Grammar(lines);
+    }
 }
