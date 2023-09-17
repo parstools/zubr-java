@@ -28,9 +28,9 @@ public class TokenSetTest {
         TokenSet set2 = new TokenSet(grammar, 1);
         set2.addSeq(new Sequence(grammar, "b"));
         set2.addSeq(new Sequence(grammar, "c"));
-        boolean changed = set1.addTier(set2.tiers.get(1));
+        boolean changed = set1.unionWithoutEps(set2);
         assertTrue(changed);
-        changed = set1.addTier(set2.tiers.get(1));
+        changed = set1.unionWithoutEps(set2);
         assertFalse(changed);
         assertEquals("{a b c}", set1.toString());
     }

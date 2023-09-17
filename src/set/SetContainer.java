@@ -133,7 +133,7 @@ public class SetContainer {
                 break;
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                if (outSet.addTier(firstY.tiers.get(1)))
+                if (outSet.unionWithoutEps(firstY))
                     changed = true;
                 if (!firstY.hasEpsilon()) {
                     isEpsilon = false;
@@ -230,10 +230,10 @@ public class SetContainer {
                         if (!symbol.terminal) {
                             TokenSet tempSet = new TokenSet(grammar, 1);
                             addFirstOfRule1(tempSet, rule, k + 1);
-                            boolean retChanged = followSetForSymbol(symbol).addTier(tempSet.tiers.get(1));
+                            boolean retChanged = followSetForSymbol(symbol).unionWithoutEps(tempSet);
                             if (retChanged) changed = true;
                             if (tempSet.hasEpsilon()) {
-                                retChanged = followSetForSymbol(symbol).addTier(followSetForIndex(i).tiers.get(1));
+                                retChanged = followSetForSymbol(symbol).unionWithoutEps(followSetForIndex(i));
                                 if (retChanged) changed = true;
                             }
                         }
@@ -257,10 +257,10 @@ public class SetContainer {
                         if (!symbol.terminal) {
                             TokenSet tempSet = new TokenSet(grammar, 1);
                             addFirstOfRule1(tempSet, rule, k + 1);
-                            boolean retChanged = followSetForSymbol(symbol).addTier(tempSet.tiers.get(1));
+                            boolean retChanged = followSetForSymbol(symbol).unionWithoutEps(tempSet);
                             if (retChanged) changed = true;
                             if (tempSet.hasEpsilon()) {
-                                retChanged = followSetForSymbol(symbol).addTier(followSetForIndex(i).tiers.get(1));
+                                retChanged = followSetForSymbol(symbol).unionWithoutEps(followSetForIndex(i));
                                 if (retChanged) changed = true;
                             }
                         }
