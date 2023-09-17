@@ -135,6 +135,7 @@ public class TokenSet {
     }
 
     public boolean concatPrefixes(TokenSet firstY) {
+        assert (!firstY.isEmpty());
         boolean changed = false;
         for (int i = maxLen - 1; i >= 0; i--) {
             Trie trie = tiers.get(i).trie;
