@@ -1,6 +1,7 @@
 package set;
 
 import grammar.Grammar;
+import grammar.Symbol;
 import util.Hash;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class TokenSet {
     @Override
     public int hashCode() {
         Hash h = new Hash();
-        for (Tier t: tiers)
+        for (Tier t : tiers)
             h.add(t.hashCode());
         return h.hash();
     }
@@ -70,5 +71,52 @@ public class TokenSet {
 
     public boolean addTier(Tier tier) {
         return tiers.get(tier.len).unionWith(tier);
+    }
+
+    public boolean unionWith(TokenSet tokenSet) {
+        boolean changed = false;
+        for (Tier tier : tokenSet.tiers)
+            if (addTier(tier))
+                changed = true;
+        return changed;
+    }
+
+    public void appendStrings(Symbol symbol) {
+        assert (maxLen > 0);
+        for (int i = maxLen; i >= 1; i--) {
+            Tier.Trie trie = tiers.get(i - 1).trie;
+            if (trie != null) {
+                tiers.get(i - 1).trie = null;
+                trie.appendStrings(symbol);
+                if (tiers.get(i).trie == null)
+                    tiers.get(i).trie = trie;
+                else
+                    tiers.get(i).trie.unionWith(trie);
+            }
+        }
+    }
+
+    public boolean concatenable() {
+        for (int i = 0; i < maxLen; i++)
+            if (tiers.get(i).trie != null)
+                return true;
+        return false;
+    }
+
+    public void concatPrefixes(TokenSet firstY) {
+        for (int i = maxLen - 1; i >= 0; i--) {
+            Tier.Trie trie = tiers.get(i).trie;
+            if (trie != null) {
+                int maxPrefixLen = maxLen - i;
+                tiers.get(i).trie = null;
+                for (int j = 1; j <= maxLen; j++) {
+                    trie.concatPrefixes(Math.min(maxPrefixLen, j), firstY.tiers.get(j).trie);
+                    if (tiers.get(i + 1).trie == null)
+                        tiers.get(i + 1).trie = trie;
+                    else
+                        tiers.get(i + 1).trie.unionWith(trie);
+                }
+            }
+        }
     }
 }

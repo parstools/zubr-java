@@ -146,6 +146,23 @@ public class SetContainer {
         return changed;
     }
 
+    boolean addFirstOfRuleK(TokenSet outSet, int k, Rule rule, int start) {
+        TokenSet tempSet = new TokenSet(grammar, k);
+        tempSet.addEpsilon();
+        for (int i = start; i < rule.size(); i++) {
+            Symbol symbol = rule.get(i);
+            if (symbol.terminal) {
+                tempSet.appendStrings(symbol);
+            } else {
+                TokenSet firstY = firstSetForSymbol(symbol);
+                tempSet.concatPrefixes(firstY);
+            }
+            if (!tempSet.concatenable()) break;
+        }
+        boolean changed = outSet.unionWith(tempSet);//at start tempSet) has epislon, but vcan be replaced by sequence
+        return changed;
+    }
+
     TokenSet firstSetForIndex(int index) {
         return firstSets.get(index);
     }
@@ -179,6 +196,21 @@ public class SetContainer {
         } while (changed);
     }
 
+    public void makeFirstSetsK(int k) {
+        boolean changed;
+        do {
+            changed = false;
+            for (int i = grammar.nonterminals.size() - 1; i >= 0; i--) {
+                Nonterminal X = grammar.getNT(i);
+                for (int j = X.ruleCount() - 1; j >= 0; j--) {
+                    Rule rule = X.rules.get(j);
+                    boolean retChanged = addFirstOfRuleK(firstSetForIndex(i), k, rule, 0);
+                    if (retChanged) changed = true;
+                }
+            }
+        } while (changed);
+    }
+
     public void makeFollowSets1() {
         followSetForIndex(0).addSeq(new Sequence(grammar, "$"));
         boolean changed;
@@ -191,11 +223,38 @@ public class SetContainer {
                     for (int k=0; k<rule.size(); k++) {
                         Symbol symbol = rule.get(k);
                         if (!symbol.terminal) {
-                            TokenSet tmpSet = new TokenSet(grammar, 1);
-                            addFirstOfRule1(tmpSet, rule, k + 1);
-                            boolean retChanged = followSetForSymbol(symbol).addTier(tmpSet.tiers.get(1));
+                            TokenSet tempSet = new TokenSet(grammar, 1);
+                            addFirstOfRule1(tempSet, rule, k + 1);
+                            boolean retChanged = followSetForSymbol(symbol).addTier(tempSet.tiers.get(1));
                             if (retChanged) changed = true;
-                            if (tmpSet.hasEpsilon()) {
+                            if (tempSet.hasEpsilon()) {
+                                retChanged = followSetForSymbol(symbol).addTier(followSetForIndex(i).tiers.get(1));
+                                if (retChanged) changed = true;
+                            }
+                        }
+                    }
+                }
+            }
+        } while (changed);
+    }
+
+    public void makeFollowSetsK() {
+        followSetForIndex(0).addSeq(new Sequence(grammar, "$"));
+        boolean changed;
+        do {
+            changed = false;
+            for (int i = 0; i<grammar.nonterminals.size(); i++) {
+                Nonterminal X = grammar.getNT(i);
+                for (int j = 0; j<X.ruleCount(); j++) {
+                    Rule rule = X.rules.get(j);
+                    for (int k=0; k<rule.size(); k++) {
+                        Symbol symbol = rule.get(k);
+                        if (!symbol.terminal) {
+                            TokenSet tempSet = new TokenSet(grammar, 1);
+                            addFirstOfRule1(tempSet, rule, k + 1);
+                            boolean retChanged = followSetForSymbol(symbol).addTier(tempSet.tiers.get(1));
+                            if (retChanged) changed = true;
+                            if (tempSet.hasEpsilon()) {
                                 retChanged = followSetForSymbol(symbol).addTier(followSetForIndex(i).tiers.get(1));
                                 if (retChanged) changed = true;
                             }

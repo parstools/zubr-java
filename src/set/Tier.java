@@ -1,6 +1,7 @@
 package set;
 
 import grammar.Grammar;
+import grammar.Symbol;
 import util.Hash;
 
 import java.util.*;
@@ -68,6 +69,25 @@ public class Tier {
             return newTrie;
         }
 
+        public void appendStrings(int index) {
+            Set<Integer> intSet = keySet();
+            Iterator<Integer> iter = intSet.iterator();
+            if (iter.hasNext())
+                while (iter.hasNext()) {
+                    int t = iter.next();
+                    get(t).appendStrings(index);
+                }
+            else {
+                Trie tr = new Trie(grammar);
+                put(index, tr);
+            }
+        }
+
+        public void appendStrings(Symbol symbol) {
+            assert (symbol.terminal);
+            appendStrings(symbol.index);
+        }
+
         public boolean unionWith(Trie trie) {
             Set<Integer> intSet = trie.keySet();
             Iterator<Integer> iter = intSet.iterator();
@@ -83,6 +103,17 @@ public class Tier {
                 }
             }
             return modified;
+        }
+
+        public void concatPrefixes(int prefixLen, Trie trie) {
+            assert (prefixLen >= 0);
+            if (prefixLen==0) return;
+            if (trie == null) return;
+            Set<Integer> intSet = trie.keySet();
+            for (int t : intSet) {
+                appendStrings(t);
+                concatPrefixes(prefixLen-1, get(t));
+            }
         }
     }
 
@@ -102,15 +133,15 @@ public class Tier {
             modified = true;
         }
         assert (seq.size() == len || seq.size() < len && !seq.isEmpty() && seq.get(seq.size() - 1) == -1);
-        Trie prior = trie;
+        Trie previous = trie;
         for (Integer i : seq) {
-            Trie tr = prior.get(i);
+            Trie tr = previous.get(i);
             if (tr == null) {
                 tr = new Trie(grammar);
-                prior.put(i, tr);
+                previous.put(i, tr);
                 modified = true;
             }
-            prior = tr;
+            previous = tr;
         }
         return modified;
     }
