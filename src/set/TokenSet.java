@@ -24,6 +24,14 @@ public class TokenSet {
         }
     }
 
+    public int calculateSize() {
+        int sum = 0;
+        for (int n = 0; n < 2; n++)
+            for (int i = 0; i < tiers[n].length; i++)
+                sum += tiers[n][i].calculateSize();
+        return sum;
+    }
+
     public boolean isEmpty() {
         for (int n = 0; n < 2; n++)
             for (int i = 0; i <= maxLen; i++) {

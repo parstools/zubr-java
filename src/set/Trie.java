@@ -94,6 +94,18 @@ public class Trie {
         }
     }
 
+    public int calculateSize() {
+        if (map.isEmpty())
+            return 1;
+        else {
+            int sum = 0;
+            for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+                sum += entry.getValue().calculateSize();
+            }
+            return sum;
+        }
+    }
+
     public void appendStrings(Symbol symbol) {
         assert (symbol.terminal);
         appendStrings(symbol.index);

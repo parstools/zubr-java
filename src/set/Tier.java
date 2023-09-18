@@ -31,9 +31,18 @@ public class Tier {
 
     public Tier clone() {
         Tier newTier = new Tier(grammar, len);
-        if (trie!=null)
+        if (trie != null)
             newTier.trie = trie.clone();
         return newTier;
+    }
+
+    public int calculateSize() {
+        if (trie == null)
+            return 0;
+        else if (len == 0)
+            return 1; //epsilon
+        else
+            return trie.calculateSize();
     }
 
     boolean addSeq(Sequence seq) {
