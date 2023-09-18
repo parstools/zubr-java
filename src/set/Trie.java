@@ -24,12 +24,11 @@ public class Trie {
     }
 
     List<String> getSuffixes() {
-        Set<Integer> intSet = map.keySet();
-        Iterator<Integer> iter = intSet.iterator();
         List<String> list = new ArrayList<>();
-        while (iter.hasNext()) {
-            int t = iter.next();
-            List<String> subList = get(t).getSuffixes();
+        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            int t = entry.getKey();
+            Trie value = entry.getValue();
+            List<String> subList = value.getSuffixes();
             String tName = grammar.getTerminalName(t);
             if (subList.isEmpty())
                 list.add(tName);
@@ -55,24 +54,20 @@ public class Trie {
 
     @Override
     public int hashCode() {
-        Set<Integer> intSet = map.keySet();
-        Iterator<Integer> iter = intSet.iterator();
         Hash h = new Hash();
-        while (iter.hasNext()) {
-            int t = iter.next();
+        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            int t = entry.getKey();
             h.add(t);
-            h.add(get(t).hashCode());
+            h.add(entry.getValue().hashCode());
         }
         return h.hash();
     }
 
     public Trie clone() {
         Trie newTrie = new Trie(grammar);
-        Set<Integer> intSet = map.keySet();
-        Iterator<Integer> iter = intSet.iterator();
-        while (iter.hasNext()) {
-            int t = iter.next();
-            newTrie.put(t, (Trie) get(t).clone());
+        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            int t = entry.getKey();
+            newTrie.put(t, entry.getValue().clone());
         }
         return newTrie;
     }
@@ -80,23 +75,18 @@ public class Trie {
     Trie clone(int prefixLen) {
         Trie newTrie = new Trie(grammar);
         if (prefixLen > 0) {
-            Set<Integer> intSet = map.keySet();
-            Iterator<Integer> iter = intSet.iterator();
-            while (iter.hasNext()) {
-                int t = iter.next();
-                newTrie.put(t, get(t).clone(prefixLen - 1));
+            for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+                int t = entry.getKey();
+                newTrie.put(t, entry.getValue().clone(prefixLen - 1));
             }
         }
         return newTrie;
     }
 
     public void appendStrings(int index) {
-        Set<Integer> intSet = map.keySet();
-        Iterator<Integer> iter = intSet.iterator();
-        if (iter.hasNext())
-            while (iter.hasNext()) {
-                int t = iter.next();
-                get(t).appendStrings(index);
+        if (!map.isEmpty())
+            for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+                entry.getValue().appendStrings(index);
             }
         else {
             Trie tr = new Trie(grammar);
@@ -110,17 +100,15 @@ public class Trie {
     }
 
     public boolean unionWith(Trie trie) {
-        Set<Integer> intSet = trie.map.keySet();
-        Iterator<Integer> iter = intSet.iterator();
         boolean modified = false;
-        while (iter.hasNext()) {
-            int t = iter.next();
+        for (Map.Entry<Integer,Trie> entry : trie.map.entrySet()) {
+            int t = entry.getKey();
             if (map.containsKey(t)) {
-                if (get(t).unionWith(trie.get(t)))
+                if (get(t).unionWith(entry.getValue()))
                     modified = true;
             } else {
                 modified = true;
-                put(t, (Trie) trie.get(t).clone());
+                put(t, entry.getValue().clone());
             }
         }
         return modified;
@@ -131,9 +119,8 @@ public class Trie {
         if (prefixLen == 0) return;
         if (trie == null) return;
         if (map.isEmpty()) {
-            Set<Integer> intSet = trie.map.keySet();
-            for (int t : intSet) {
-                map.put(t, (Trie) trie.get(t).clone());
+            for (Map.Entry<Integer,Trie> entry : trie.map.entrySet()) {
+                map.put(entry.getKey(), entry.getValue().clone());
             }
         } else {
             appendPrefixes(prefixLen, trie);
@@ -141,10 +128,10 @@ public class Trie {
     }
 
     private void appendPrefixes(int prefixLen, Trie trie) {
-        Set<Integer> intSet1 = map.keySet();
-        assert (!intSet1.isEmpty());
-        for (int t1 : intSet1) {
-            Trie sub = get(t1);
+        assert (!map.isEmpty());
+        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            int t1 = entry.getKey();
+            Trie sub = entry.getValue();
             if (sub.map.isEmpty())
                 put(t1, trie.clone(prefixLen));
             else
