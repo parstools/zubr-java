@@ -13,6 +13,7 @@ public class TokenSet {
     Grammar grammar;
 
     public TokenSet(Grammar grammar, int maxLen) {
+        this.grammar = grammar;
         this.maxLen = maxLen;
         tiers = new Tier[2][];
 
@@ -65,8 +66,49 @@ public class TokenSet {
         return tiers[0][seq.size()].addSeq(seq);
     }
 
+    public boolean addSeqBuild(String str) {
+        return addSeqBuild(new Sequence(grammar, str));
+    }
+
     public boolean addSeqDone(Sequence seq) {
         return tiers[1][seq.size()].addSeq(seq);
+    }
+
+    public boolean addSeqDone(String str) {
+        return addSeqDone(new Sequence(grammar, str));
+    }
+
+    public boolean containsBuild(Sequence seq) {
+        if (seq.size() >= maxLen)
+            return false;
+        return tiers[0][seq.size()].contains(seq);
+    }
+
+    public boolean containsBuild(String str) {
+        return containsBuild(new Sequence(grammar, str));
+    }
+
+    public boolean containsDone(Sequence seq) {
+        if (seq.size() > maxLen)
+            return false;
+        return tiers[1][seq.size()].contains(seq);
+    }
+
+    public boolean containsDone(String str) {
+        return containsDone(new Sequence(grammar, str));
+    }
+
+    public boolean contains(Sequence seq) {
+        if (containsDone(seq))
+            return true;
+        else if (containsBuild(seq))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean contains(String str) {
+        return contains(new Sequence(grammar, str));
     }
 
     public void addAllSSeqDone(SequenceSet sseq) {

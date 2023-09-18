@@ -51,9 +51,9 @@ public class Tier {
             trie = new Trie(grammar);
             modified = true;
         }
-        assert (seq.size() == len || seq.size() < len && !seq.isEmpty() && seq.get(seq.size() - 1) == -1);
+        assert (seq.size() == len);
         Trie previous = trie;
-        for (Integer i : seq) {
+        for (int i : seq) {
             Trie tr = previous.get(i);
             if (tr == null) {
                 tr = new Trie(grammar);
@@ -80,5 +80,20 @@ public class Tier {
             return 0;
         else
             return trie.hashCode();
+    }
+
+    public boolean contains(Sequence seq) {
+        if (trie==null)
+            return false;
+        if (len==0)
+            return true;
+        assert (seq.size() == len);
+        Trie tr = trie;
+        for (int i : seq) {
+            tr = tr.get(i);
+            if (tr == null)
+                return false;
+        }
+        return true;
     }
 }

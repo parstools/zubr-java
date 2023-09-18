@@ -87,4 +87,14 @@ public class TokenSetTest {
         set1.concatPrefixes(set2);
         assertEquals("{i i*}",set1.toString());
     }
+
+    @Test
+    void containsTest() {
+        Grammar grammar = TestGrammars.testFirstFollow();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.addSeqBuild("i+");
+        set.addSeqDone("i+(");
+        assertTrue(set.contains("i+"));
+        assertFalse(set.contains("i+)"));
+    }
 }
