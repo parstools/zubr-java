@@ -12,10 +12,8 @@ public class TokenSet {
     public TokenSet(Grammar grammar, int maxLen) {
         this.grammar = grammar;
         this.maxLen = maxLen;
-        tiers = new Tier[2][];
-
-        tiers[1] = new Tier[maxLen + 1];
-        for (int n = 0; n < 2; n++) {
+        tiers = new Tier[3][];
+        for (int n = 0; n < 3; n++) {
             tiers[n] = new Tier[maxLen + 1];
             for (int i = 0; i <= maxLen; i++)
                 tiers[n][i] = new Tier(grammar, i);
@@ -24,14 +22,14 @@ public class TokenSet {
 
     public int calculateSize() {
         int sum = 0;
-        for (int n = 0; n < 2; n++)
+        for (int n = 0; n < 3; n++)
             for (int i = 0; i < tiers[n].length; i++)
                 sum += tiers[n][i].calculateSize();
         return sum;
     }
 
     public boolean isEmpty() {
-        for (int n = 0; n < 2; n++)
+        for (int n = 0; n < 3; n++)
             for (int i = 0; i <= maxLen; i++) {
                 Tier tier = tiers[n][i];
                 if (tier.trie != null)
@@ -75,6 +73,14 @@ public class TokenSet {
         return addSeqDone(new Sequence(grammar, str));
     }
 
+    public boolean addSeqEof(Sequence seq) {
+        return tiers[2][seq.size()].addSeq(seq);
+    }
+
+    public boolean addSeqEof(String str) {
+        return addSeqEof(new Sequence(grammar, str));
+    }
+
     public boolean containsBuild(Sequence seq) {
         if (seq.size() >= maxLen)
             return false;
@@ -95,10 +101,22 @@ public class TokenSet {
         return containsDone(new Sequence(grammar, str));
     }
 
+    public boolean containsEof(Sequence seq) {
+        if (seq.size() > maxLen)
+            return false;
+        return tiers[1][seq.size()].contains(seq);
+    }
+
+    public boolean containsEof(String str) {
+        return containsDone(new Sequence(grammar, str));
+    }
+
     public boolean contains(Sequence seq) {
         if (containsDone(seq))
             return true;
         else if (containsBuild(seq))
+            return true;
+        else if (containsEof(seq))
             return true;
         else
             return false;
@@ -108,9 +126,12 @@ public class TokenSet {
         return contains(new Sequence(grammar, str));
     }
 
-    public void addAllSSeqDone(SequenceSet sseq) {
+    public void addAllSeqDoneOrEof(SequenceSet sseq) {
         for (Sequence seq : sseq)
-            addSeqDone(seq);
+            if (seq.isEof())
+                addSeqEof(seq);
+            else
+                addSeqDone(seq);
     }
 
     private String toStringPart(int n) {
@@ -141,8 +162,12 @@ public class TokenSet {
             sb.append("]");
         }
         String donePart = toStringPart(1);
-        if (!donePart.isEmpty()) {
+        String eofPart = toStringPart(2);
+        if (!donePart.isEmpty() || !eofPart.isEmpty()) {
             sb.append("{");
+            sb.append(eofPart);
+            if (!donePart.isEmpty() && !eofPart.isEmpty())
+                sb.append(" ");
             sb.append(donePart);
             sb.append("}");
         }
@@ -155,7 +180,7 @@ public class TokenSet {
     @Override
     public int hashCode() {
         Hash h = new Hash();
-        for (int n = 0; n < 2; n++)
+        for (int n = 0; n < 3; n++)
             for (Tier t : tiers[n])
                 h.add(t.hashCode());
         return h.hash();
@@ -179,7 +204,7 @@ public class TokenSet {
 
     public boolean unionWith(TokenSet tokenSet) {
         boolean changed = false;
-        for (int n = 0; n < 2; n++)
+        for (int n = 0; n < 3; n++)
             for (Tier tier : tokenSet.tiers[n])
                 if (addTier(n, tier))
                     changed = true;
@@ -188,7 +213,7 @@ public class TokenSet {
 
     public boolean unionWithoutEps(TokenSet tokenSet) {
         boolean changed = false;
-        for (int n = 0; n < 2; n++)
+        for (int n = 0; n < 3; n++)
             for (Tier tier : tokenSet.tiers[n])
                 if (tier.len > 0)
                     if (addTier(n, tier))
@@ -228,7 +253,7 @@ public class TokenSet {
 
     public TokenSet clone() {
         TokenSet newSet = new TokenSet(grammar, maxLen);
-        for (int n = 0; n < 2; n++)
+        for (int n = 0; n < 3; n++)
             for (int i = 0; i <= maxLen; i++)
                 newSet.tiers[n][i] = tiers[n][i].clone();
         return newSet;

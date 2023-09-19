@@ -37,4 +37,8 @@ public class Sequence extends ArrayList<Integer> {
             return sb.toString();
         }
     }
+
+    public boolean isEof() {
+        return size() > 0 && get(size() - 1) == -1;
+    }
 }

@@ -65,7 +65,7 @@ public class Generator {
         SequenceSet sset = new SequenceSet();
         root.collectFirst(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
-        result.addAllSSeqDone(sset);
+        result.addAllSeqDoneOrEof(sset);
         return result;
     }
 
@@ -80,7 +80,7 @@ public class Generator {
         SequenceSet sset = new SequenceSet();
         collectFollow(ntNumber, k, sset);
         TokenSet result = new TokenSet(grammar, k);
-        result.addAllSSeqDone(sset);
+        result.addAllSeqDoneOrEof(sset);
         return result;
     }
 

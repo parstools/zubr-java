@@ -63,10 +63,10 @@ public class SetContainer {
             for (int i = 0; i < grammar.nonterminals.size(); i++) {
                 SequenceSet sset = new SequenceSet();
                 generator.collectFirst(i, k, sset);
-                firstSets.get(i).addAllSSeqDone(sset);
+                firstSets.get(i).addAllSeqDoneOrEof(sset);
                 sset = new SequenceSet();
                 generator.collectFollow(i, k, sset);
-                followSets.get(i).addAllSSeqDone(sset);
+                followSets.get(i).addAllSeqDoneOrEof(sset);
             }
             if (counter >= nextLimit)
                 break;
@@ -221,7 +221,7 @@ public class SetContainer {
     }
 
     public void makeFollowSets1() {
-        followSetForIndex(0).addSeqDone(new Sequence(grammar, "$"));
+        followSetForIndex(0).addSeqEof(new Sequence(grammar, "$"));
         boolean changed;
         do {
             changed = false;
@@ -248,7 +248,7 @@ public class SetContainer {
     }
 
     public void makeFollowSetsK(int k) {
-        followSetForIndex(0).addSeqDone(new Sequence(grammar, "$"));
+        followSetForIndex(0).addSeqEof(new Sequence(grammar, "$"));
         boolean changed;
         do {
             changed = false;
