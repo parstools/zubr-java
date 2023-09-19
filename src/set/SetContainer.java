@@ -156,9 +156,11 @@ public class SetContainer {
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
+                TokenSet unfinished = tempSet;
                 tempSet = tempSet.concat(firstY);
                 if (tempSet.isEmpty()) {
                     canFinalize = false;
+                    tempSet = unfinished;
                     break;
                 }
             }
