@@ -114,4 +114,28 @@ public class TokenSetTest {
         assertTrue(set.contains("i+"));
         assertFalse(set.contains("i+)"));
     }
+
+    @Test
+    void parseTest1() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.parse("[eps abc a ab]{c$ ab cab cc$ eps a}");
+        assertEquals("[eps a ab abc]{eps a ab cab c$ cc$}",set.toString());
+    }
+
+    @Test
+    void parseTest2() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.parse("[eps abc a ab]");
+        assertEquals("[eps a ab abc]",set.toString());
+    }
+
+    @Test
+    void parseTest3() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.parse("{c$ ab cab cc$ eps a}");
+        assertEquals("{eps a ab cab c$ cc$}",set.toString());
+    }
 }

@@ -298,4 +298,59 @@ public class TokenSet {
         for (int i = 0; i <= maxLen; i++)
             tiers[0][i].clear();
     }
+
+    public void parse(String s) {
+        if (s.length() < 2)
+            return;
+        String buildPart = "";
+        String doneEofPart = "";
+        if (s.charAt(0) == '[') {
+            int pos = s.indexOf("]{");
+            if (pos > 0) {
+                buildPart = s.substring(1,pos);
+                if (s.charAt(s.length() - 1) != '}')
+                    throw new RuntimeException("bad parse string" + s);
+                doneEofPart = s.substring(pos+2,s.length()-1);
+            } else {
+                if (s.charAt(s.length() - 1) != ']')
+                    throw new RuntimeException("bad parse string" + s);
+                buildPart = s.substring(1,s.length()-1);
+            }
+        } else if (s.charAt(0) == '{') {
+            doneEofPart = s.substring(1,s.length()-1);
+        } else throw new RuntimeException("bad parse string" + s);
+        parseBuild(buildPart);
+        parseDoneEof(doneEofPart);
+    }
+
+    private void parseBuild(String buildPart) {
+        if (buildPart.isEmpty())
+            return;
+        String[] names = buildPart.split(" ");
+        for (String name: names) {
+            if (name.equals("eps"))
+                addSeqBuild("");
+            else
+                addSeqBuild(name);
+        }
+    }
+    private void parseDoneEof(String doneEofPart) {
+        if (doneEofPart.isEmpty())
+            return;
+        String[] names = doneEofPart.split(" ");
+        for (String name: names) {
+            int pos = name.indexOf("$");
+            if (pos>=0) {
+                if (pos!=name.length()-1)
+                    throw new RuntimeException("bad token name "+name);
+                addSeqEof(name);
+            }
+            else {
+                if (name.equals("eps"))
+                    addSeqDone("");
+                else
+                    addSeqDone(name);
+            }
+        }
+    }
 }
