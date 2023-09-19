@@ -13,8 +13,6 @@ import java.util.List;
 
 import grammar.Rule;
 
-import static java.lang.System.out;
-
 public class SetContainer {
     Grammar grammar;
     List<TokenSet> firstSets = new ArrayList<>();
@@ -219,7 +217,7 @@ public class SetContainer {
             }
         } while (changed);
         for (int i = 0; i < grammar.nonterminals.size(); i++)
-            firstSetForIndex(i).reject();
+            firstSetForIndex(i).rejectBuild();
     }
 
     public void makeFollowSets1() {

@@ -4,9 +4,6 @@ import grammar.Grammar;
 import grammar.Symbol;
 import util.Hash;
 
-import java.util.Iterator;
-import java.util.Set;
-
 public class TokenSet {
     int maxLen;
     private Tier[][] tiers;
@@ -265,7 +262,7 @@ public class TokenSet {
         return result;
     }
 
-    public void reject() {
+    public void rejectBuild() {
         for (int i = 0; i <= maxLen; i++)
             tiers[0][i].clear();
     }
