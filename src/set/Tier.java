@@ -45,6 +45,10 @@ public class Tier {
             return trie.calculateSize();
     }
 
+    boolean addSeq(String str) {
+        return addSeq(new Sequence(grammar, str));
+    }
+
     boolean addSeq(Sequence seq) {
         boolean modified = false;
         if (trie == null) {
@@ -83,9 +87,9 @@ public class Tier {
     }
 
     public boolean contains(Sequence seq) {
-        if (trie==null)
+        if (trie == null)
             return false;
-        if (len==0)
+        if (len == 0)
             return true;
         assert (seq.size() == len);
         Trie tr = trie;
@@ -95,5 +99,27 @@ public class Tier {
                 return false;
         }
         return true;
+    }
+
+    public boolean contains(String str) {
+        return contains(new Sequence(grammar, str));
+    }
+
+    public Tier concat(Tier tier, int newLen) {
+        int prefixLen = newLen - len;
+        Tier result = new Tier(grammar, len);
+        if (trie == null || tier.trie == null)
+            return result;
+        result.trie = trie.clone();
+        result.trie.concatPrefixes(prefixLen, tier.trie);
+        return result;
+    }
+
+    public void clear() {
+        trie = null;
+    }
+
+    public boolean isEmpty() {
+        return trie == null;
     }
 }

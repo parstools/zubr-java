@@ -11,11 +11,10 @@ public class TokenSetTest {
     void addSeq() {
         Grammar grammar = TestGrammars.grammar2();
         TokenSet set = new TokenSet(grammar, 3);
-        Sequence eps = new Sequence(grammar, "");
-        set.addSeqDone(eps);
-        set.addSeqDone(new Sequence(grammar, "aa"));
-        set.addSeqDone(new Sequence(grammar, "ab"));
-        set.addSeqDone(new Sequence(grammar, "ac"));
+        set.addSeqDone("");
+        set.addSeqDone("aa");
+        set.addSeqDone("ab");
+        set.addSeqDone("ac");
         assertEquals("{eps aa ab ac}", set.toString());
     }
 
@@ -23,11 +22,11 @@ public class TokenSetTest {
     void addTier1() {
         Grammar grammar = TestGrammars.grammar2();
         TokenSet set1 = new TokenSet(grammar, 1);
-        set1.addSeqDone(new Sequence(grammar, "a"));
-        set1.addSeqDone(new Sequence(grammar, "b"));
+        set1.addSeqDone("a");
+        set1.addSeqDone("b");
         TokenSet set2 = new TokenSet(grammar, 1);
-        set2.addSeqDone(new Sequence(grammar, "b"));
-        set2.addSeqDone(new Sequence(grammar, "c"));
+        set2.addSeqDone("b");
+        set2.addSeqDone("c");
         boolean changed = set1.unionWithoutEps(set2);
         assertTrue(changed);
         changed = set1.unionWithoutEps(set2);
@@ -36,56 +35,74 @@ public class TokenSetTest {
     }
 
     @Test
-    void concatPrefixes1() {
+    void concat1() {
         Grammar grammar = TestGrammars.testFirstFollow();
         TokenSet set1 = new TokenSet(grammar, 2);
-        set1.addSeqBuild(new Sequence(grammar, ""));
+        set1.addSeqBuild("");
         TokenSet set2 = new TokenSet(grammar, 2);
-        set2.addSeqDone(new Sequence(grammar, "("));
-        set2.addSeqDone(new Sequence(grammar, "i"));
+        set2.addSeqDone("(");
+        set2.addSeqDone("i");
         assertEquals("{( i}",set2.toString());
-        set1.concatPrefixes(set2);
-        set1.done();
-        assertEquals("{( i}",set1.toString());
+        TokenSet set3 = set1.concat(set2);
+        assertEquals("[( i]", set3.toString());
     }
 
     @Test
-    void concatPrefixes2() {
+    void concat2() {
         Grammar grammar = TestGrammars.testFirstFollow();
         TokenSet set1 = new TokenSet(grammar, 2);
-        set1.addSeqBuild(new Sequence(grammar, ""));
+        set1.addSeqBuild("");
         TokenSet set2 = new TokenSet(grammar, 2);
-        set2.addSeqDone(new Sequence(grammar, "i"));
-        set2.addSeqDone(new Sequence(grammar, "()"));
+        set2.addSeqDone("i");
+        set2.addSeqDone("()");
         assertEquals("{i ()}",set2.toString());
-        set1.concatPrefixes(set2);
-        set1.done();
-        assertEquals("{i ()}",set1.toString());
+        TokenSet set3 = set1.concat(set2);
+        assertEquals("[i]{()}", set3.toString());
     }
 
     @Test
-    void concateWithEps() {
+    void concatWithEps() {
         Grammar grammar = TestGrammars.testFirstFollow();
         TokenSet set1 = new TokenSet(grammar, 2);
-        set1.addSeqBuild(new Sequence(grammar, "i"));
-        set1.addSeqBuild(new Sequence(grammar, "()"));
+        set1.addSeqBuild("i");
+        set1.addSeqDone("()");
         TokenSet set2 = new TokenSet(grammar, 2);
-        set2.addSeqDone(new Sequence(grammar, ""));
-        set1.concatPrefixes(set2);
-        set1.done();
-        assertEquals("{() i}",set1.toString());
+        set2.addSeqDone("");
+        TokenSet set3 = set1.concat(set2);
+        assertEquals("[i]{()}", set1.toString());
+        assertEquals("{eps}", set2.toString());
+        assertEquals("[i]{()}", set3.toString());
     }
 
     @Test
-    void concateWithEps_1() {
+    void concatWithEps_1() {
         Grammar grammar = TestGrammars.testFirstFollow();
         TokenSet set1 = new TokenSet(grammar, 2);
-        set1.addSeqBuild(new Sequence(grammar, "i"));
+        set1.addSeqBuild("i");
         TokenSet set2 = new TokenSet(grammar, 2);
-        set2.addSeqDone(new Sequence(grammar, ""));
-        set2.addSeqDone(new Sequence(grammar, "*i"));
-        set1.concatPrefixes(set2);
-        assertEquals("{i i*}",set1.toString());
+        set2.addSeqDone("");
+        set2.addSeqDone("*i");
+        TokenSet set3 = set1.concat(set2);
+        assertEquals("[i]", set1.toString());
+        assertEquals("{eps *i}", set2.toString());
+        assertEquals("[i]{i*}", set3.toString());
+    }
+
+    @Test
+    void concatFirstK3() {
+        Grammar grammar = TestGrammars.testFirstFollow();
+        TokenSet set1 = new TokenSet(grammar, 3);
+        set1.addSeqBuild("+i");
+        set1.addSeqDone("+(i");
+        set1.addSeqDone("+i*");
+        assertEquals("[+i]{+(i +i*}", set1.toString());
+        TokenSet set2 = new TokenSet(grammar, 3);
+        set2.addSeqDone("");
+        set2.addSeqDone("+i");
+        set2.addSeqDone("+i*");
+        assertEquals("{eps +i +i*}", set2.toString());
+        TokenSet set3 = set1.concat(set2);
+        assertEquals("[+i]{+(i +i+ +i*}", set3.toString());
     }
 
     @Test

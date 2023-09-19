@@ -147,7 +147,7 @@ public class Trie {
             if (sub.map.isEmpty())
                 put(t1, trie.clone(prefixLen));
             else
-                sub.appendPrefixes(prefixLen - 1, trie);
+                sub.appendPrefixes(prefixLen, trie);
         }
     }
 }

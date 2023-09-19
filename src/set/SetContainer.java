@@ -162,7 +162,7 @@ public class SetContainer {
                     canFinalize = false;
                     break;
                 }
-                tempSet.concatPrefixes(firstY);
+                tempSet = tempSet.concat(firstY);
             }
             if (tempSet.isEmptyBuild()) break;
         }
@@ -220,6 +220,8 @@ public class SetContainer {
                 }
             }
        } while (changed);
+        for (int i = 0; i < grammar.nonterminals.size(); i++)
+            firstSetForIndex(i).reject();
     }
 
     public void makeFollowSets1() {

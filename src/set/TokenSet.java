@@ -116,26 +116,43 @@ public class TokenSet {
             addSeqDone(seq);
     }
 
+    private String toStringPart(int n) {
+        StringBuilder sb = new StringBuilder();
+        boolean needSpace = false;
+        for (int i = 0; i <= maxLen; i++) {
+            String tstr = tiers[n][i].toString();
+            boolean empty = tstr.isEmpty();
+            if (!empty) {
+                if (needSpace) {
+                    sb.append(" ");
+                    needSpace = false;
+                }
+                sb.append(tstr);
+                needSpace = true;
+            }
+        }
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        boolean needSpace = false;
-        for (int n = 0; n < 2; n++)
-            for (int i = 0; i <= maxLen; i++) {
-                String tstr = tiers[n][i].toString();
-                boolean empty = tstr.isEmpty();
-                if (!empty) {
-                    if (needSpace) {
-                        sb.append(" ");
-                        needSpace = false;
-                    }
-                    sb.append(tstr);
-                    needSpace = true;
-                }
-            }
-        sb.append("}");
-        return sb.toString();
+        String buildPart = toStringPart(0);
+        if (!buildPart.isEmpty()) {
+            sb.append("[");
+            sb.append(buildPart);
+            sb.append("]");
+        }
+        String donePart = toStringPart(1);
+        if (!donePart.isEmpty()) {
+            sb.append("{");
+            sb.append(donePart);
+            sb.append("}");
+        }
+        if (buildPart.isEmpty() && donePart.isEmpty())
+            return "{}";
+        else
+            return sb.toString();
     }
 
     @Override
@@ -159,24 +176,26 @@ public class TokenSet {
         return tiers[1][0].trie != null;
     }
 
-    private boolean addTier(Tier tier) {
-        return tiers[1][tier.len].unionWith(tier);
+    private boolean addTier(int n, Tier tier) {
+        return tiers[n][tier.len].unionWith(tier);
     }
 
     public boolean unionWith(TokenSet tokenSet) {
         boolean changed = false;
-        for (Tier tier : tokenSet.tiers[1])
-            if (addTier(tier))
-                changed = true;
+        for (int n = 0; n < 2; n++)
+            for (Tier tier : tokenSet.tiers[n])
+                if (addTier(n, tier))
+                    changed = true;
         return changed;
     }
 
     public boolean unionWithoutEps(TokenSet tokenSet) {
         boolean changed = false;
-        for (Tier tier : tokenSet.tiers[1])
-            if (tier.len > 0)
-                if (addTier(tier))
-                    changed = true;
+        for (int n = 0; n < 2; n++)
+            for (Tier tier : tokenSet.tiers[n])
+                if (tier.len > 0)
+                    if (addTier(n, tier))
+                        changed = true;
         return changed;
     }
 
@@ -218,48 +237,36 @@ public class TokenSet {
         return newSet;
     }
 
-    public boolean concatPrefixes(TokenSet firstY) {
-        assert (!firstY.isEmpty());
-        assert (firstY.isEmptyBuild());
-        boolean changed = false;
-        /*TokenSet srcCloned = null;
-        if (firstY.hasEpsilon()) {
-            srcCloned = this.clone();
-            srcCloned.done();
-        }*/
-        for (int i = maxLen - 1; i >= 0; i--) {
-            Trie trie = tiers[0][i].trie;
-            if (trie != null) {
-                int maxPrefixLen = maxLen - i;
-                for (int j = 0; j <= maxLen; j++) {
-                    Trie ytrie = firstY.tiers[1][j].trie;
-                    if (ytrie == null)
-                        continue;
-                    int prefixLen = Math.min(maxPrefixLen, j);
-                    Trie cloned = trie.clone();
-                    cloned.concatPrefixes(prefixLen, ytrie);
-                    tiers[0][i].trie = null;
-                    changed = true;
-                    int targetIndex = i + prefixLen;
-                    int target = targetIndex == maxLen ? 1 : 0;
-                    Tier tt = tiers[1][targetIndex];
-                    if (tt.trie == null)
-                        tt.trie = cloned;
-                    else
-                        tt.trie.unionWith(cloned);
-                    if (target == 0) {
-                        tt = tiers[0][targetIndex];
-                        if (tt.trie == null)
-                            tt.trie = cloned.clone();
-                        else
-                            tt.trie.unionWith(cloned);
-                    }
-                }
+    public TokenSet concat(TokenSet second) {
+        assert (maxLen == second.maxLen);
+        TokenSet result = new TokenSet(grammar, maxLen);
+        assert (tiers[0][maxLen].isEmpty());
+        assert (second.tiers[0][maxLen].isEmpty());
+        for (int i = 0; i < maxLen; i++)
+            for (int j = 0; j <= maxLen; j++) {
+                int combinedLen = Math.min(i + j, maxLen);
+                int target = combinedLen == maxLen ? 1 : 0;
+                Tier tier0 = tiers[0][i];
+                Tier tier1 = second.tiers[1][j];
+                Tier newTier = tier0.concat(tier1, combinedLen);
+                result.tiers[target][combinedLen].unionWith(newTier);
             }
-        }
-        /*if (srcCloned != null) {
-            this.unionWith(srcCloned);
-        }*/
-        return changed;
+        for (int i = 0; i < maxLen; i++)
+            for (int j = maxLen - i; j < maxLen; j++) {
+                Tier tier0 = tiers[0][i];
+                Tier tier1 = second.tiers[0][j];
+                Tier newTier = tier0.concat(tier1, maxLen);
+                result.tiers[1][maxLen].unionWith(newTier);
+            }
+
+        for (int i = 0; i <= maxLen; i++)
+            result.tiers[1][i].unionWith(tiers[1][i]);
+        result.tiers[1][maxLen].unionWith(tiers[0][maxLen]);
+        return result;
+    }
+
+    public void reject() {
+        for (int i = 0; i <= maxLen; i++)
+            tiers[0][i].clear();
     }
 }
