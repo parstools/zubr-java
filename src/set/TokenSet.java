@@ -281,6 +281,15 @@ public class TokenSet {
                 result.tiers[target][combinedLen].unionWith(newTier);
             }
         for (int i = 0; i < maxLen; i++)
+            for (int j = 0; j <= maxLen; j++) {
+                int combinedLen = Math.min(i + j, maxLen);
+                int target = combinedLen == i + j ? 2 : 1;
+                Tier tier0 = tiers[0][i];
+                Tier tier1 = second.tiers[2][j];
+                Tier newTier = tier0.concat(tier1, combinedLen);
+                result.tiers[target][combinedLen].unionWith(newTier);
+            }
+        for (int i = 0; i < maxLen; i++)
             for (int j = maxLen - i; j < maxLen; j++) {
                 Tier tier0 = tiers[0][i];
                 Tier tier1 = second.tiers[0][j];
