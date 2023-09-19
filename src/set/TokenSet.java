@@ -222,13 +222,20 @@ public class TokenSet {
     }
 
     public void appendStrings(Symbol symbol) {
+        assert (symbol.terminal);
         assert (maxLen > 0);
         for (int i = maxLen; i >= 1; i--) {
             Trie trie = tiers[0][i - 1].trie;
             if (trie != null) {
                 tiers[0][i - 1].trie = null;
                 trie.appendStrings(symbol);
-                int target = i == maxLen ? 1 : 0;
+                int target;
+                if (symbol.index == -1)
+                    target = 2;
+                else if (i == maxLen)
+                    target = 1;
+                else
+                    target = 0;
                 if (tiers[target][i].trie == null)
                     tiers[target][i].trie = trie;
                 else
