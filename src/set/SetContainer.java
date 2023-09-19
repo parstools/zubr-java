@@ -146,30 +146,24 @@ public class SetContainer {
         return changed;
     }
 
-    boolean addFirstOfRuleK(TokenSet outSet, int k, Rule rule, int start) {
-        TokenSet tempSet = new TokenSet(grammar, k);
+    boolean addFirstOfRuleK(TokenSet tempSet, int k, Rule rule, int start) {
         tempSet.addEpsilonBuild();
-        boolean canFinalize = true;
         for (int i = start; i < rule.size(); i++) {
             Symbol symbol = rule.get(i);
             if (symbol.terminal) {
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                TokenSet unfinished = tempSet;
-                tempSet = tempSet.concat(firstY);
-                if (tempSet.isEmpty()) {
-                    canFinalize = false;
-                    tempSet = unfinished;
-                    break;
+                TokenSet concated = tempSet.concat(firstY);
+                if (concated.isEmpty())
+                    return false;
+                else {
+                    tempSet.replaceWith(concated);
                 }
             }
             if (tempSet.isEmptyBuild()) break;
         }
-        if (canFinalize)
-            tempSet.done();
-        boolean changed = outSet.unionWith(tempSet);//at start tempSet) has epislon, but vcan be replaced by sequence
-        return changed;
+        return true;
     }
 
     TokenSet firstSetForIndex(int index) {
@@ -213,8 +207,12 @@ public class SetContainer {
                 Nonterminal X = grammar.getNT(i);
                 for (int j = X.ruleCount() - 1; j >= 0; j--) {
                     Rule rule = X.rules.get(j);
-                    boolean retChanged = addFirstOfRuleK(firstSetForIndex(i), k, rule, 0);
-                    if (retChanged) changed = true;
+                    TokenSet tempSet = new TokenSet(grammar, k);
+                    boolean canFinalize = addFirstOfRuleK(tempSet, k, rule, 0);
+                    if (canFinalize)
+                        tempSet.done();
+                    if (firstSetForIndex(i).unionWith(tempSet))
+                        changed = true;
                 }
             }
         } while (changed);
@@ -262,13 +260,19 @@ public class SetContainer {
                         Symbol symbol = rule.get(n);
                         if (!symbol.terminal) {
                             TokenSet tempSet = new TokenSet(grammar, k);
-                            addFirstOfRuleK(tempSet, k, rule, n + 1);
-                            boolean retChanged = followSetForSymbol(symbol).unionWithoutEps(tempSet);
-                            if (retChanged) changed = true;
-                            if (tempSet.hasEpsilon()) {
-                                retChanged = followSetForSymbol(symbol).unionWithoutEps(followSetForIndex(i));
-                                if (retChanged) changed = true;
+                            boolean canFinalize = addFirstOfRuleK(tempSet, k, rule, n+1);
+                            if (canFinalize) {
+                                if (!tempSet.isEmptyBuild()) {
+                                    TokenSet concated = tempSet.concat(followSetForIndex(i));
+                                    if (!concated.isEmpty()) {
+                                        tempSet.replaceWith(concated);
+                                        tempSet.done();
+                                    }
+                                }
+                                else tempSet.done();
                             }
+                            if (followSetForIndex(symbol.index).unionWith(tempSet))
+                                changed = true;
                         }
                     }
                 }

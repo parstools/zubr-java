@@ -211,6 +211,13 @@ public class TokenSet {
         return changed;
     }
 
+    public void replaceWith(TokenSet tokenSet) {
+        boolean changed = false;
+        for (int n = 0; n < 3; n++)
+            for (int i=0; i<=maxLen; i++)
+                tiers[n][i] = tokenSet.tiers[n][i].clone();
+    }
+
     public boolean unionWithoutEps(TokenSet tokenSet) {
         boolean changed = false;
         for (int n = 0; n < 3; n++)
