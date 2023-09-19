@@ -137,7 +137,7 @@ public class TokenSet {
     private String toStringPart(int n) {
         StringBuilder sb = new StringBuilder();
         boolean needSpace = false;
-        for (int i = 0; i <= maxLen; i++) {
+        for (int i = n == 2 ? 1 : 0; i <= maxLen; i++) {
             String tstr = tiers[n][i].toString();
             boolean empty = tstr.isEmpty();
             if (!empty) {
@@ -165,13 +165,13 @@ public class TokenSet {
         String eofPart = toStringPart(2);
         if (!donePart.isEmpty() || !eofPart.isEmpty()) {
             sb.append("{");
-            sb.append(eofPart);
+            sb.append(donePart);
             if (!donePart.isEmpty() && !eofPart.isEmpty())
                 sb.append(" ");
-            sb.append(donePart);
+            sb.append(eofPart);
             sb.append("}");
         }
-        if (buildPart.isEmpty() && donePart.isEmpty())
+        if (buildPart.isEmpty() && donePart.isEmpty() && eofPart.isEmpty())
             return "{}";
         else
             return sb.toString();

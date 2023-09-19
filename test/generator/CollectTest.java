@@ -139,7 +139,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 1);
         assertEquals("{eps a}", firstS.toString());
         assertEquals("{c}", firstA.toString());
-        assertEquals("{$ c}", followS.toString());
+        assertEquals("{c $}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         firstS = generator.collectFirst(0, 2);
@@ -161,7 +161,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 1);
         assertEquals("{eps a}", firstS.toString());
         assertEquals("{a}", firstA.toString());
-        assertEquals("{$ a}", followS.toString());
+        assertEquals("{a $}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         firstS = generator.collectFirst(0, 2);
@@ -170,7 +170,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 2);
         assertEquals("{eps aa}", firstS.toString());
         assertEquals("{ab}", firstA.toString());
-        assertEquals("{$ ab}", followS.toString());
+        assertEquals("{ab $}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         assertTrue(generator.next());
@@ -183,7 +183,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 1);
         assertEquals("{eps a}", firstS.toString());
         assertEquals("{a c}", firstA.toString());
-        assertEquals("{$ a c}", followS.toString());
+        assertEquals("{a c $}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         firstS = generator.collectFirst(0, 2);
@@ -192,7 +192,7 @@ public class CollectTest {
         followA = generator.collectFollow(1, 2);
         assertEquals("{eps aa ac}", firstS.toString());
         assertEquals("{c ab}", firstA.toString());
-        assertEquals("{$ ab c$}", followS.toString());
+        assertEquals("{ab $ c$}", followS.toString());
         assertEquals("{$}", followA.toString());
 
         firstS = generator.collectFirst(0, 3);
@@ -202,7 +202,7 @@ public class CollectTest {
 
         assertEquals("{eps ac aab}", firstS.toString());
         assertEquals("{c aba}", firstA.toString());
-        assertEquals("{$ c$ aba}", followS.toString());
+        assertEquals("{aba $ c$}", followS.toString());
         assertEquals("{$}", followA.toString());
     }
 }

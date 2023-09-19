@@ -22,11 +22,11 @@ public class SetContainerTest {
         assertEquals("{( i}", sc.firstSetForIndex(4).toString());
 
         sc.makeFollowSets1();
-        assertEquals("{$ )}", sc.followSetForIndex(0).toString());
-        assertEquals("{$ )}", sc.followSetForIndex(1).toString());
-        assertEquals("{$ + )}", sc.followSetForIndex(2).toString());
-        assertEquals("{$ + )}", sc.followSetForIndex(3).toString());
-        assertEquals("{$ + * )}", sc.followSetForIndex(4).toString());
+        assertEquals("{) $}", sc.followSetForIndex(0).toString());
+        assertEquals("{) $}", sc.followSetForIndex(1).toString());
+        assertEquals("{+ ) $}", sc.followSetForIndex(2).toString());
+        assertEquals("{+ ) $}", sc.followSetForIndex(3).toString());
+        assertEquals("{+ * ) $}", sc.followSetForIndex(4).toString());
     }
 
     @Test
@@ -88,11 +88,11 @@ public class SetContainerTest {
         sc.reset(1);
         sc.makeFirstSetsK(1);
         sc.makeFollowSetsK(1);
-        assertEquals("{$ )}", sc.followSetForIndex(0).toString());
-        assertEquals("{$ )}", sc.followSetForIndex(1).toString());
-        assertEquals("{$ + )}", sc.followSetForIndex(2).toString());
-        assertEquals("{$ + )}", sc.followSetForIndex(3).toString());
-        assertEquals("{$ + * )}", sc.followSetForIndex(4).toString());
+        assertEquals("{) $}", sc.followSetForIndex(0).toString());
+        assertEquals("{) $}", sc.followSetForIndex(1).toString());
+        assertEquals("{+ ) $}", sc.followSetForIndex(2).toString());
+        assertEquals("{+ ) $}", sc.followSetForIndex(3).toString());
+        assertEquals("{+ * ) $}", sc.followSetForIndex(4).toString());
     }
 
     @Disabled("only for generate data to tests")
