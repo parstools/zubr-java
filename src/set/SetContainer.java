@@ -158,19 +158,17 @@ public class SetContainer {
                 tempSet.appendStrings(symbol);
             } else {
                 TokenSet firstY = firstSetForSymbol(symbol);
-                if (firstY.isEmptyDone()) {
+                tempSet = tempSet.concat(firstY);
+                if (tempSet.isEmpty()) {
                     canFinalize = false;
                     break;
                 }
-                tempSet = tempSet.concat(firstY);
             }
             if (tempSet.isEmptyBuild()) break;
         }
         if (canFinalize)
             tempSet.done();
         boolean changed = outSet.unionWith(tempSet);//at start tempSet) has epislon, but vcan be replaced by sequence
-        if (!canFinalize)
-            changed = true;
         return changed;
     }
 
@@ -219,7 +217,7 @@ public class SetContainer {
                     if (retChanged) changed = true;
                 }
             }
-       } while (changed);
+        } while (changed);
         for (int i = 0; i < grammar.nonterminals.size(); i++)
             firstSetForIndex(i).reject();
     }
