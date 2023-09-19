@@ -81,14 +81,28 @@ public class SetContainerTest {
         assertEquals("{i (i) (((( (((i ((i+ ((i* ((i) (i+( (i+i (i*( (i*i}", sc.firstSetForIndex(4).toString());
     }
 
+    @Test
+    void FollowK_1() {
+        Grammar g = TestGrammars.testFirstFollow();
+        SetContainer sc = new SetContainer(g);
+        sc.reset(1);
+        sc.makeFirstSetsK(1);
+        sc.makeFollowSetsK(1);
+        assertEquals("{$ )}", sc.followSetForIndex(0).toString());
+        assertEquals("{$ )}", sc.followSetForIndex(1).toString());
+        assertEquals("{$ + )}", sc.followSetForIndex(2).toString());
+        assertEquals("{$ + )}", sc.followSetForIndex(3).toString());
+        assertEquals("{$ + * )}", sc.followSetForIndex(4).toString());
+    }
+
     @Disabled("only for generate data to tests")
     @Test
     void FirstFollowK_2_gen() {
         Grammar g = TestGrammars.testFirstFollow();
         SetContainer sc1 = new SetContainer(g);
-        sc1.reset(4);
-        sc1.computeSetsByGeneration(4, 30, 100000);
-        for (int i=0; i<sc1.firstSets.size(); i++)
-            out.println("assertEquals(\"" + sc1.firstSetForIndex(i).toString() + "\", sc.firstSetForIndex("+i+").toString());");
+        sc1.reset(1);
+        sc1.computeSetsByGeneration(1, 30, 100000);
+        for (int i=0; i<sc1.followSets.size(); i++)
+            out.println("assertEquals(\"" + sc1.followSetForIndex(i).toString() + "\", sc.followSetForIndex("+i+").toString());");
     }
 }

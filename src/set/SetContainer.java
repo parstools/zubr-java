@@ -247,7 +247,7 @@ public class SetContainer {
         } while (changed);
     }
 
-    public void makeFollowSetsK() {
+    public void makeFollowSetsK(int k) {
         followSetForIndex(0).addSeqDone(new Sequence(grammar, "$"));
         boolean changed;
         do {
@@ -256,11 +256,11 @@ public class SetContainer {
                 Nonterminal X = grammar.getNT(i);
                 for (int j = 0; j < X.ruleCount(); j++) {
                     Rule rule = X.rules.get(j);
-                    for (int k = 0; k < rule.size(); k++) {
-                        Symbol symbol = rule.get(k);
+                    for (int n = 0; n < rule.size(); n++) {
+                        Symbol symbol = rule.get(n);
                         if (!symbol.terminal) {
                             TokenSet tempSet = new TokenSet(grammar, k);
-                            addFirstOfRule1(tempSet, rule, k + 1);
+                            addFirstOfRuleK(tempSet, k, rule, n + 1);
                             boolean retChanged = followSetForSymbol(symbol).unionWithoutEps(tempSet);
                             if (retChanged) changed = true;
                             if (tempSet.hasEpsilon()) {
