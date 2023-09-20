@@ -107,6 +107,23 @@ public class Main {
         out.println("duration=" + duration / 1e9);
     }
 
+    static void testK4() throws IOException {
+        Path path = Paths.get("res/k4.dat");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        int n = 0;
+        int count = 0;
+        while (n < lines.size()) {
+            List<String> gramLines = new ArrayList<>();
+            n = readGramLines(lines, n, gramLines);
+            Grammar grammar = new Grammar(gramLines);
+            count++;
+            List<String> expectLines = new ArrayList<>();
+            n = readExpectLines(lines, n, expectLines);
+            n++;
+        }
+        out.println(count + " grammars");
+    }
+
     static void detectCycles(List<String> lines) {
         int n = 0;
         int count = 0;
@@ -222,7 +239,7 @@ public class Main {
                 n++;
                 continue;
             }
-            if (line.isEmpty() || line.equals("---")) break;
+            if (line.isEmpty() || line.equals("---") || line.startsWith("===")) break;
             gramLines.add(line);
             n++;
         }
@@ -230,10 +247,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("res/trapGrammars.dat");
         try {
-            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            detectCycles(lines);
+            testK4();
         } catch (IOException e) {
             e.printStackTrace();
         }
