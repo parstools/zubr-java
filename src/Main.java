@@ -2,6 +2,7 @@ import generator.Generator;
 import generator.RuleOrder;
 import grammar.Grammar;
 import set.SetContainer;
+import set.TokenSet;
 import util.NoMinLenGrammarException;
 
 import java.io.FileWriter;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.getenv;
 import static java.lang.System.out;
 
 public class Main {
@@ -128,26 +130,50 @@ public class Main {
     private static void testK4grammar(Grammar grammar, List<String> expectLines) {
         int n = 0;
         while ((n = testK(grammar, n, expectLines)) < expectLines.size()) {
-
         }
     }
 
     private static int testK(Grammar grammar, int n, List<String> lines) {
+        int failed = 0;
         String line = lines.get(n).trim();
         assert (line.startsWith("==="));
         int k = Integer.valueOf(line.substring(3,line.length()));
+        SetContainer sc = new SetContainer(grammar);
+        sc.reset(k);
+        sc.makeFirstSetsK(k);
+        sc.makeFollowSetsK(k);
         n++;
         line = lines.get(n).trim();
         assert (line.equals("FIRST:"));
         n++;
-        for (int i=0; i<grammar.nonterminals.size(); i++)
+        for (int i = 0; i < sc.firstSets.size(); i++) {
+            line = lines.get(n).trim();
+            if (!compareSetWithLine(grammar, k, sc.firstSets.get(i), line))
+                failed++;
             n++;
+        }
         line = lines.get(n).trim();
         assert (line.equals("FOLLOW:"));
         n++;
-        for (int i=0; i<grammar.nonterminals.size(); i++)
+        for (int i = 0; i < sc.followSets.size(); i++) {
+            line = lines.get(n).trim();
+            if (!compareSetWithLine(grammar, k, sc.followSets.get(i), line))
+                failed++;
             n++;
+        }
         return n;
+    }
+
+    private static boolean compareSetWithLine(Grammar grammar, int k, TokenSet tokenSet, String line) {
+        int pos = line.indexOf("{");
+        String tokenStr = line.substring(pos, line.length());
+        TokenSet expectSet = new TokenSet(grammar, k);
+        expectSet.parse(tokenStr);
+        boolean eq = expectSet.toString().equals(tokenSet.toString());
+        if (!eq) {
+            out.println("differ "+expectSet.toString() + " " + tokenSet.toString());
+        }
+        return eq;
     }
 
     static void detectCycles(List<String> lines) {
