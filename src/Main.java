@@ -107,7 +107,7 @@ public class Main {
         out.println("duration=" + duration / 1e9);
     }
 
-    static void testK4() throws IOException {
+    static void testK4grammars() throws IOException {
         Path path = Paths.get("res/k4.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         int n = 0;
@@ -119,9 +119,35 @@ public class Main {
             count++;
             List<String> expectLines = new ArrayList<>();
             n = readExpectLines(lines, n, expectLines);
+            testK4grammar(grammar, expectLines);
             n++;
         }
         out.println(count + " grammars");
+    }
+
+    private static void testK4grammar(Grammar grammar, List<String> expectLines) {
+        int n = 0;
+        while ((n = testK(grammar, n, expectLines)) < expectLines.size()) {
+
+        }
+    }
+
+    private static int testK(Grammar grammar, int n, List<String> lines) {
+        String line = lines.get(n).trim();
+        assert (line.startsWith("==="));
+        int k = Integer.valueOf(line.substring(3,line.length()));
+        n++;
+        line = lines.get(n).trim();
+        assert (line.equals("FIRST:"));
+        n++;
+        for (int i=0; i<grammar.nonterminals.size(); i++)
+            n++;
+        line = lines.get(n).trim();
+        assert (line.equals("FOLLOW:"));
+        n++;
+        for (int i=0; i<grammar.nonterminals.size(); i++)
+            n++;
+        return n;
     }
 
     static void detectCycles(List<String> lines) {
@@ -248,7 +274,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            testK4();
+            testK4grammars();
         } catch (IOException e) {
             e.printStackTrace();
         }
