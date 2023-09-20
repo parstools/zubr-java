@@ -15,8 +15,8 @@ import grammar.Rule;
 
 public class SetContainer {
     Grammar grammar;
-    List<TokenSet> firstSets = new ArrayList<>();
-    List<TokenSet> followSets = new ArrayList<>();
+    public List<TokenSet> firstSets = new ArrayList<>();
+    public List<TokenSet> followSets = new ArrayList<>();
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
