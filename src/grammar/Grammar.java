@@ -8,8 +8,6 @@ import util.NoMinLenGrammarException;
 
 import java.util.*;
 
-import static java.lang.System.out;
-
 public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
     Map<String, Integer> ntNamesToInt = new HashMap<>();
@@ -177,7 +175,7 @@ public class Grammar implements Cloneable {
         return h.hash();
     }
 
-    public List<String> lines() {
+    public List<String> toLines() {
         List<String> lines = new ArrayList<>();
         for (int i = 0; i < nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
