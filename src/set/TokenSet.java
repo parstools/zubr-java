@@ -194,6 +194,10 @@ public class TokenSet {
         return tiers[1][0].addSeq(new Sequence(grammar));
     }
 
+    public void removeEpsilon() {
+        tiers[1][0].clear();
+    }
+
     public boolean hasEpsilon() {
         return tiers[1][0].trie != null;
     }

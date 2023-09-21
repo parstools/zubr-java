@@ -146,7 +146,7 @@ public class SetContainer {
         return changed;
     }
 
-    boolean addFirstOfRuleK(TokenSet tempSet, int k, Rule rule, int start) {
+    public boolean addFirstOfRuleK(TokenSet tempSet, int k, Rule rule, int start) {
         tempSet.addEpsilonBuild();
         for (int i = start; i < rule.size(); i++) {
             Symbol symbol = rule.get(i);
