@@ -369,4 +369,13 @@ public class TokenSet {
             }
         }
     }
+
+    public SequenceSet getPrefixes(int prefixLen) {
+        SequenceSet ss = new SequenceSet();
+        for (int i = prefixLen; i <= maxLen; i++)
+            tiers[1][i].getPrefixes(prefixLen, ss);
+        for (int i = 1; i <= maxLen; i++)
+            tiers[2][i].getPrefixes(Math.min(i,prefixLen), ss);
+        return ss;
+    }
 }

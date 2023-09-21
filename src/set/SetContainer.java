@@ -118,7 +118,7 @@ public class SetContainer {
             printWriter.println(grammar.getNonTerminalName(i) + " " + followSets.get(i).toString());
     }
 
-    boolean addFirstOfRule1(TokenSet outSet, Rule rule, int start) {
+    public boolean addFirstOfRule1(TokenSet outSet, Rule rule, int start) {
         boolean isEpsilon = true;
         boolean changed = false;
         for (int i = start; i < rule.size(); i++) {

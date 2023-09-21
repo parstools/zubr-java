@@ -138,4 +138,23 @@ public class TokenSetTest {
         set.parse("{c$ ab cab cc$ eps a}");
         assertEquals("{eps a ab cab c$ cc$}",set.toString());
     }
+
+    @Test
+    void getPrefixesTest() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.parse("{a ab bca bb bac $ c$ aa$}");
+        SequenceSet ss = set.getPrefixes(1);
+        TokenSet sorted1 = new TokenSet(grammar, 1);
+        sorted1.addAllSeqDoneOrEof(ss);
+        assertEquals("{a b c $}", sorted1.toString());
+        ss = set.getPrefixes(2);
+        TokenSet sorted2 = new TokenSet(grammar, 2);
+        sorted2.addAllSeqDoneOrEof(ss);
+        assertEquals("{aa ab ba bb bc $ c$}", sorted2.toString());
+        ss = set.getPrefixes(3);
+        TokenSet sorted3 = new TokenSet(grammar, 3);
+        sorted3.addAllSeqDoneOrEof(ss);
+        assertEquals("{bac bca $ c$ aa$}", sorted3.toString());
+    }
 }

@@ -41,4 +41,10 @@ public class Sequence extends ArrayList<Integer> {
     public boolean isEof() {
         return size() > 0 && get(size() - 1) == -1;
     }
+
+    public Sequence clone() {
+        Sequence newSeq = new Sequence(grammar);
+        newSeq.addAll(this);
+        return newSeq;
+    }
 }

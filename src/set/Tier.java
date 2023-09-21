@@ -122,4 +122,9 @@ public class Tier {
     public boolean isEmpty() {
         return trie == null;
     }
+
+    public void getPrefixes(int prefixLen, SequenceSet ss) {
+        if (trie != null)
+            trie.getPrefixes(new Sequence(grammar), prefixLen, ss);
+    }
 }

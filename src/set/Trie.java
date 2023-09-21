@@ -150,4 +150,18 @@ public class Trie {
                 sub.appendPrefixes(prefixLen, trie);
         }
     }
+
+    public void getPrefixes(Sequence seq, int prefixLen, SequenceSet ss) {
+        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            int t = entry.getKey();
+            Sequence cloneSeq = seq.clone();
+            cloneSeq.add(t);
+            if (prefixLen==1)
+                ss.add(cloneSeq);
+            else {
+                Trie sub = entry.getValue();
+                sub.getPrefixes(cloneSeq, prefixLen-1, ss);
+            }
+        }
+    }
 }
