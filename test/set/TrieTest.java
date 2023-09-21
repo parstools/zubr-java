@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TrieTest {
     @Test
     void cloneTest() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         Trie trie1 = new Trie(grammar);
         trie1.put(0, new Trie(grammar));
         Trie trie2 = new Trie(grammar);
@@ -24,7 +24,7 @@ public class TrieTest {
 
     @Test
     void concatPrefixes() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         Trie trie1 = new Trie(grammar);
         Trie trie2 = new Trie(grammar);
         trie2.put(0, new Trie(grammar));

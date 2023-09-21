@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SetContainerTest {
     @Test
     void FirstFollow1() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(1);
         sc.makeFirstSets1();
@@ -31,7 +31,7 @@ public class SetContainerTest {
 
     @Test
     void FirstK_1() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(1);
         sc.makeFirstSetsK(1);
@@ -44,7 +44,7 @@ public class SetContainerTest {
 
     @Test
     void FirstK_2() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(2);
         sc.makeFirstSetsK(2);
@@ -57,7 +57,7 @@ public class SetContainerTest {
 
     @Test
     void FirstK_3() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(3);
         sc.makeFirstSetsK(3);
@@ -70,7 +70,7 @@ public class SetContainerTest {
 
     @Test
     void FirstK_4() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(4);
         sc.makeFirstSetsK(4);
@@ -83,7 +83,7 @@ public class SetContainerTest {
 
     @Test
     void FollowK_1() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(1);
         sc.makeFirstSetsK(1);
@@ -97,7 +97,7 @@ public class SetContainerTest {
 
     @Test
     void FollowK_2() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(2);
         sc.makeFirstSetsK(2);
@@ -111,7 +111,7 @@ public class SetContainerTest {
 
     @Test
     void FollowK_3() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(3);
         sc.makeFirstSetsK(3);
@@ -125,7 +125,7 @@ public class SetContainerTest {
 
     @Test
     void FollowK_4() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc = new SetContainer(g);
         sc.reset(4);
         sc.makeFirstSetsK(4);
@@ -140,7 +140,7 @@ public class SetContainerTest {
     @Disabled("only for generate data to tests")
     @Test
     void FirstFollowK_2_gen() {
-        Grammar g = TestGrammars.LL1();
+        Grammar g = TestGrammars.stdLL1();
         SetContainer sc1 = new SetContainer(g);
         sc1.reset(4);
         sc1.computeSetsByGeneration(4, 30, 100000);

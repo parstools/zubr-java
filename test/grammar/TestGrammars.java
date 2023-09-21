@@ -262,7 +262,7 @@ public class TestGrammars {
         lines.add("F -> i");
         return new Grammar(lines);
     }
-    public static Grammar LL1() {
+    public static Grammar stdLL1() {
         List<String> lines = new ArrayList<>();
         lines.add("E -> T E'");
         lines.add("E' -> + T E'");
@@ -272,6 +272,33 @@ public class TestGrammars {
         lines.add("T' ->");
         lines.add("F -> ( E )");
         lines.add("F -> i");
+        return new Grammar(lines);
+    }
+
+    public static Grammar LL1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a S A");
+        lines.add("S ->");
+        lines.add("A -> b S");
+        lines.add("A -> c");
+        return new Grammar(lines);
+    }
+
+    public static Grammar LL2() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a S A");
+        lines.add("S ->");
+        lines.add("A -> a b S");
+        lines.add("A -> c");
+        return new Grammar(lines);
+    }
+
+    public static Grammar LL3() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a S A");
+        lines.add("S ->");
+        lines.add("A -> a a b S");
+        lines.add("A -> c");
         return new Grammar(lines);
     }
 }

@@ -36,7 +36,7 @@ public class TokenSetTest {
 
     @Test
     void concat1() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         TokenSet set1 = new TokenSet(grammar, 2);
         set1.addSeqBuild("");
         TokenSet set2 = new TokenSet(grammar, 2);
@@ -49,7 +49,7 @@ public class TokenSetTest {
 
     @Test
     void concat2() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         TokenSet set1 = new TokenSet(grammar, 2);
         set1.addSeqBuild("");
         TokenSet set2 = new TokenSet(grammar, 2);
@@ -62,7 +62,7 @@ public class TokenSetTest {
 
     @Test
     void concatWithEps() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         TokenSet set1 = new TokenSet(grammar, 2);
         set1.addSeqBuild("i");
         set1.addSeqDone("()");
@@ -76,7 +76,7 @@ public class TokenSetTest {
 
     @Test
     void concatWithEps_1() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         TokenSet set1 = new TokenSet(grammar, 2);
         set1.addSeqBuild("i");
         TokenSet set2 = new TokenSet(grammar, 2);
@@ -90,7 +90,7 @@ public class TokenSetTest {
 
     @Test
     void concatFirstK3() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         TokenSet set1 = new TokenSet(grammar, 3);
         set1.addSeqBuild("+i");
         set1.addSeqDone("+(i");
@@ -107,7 +107,7 @@ public class TokenSetTest {
 
     @Test
     void containsTest() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         TokenSet set = new TokenSet(grammar, 3);
         set.addSeqBuild("i+");
         set.addSeqDone("i+(");

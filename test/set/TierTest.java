@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TierTest {
     @Test
     void concat() {
-        Grammar grammar = TestGrammars.LL1();
+        Grammar grammar = TestGrammars.stdLL1();
         Tier tier0 = new Tier(grammar,2);
         tier0.addSeq("+i");
         assertEquals("+i", tier0.toString());
