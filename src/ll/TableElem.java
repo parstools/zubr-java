@@ -1,10 +1,14 @@
 package ll;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TableElem {
-    int ruleIndex;
+    List<Integer> alts;
     TableMap subMap;
 
     TableElem(int ruleIndex) {
-        this.ruleIndex = ruleIndex;
+        this.alts = new ArrayList<>();
+        alts.add(ruleIndex);
     }
 }

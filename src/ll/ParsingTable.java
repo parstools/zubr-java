@@ -45,10 +45,11 @@ public class ParsingTable {
                     set.unionWith(sc.followSets.get(i));
                 }
                 SingleTokenSet sts = set.firstTokens();
-                for (int t: sts) {
+                for (int t : sts) {
                     if (maps.get(i).containsKey(t))
                         out.println("can't create LL");
-                    maps.get(i).put(t, new TableElem(i));
+                    else
+                        maps.get(i).put(t, new TableElem(i));
                     out.println(i + ":" + t + "," + j);
                 }
             }
@@ -62,6 +63,7 @@ public class ParsingTable {
         sc.makeFollowSetsK(k);
         for (int i = 0; i < grammar.nonterminals.size(); i++) {
             Nonterminal nt = grammar.getNT(i);
+            TableMap row = maps.get(i);
             for (int j = 0; j < nt.ruleCount(); j++) {
                 Rule rule = nt.rules.get(j);
                 TokenSet set = new TokenSet(grammar, k);
@@ -69,16 +71,24 @@ public class ParsingTable {
                 set = set.concat(sc.followSets.get(i));
                 assert (!set.hasEpsilon());
                 SingleTokenSet sts = set.firstTokens();
-                for (int t: sts) {
-                    TableMap row = maps.get(i);
-                    if (row.containsKey(t)) {
-                        Sequence seq = new Sequence(grammar);
-                        seq.add(t);
-                        SingleTokenSet sts1 = set.nthTokens(seq);
-                        out.println("can't create LL");
-                    }
-                    row.put(t, new TableElem(j));
+                for (int t : sts) {
+                    if (row.containsKey(t))
+                        row.get(t).alts.add(j);
+                    else
+                        row.put(t, new TableElem(j));
                     out.println(i + ":" + t + "," + j);
+                }
+            }
+            for (int t = -1; t < grammar.nonterminals.size(); t++) {
+                if (!row.containsKey(t))
+                    continue;
+                int altCount = row.get(t).alts.size();
+                assert (altCount >= 1);
+                if (altCount > 1) {
+                    out.println("can't create LL");
+                    /*Sequence seq = new Sequence(grammar);
+                    seq.add(t);
+                    SingleTokenSet sts1 = set.nthTokens(seq);*/
                 }
             }
         }
