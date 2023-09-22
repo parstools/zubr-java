@@ -9,8 +9,6 @@ import set.TokenSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.out;
-
 public class TableElem {
     List<Integer> alts;
     TableMap subMap;

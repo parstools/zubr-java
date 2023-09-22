@@ -8,8 +8,6 @@ import set.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.out;
-
 public class ParsingTable {
     Grammar grammar;
     List<TableElem> rows;
@@ -17,14 +15,14 @@ public class ParsingTable {
 
     ParsingTable(Grammar grammar) {
         this.grammar = grammar;
+    }
+
+    boolean createLL(int k) {
         ruleSets = new ArrayList<>();
         rows = new ArrayList<>();
         for (int i = 0; i < grammar.nonterminals.size(); i++) {
             rows.add(new TableElem(grammar));
         }
-    }
-
-    boolean createLL(int k) {
         SetContainer sc = new SetContainer(grammar);
         sc.reset(k);
         sc.makeFirstSetsK(k);
@@ -44,12 +42,9 @@ public class ParsingTable {
                 Rule rule = nt.rules.get(j);
                 row.addAlt(rule);
             }
-            if (!row.incLookahead(new Sequence(grammar), ruleSets)) {
-                out.println("LL failed");
+            if (!row.incLookahead(new Sequence(grammar), ruleSets))
                 return false;
-            }
         }
-        out.println("LL OK");
         return true;
     }
 }
