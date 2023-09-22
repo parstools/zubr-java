@@ -77,7 +77,7 @@ public class ParsingTable {
                 SingleTokenSet sts = ruleSets.get(rule.globalIndex).firstTokens();
                 for (int t : sts) {
                     if (row.containsKey(t))
-                        row.get(t).alts.add(j);
+                        row.get(t).alts.add(rule.globalIndex);
                     else
                         row.put(t, new TableElem(j));
                     out.println(i + ":" + t + "," + j);
@@ -89,10 +89,27 @@ public class ParsingTable {
                 int altCount = row.get(t).alts.size();
                 assert (altCount >= 1);
                 if (altCount > 1) {
-                    out.println("can't create LL");
-                    /*Sequence seq = new Sequence(grammar);
+                    Sequence seq = new Sequence(grammar);
                     seq.add(t);
-                    SingleTokenSet sts1 = set.nthTokens(seq);*/
+                    for (int j=0; j<altCount; j++) {
+                        TokenSet set = ruleSets.get(row.get(t).alts.get(j));
+                        SingleTokenSet sts = set.nthTokens(seq);
+                        row.get(t).subMap = new TableMap();
+                        TableMap map1 = row.get(t).subMap;
+                        for (int t1 : sts) {
+                            if (map1.containsKey(t1))
+                                map1.get(t1).alts.add(j);
+                            else
+                                map1.put(t1, new TableElem(j));
+                        }
+                        for (int t1 = -1; t1 < grammar.nonterminals.size(); t1++) {
+                            if (!map1.containsKey(t1))
+                                continue;
+                            int altCount1 = map1.get(t1).alts.size();
+                            if (altCount1>1)
+                                out.println("can't create LL");
+                        }
+                    }
                 }
             }
         }
