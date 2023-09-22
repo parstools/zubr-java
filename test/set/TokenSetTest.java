@@ -172,7 +172,9 @@ public class TokenSetTest {
         Grammar grammar = TestGrammars.grammar2();
         TokenSet set = new TokenSet(grammar, 3);
         set.parse("{a ab bca bb bac $ c$ aa$}");
-        SingleTokenSet sts = set.nthTokens("a");
+        SingleTokenSet sts = set.nthTokens("");
+        assertEquals("{$abc}", sts.toString());
+        sts = set.nthTokens("a");
         assertEquals("{ab}", sts.toString());
         sts = set.nthTokens("b");
         assertEquals("{abc}", sts.toString());

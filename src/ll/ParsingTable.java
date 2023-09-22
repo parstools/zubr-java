@@ -3,10 +3,7 @@ package ll;
 import grammar.Grammar;
 import grammar.Nonterminal;
 import grammar.Rule;
-import set.Sequence;
-import set.SequenceSet;
-import set.SetContainer;
-import set.TokenSet;
+import set.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,12 +44,12 @@ public class ParsingTable {
                     set.removeEpsilon();
                     set.unionWith(sc.followSets.get(i));
                 }
-                SequenceSet prefixes = set.getPrefixes(1);
-                for (Sequence seq: prefixes) {
-                    if (maps.get(i).containsKey(seq.get(0)))
+                SingleTokenSet sts = set.firstTokens();
+                for (int t: sts) {
+                    if (maps.get(i).containsKey(t))
                         out.println("can't create LL");
-                    maps.get(i).put(seq.get(0), new TableElem(i));
-                    out.println(i + ":" + seq.get(0) + "," + j);
+                    maps.get(i).put(t, new TableElem(i));
+                    out.println(i + ":" + t + "," + j);
                 }
             }
         }
@@ -71,12 +68,12 @@ public class ParsingTable {
                 sc.addFirstOfRuleK(set, k, rule, 0);
                 set = set.concat(sc.followSets.get(i));
                 assert (!set.hasEpsilon());
-                SequenceSet prefixes = set.getPrefixes(1);
-                for (Sequence seq: prefixes) {
-                    if (maps.get(i).containsKey(seq.get(0)))
+                SingleTokenSet sts = set.firstTokens();
+                for (int t: sts) {
+                    if (maps.get(i).containsKey(t))
                         out.println("can't create LL");
-                    maps.get(i).put(seq.get(0), new TableElem(j));
-                    out.println(i + ":" + seq.get(0) + "," + j);
+                    maps.get(i).put(t, new TableElem(j));
+                    out.println(i + ":" + t + "," + j);
                 }
             }
         }
