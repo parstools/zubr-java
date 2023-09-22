@@ -218,7 +218,7 @@ public class TokenSet {
     public void replaceWith(TokenSet tokenSet) {
         boolean changed = false;
         for (int n = 0; n < 3; n++)
-            for (int i=0; i<=maxLen; i++)
+            for (int i = 0; i <= maxLen; i++)
                 tiers[n][i] = tokenSet.tiers[n][i].clone();
     }
 
@@ -327,17 +327,17 @@ public class TokenSet {
         if (s.charAt(0) == '[') {
             int pos = s.indexOf("]{");
             if (pos > 0) {
-                buildPart = s.substring(1,pos);
+                buildPart = s.substring(1, pos);
                 if (s.charAt(s.length() - 1) != '}')
                     throw new RuntimeException("bad parse string" + s);
-                doneEofPart = s.substring(pos+2,s.length()-1);
+                doneEofPart = s.substring(pos + 2, s.length() - 1);
             } else {
                 if (s.charAt(s.length() - 1) != ']')
                     throw new RuntimeException("bad parse string" + s);
-                buildPart = s.substring(1,s.length()-1);
+                buildPart = s.substring(1, s.length() - 1);
             }
         } else if (s.charAt(0) == '{') {
-            doneEofPart = s.substring(1,s.length()-1);
+            doneEofPart = s.substring(1, s.length() - 1);
         } else throw new RuntimeException("bad parse string" + s);
         parseBuild(buildPart);
         parseDoneEof(doneEofPart);
@@ -347,25 +347,25 @@ public class TokenSet {
         if (buildPart.isEmpty())
             return;
         String[] names = buildPart.split(" ");
-        for (String name: names) {
+        for (String name : names) {
             if (name.equals("eps"))
                 addSeqBuild("");
             else
                 addSeqBuild(name);
         }
     }
+
     private void parseDoneEof(String doneEofPart) {
         if (doneEofPart.isEmpty())
             return;
         String[] names = doneEofPart.split(" ");
-        for (String name: names) {
+        for (String name : names) {
             int pos = name.indexOf("$");
-            if (pos>=0) {
-                if (pos!=name.length()-1)
-                    throw new RuntimeException("bad token name "+name);
+            if (pos >= 0) {
+                if (pos != name.length() - 1)
+                    throw new RuntimeException("bad token name " + name);
                 addSeqEof(name);
-            }
-            else {
+            } else {
                 if (name.equals("eps"))
                     addSeqDone("");
                 else
@@ -379,7 +379,27 @@ public class TokenSet {
         for (int i = prefixLen; i <= maxLen; i++)
             tiers[1][i].getPrefixes(prefixLen, ss);
         for (int i = 1; i <= maxLen; i++)
-            tiers[2][i].getPrefixes(Math.min(i,prefixLen), ss);
+            tiers[2][i].getPrefixes(Math.min(i, prefixLen), ss);
         return ss;
+    }
+
+    public SingleTokenSet firstTokens() {
+        SingleTokenSet sts = new SingleTokenSet(grammar);
+        for (int i = 1; i <= 2; i++)
+            for (int j = 1; j <= maxLen; j++)
+                tiers[i][j].firstTokens(sts);
+        return sts;
+    }
+
+    public SingleTokenSet nthTokens(Sequence seq) {
+        SingleTokenSet sts = new SingleTokenSet(grammar);
+        for (int i = 1; i <= 2; i++)
+            for (int j = seq.size()+1; j <= maxLen; j++)
+                tiers[i][j].nthTokens(seq, sts);
+        return sts;
+    }
+
+    public SingleTokenSet nthTokens(String str) {
+        return nthTokens(new Sequence(grammar, str));
     }
 }

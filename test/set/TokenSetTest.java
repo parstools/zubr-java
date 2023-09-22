@@ -157,4 +157,28 @@ public class TokenSetTest {
         sorted3.addAllSeqDoneOrEof(ss);
         assertEquals("{bac bca $ c$ aa$}", sorted3.toString());
     }
+
+    @Test
+    void firstTokensTest() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.parse("{a ab bca bb bac $ c$ aa$}");
+        SingleTokenSet sts = set.firstTokens();
+        assertEquals("{$abc}", sts.toString());
+    }
+
+    @Test
+    void nthTokensTest() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set = new TokenSet(grammar, 3);
+        set.parse("{a ab bca bb bac $ c$ aa$}");
+        SingleTokenSet sts = set.nthTokens("a");
+        assertEquals("{ab}", sts.toString());
+        sts = set.nthTokens("b");
+        assertEquals("{abc}", sts.toString());
+        sts = set.nthTokens("c");
+        assertEquals("{$}", sts.toString());
+        sts = set.nthTokens("ba");
+        assertEquals("{c}", sts.toString());
+    }
 }

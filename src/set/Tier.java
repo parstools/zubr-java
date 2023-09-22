@@ -127,4 +127,14 @@ public class Tier {
         if (trie != null)
             trie.getPrefixes(new Sequence(grammar), prefixLen, ss);
     }
+
+    public void firstTokens(SingleTokenSet sts) {
+        if (trie != null)
+            trie.firstTokens(sts);
+    }
+
+    public void nthTokens(Sequence seq, SingleTokenSet sts) {
+        if (trie != null)
+            trie.nthTokens(seq, sts);
+    }
 }

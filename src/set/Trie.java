@@ -25,7 +25,7 @@ public class Trie {
 
     List<String> getSuffixes() {
         List<String> list = new ArrayList<>();
-        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t = entry.getKey();
             Trie value = entry.getValue();
             List<String> subList = value.getSuffixes();
@@ -55,7 +55,7 @@ public class Trie {
     @Override
     public int hashCode() {
         Hash h = new Hash();
-        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t = entry.getKey();
             h.add(t);
             h.add(entry.getValue().hashCode());
@@ -65,7 +65,7 @@ public class Trie {
 
     public Trie clone() {
         Trie newTrie = new Trie(grammar);
-        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t = entry.getKey();
             newTrie.put(t, entry.getValue().clone());
         }
@@ -75,7 +75,7 @@ public class Trie {
     Trie clone(int prefixLen) {
         Trie newTrie = new Trie(grammar);
         if (prefixLen > 0) {
-            for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
                 int t = entry.getKey();
                 newTrie.put(t, entry.getValue().clone(prefixLen - 1));
             }
@@ -85,7 +85,7 @@ public class Trie {
 
     public void appendStrings(int index) {
         if (!map.isEmpty())
-            for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
                 entry.getValue().appendStrings(index);
             }
         else {
@@ -99,7 +99,7 @@ public class Trie {
             return 1;
         else {
             int sum = 0;
-            for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+            for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
                 sum += entry.getValue().calculateSize();
             }
             return sum;
@@ -113,7 +113,7 @@ public class Trie {
 
     public boolean unionWith(Trie trie) {
         boolean modified = false;
-        for (Map.Entry<Integer,Trie> entry : trie.map.entrySet()) {
+        for (Map.Entry<Integer, Trie> entry : trie.map.entrySet()) {
             int t = entry.getKey();
             if (map.containsKey(t)) {
                 if (get(t).unionWith(entry.getValue()))
@@ -131,7 +131,7 @@ public class Trie {
         if (prefixLen == 0) return;
         if (trie == null) return;
         if (map.isEmpty()) {
-            for (Map.Entry<Integer,Trie> entry : trie.map.entrySet()) {
+            for (Map.Entry<Integer, Trie> entry : trie.map.entrySet()) {
                 map.put(entry.getKey(), entry.getValue().clone());
             }
         } else {
@@ -141,7 +141,7 @@ public class Trie {
 
     private void appendPrefixes(int prefixLen, Trie trie) {
         assert (!map.isEmpty());
-        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t1 = entry.getKey();
             Trie sub = entry.getValue();
             if (sub.map.isEmpty())
@@ -152,16 +152,36 @@ public class Trie {
     }
 
     public void getPrefixes(Sequence seq, int prefixLen, SequenceSet ss) {
-        for (Map.Entry<Integer,Trie> entry : map.entrySet()) {
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t = entry.getKey();
             Sequence cloneSeq = seq.clone();
             cloneSeq.add(t);
-            if (prefixLen==1)
+            if (prefixLen == 1)
                 ss.add(cloneSeq);
             else {
                 Trie sub = entry.getValue();
-                sub.getPrefixes(cloneSeq, prefixLen-1, ss);
+                sub.getPrefixes(cloneSeq, prefixLen - 1, ss);
             }
         }
+    }
+
+    public void firstTokens(SingleTokenSet sts) {
+        sts.addAll(map.keySet());
+    }
+
+    public void nthTokens(Sequence seq, SingleTokenSet sts) {
+        Trie trie = findTrie(seq);
+        if (trie != null)
+            trie.firstTokens(sts);
+    }
+
+    private Trie findTrie(Sequence seq) {
+        Trie tr = this;
+        for (int t : seq) {
+            tr = tr.get(t);
+            if (tr == null)
+                return null;
+        }
+        return tr;
     }
 }
