@@ -17,18 +17,18 @@ import static java.lang.System.out;
 
 public class ParsingTable {
     Grammar grammar;
-    List<Map<Integer, Integer>> maps;
+    List<TableMap> maps;
 
     ParsingTable(Grammar grammar) {
         this.grammar = grammar;
         maps = new ArrayList<>();
         for (int i = 0; i < grammar.nonterminals.size(); i++) {
-            maps.add(new HashMap<>());
+            maps.add(new TableMap());
         }
     }
 
     void clear() {
-        for (Map<Integer, Integer> map : maps)
+        for (TableMap map : maps)
             map.clear();
     }
 
@@ -51,7 +51,7 @@ public class ParsingTable {
                 for (Sequence seq: prefixes) {
                     if (maps.get(i).containsKey(seq.get(0)))
                         out.println("can't create LL");
-                    maps.get(i).put(seq.get(0), j);
+                    maps.get(i).put(seq.get(0), new TableElem(i));
                     out.println(i + ":" + seq.get(0) + "," + j);
                 }
             }
@@ -67,7 +67,7 @@ public class ParsingTable {
             Nonterminal nt = grammar.getNT(i);
             for (int j = 0; j < nt.ruleCount(); j++) {
                 Rule rule = nt.rules.get(j);
-                TokenSet set = new TokenSet(grammar, 1);
+                TokenSet set = new TokenSet(grammar, k);
                 sc.addFirstOfRuleK(set, k, rule, 0);
                 set = set.concat(sc.followSets.get(i));
                 assert (!set.hasEpsilon());
@@ -75,7 +75,7 @@ public class ParsingTable {
                 for (Sequence seq: prefixes) {
                     if (maps.get(i).containsKey(seq.get(0)))
                         out.println("can't create LL");
-                    maps.get(i).put(seq.get(0), j);
+                    maps.get(i).put(seq.get(0), new TableElem(j));
                     out.println(i + ":" + seq.get(0) + "," + j);
                 }
             }
