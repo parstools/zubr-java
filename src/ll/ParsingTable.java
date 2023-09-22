@@ -91,10 +91,10 @@ public class ParsingTable {
                 if (altCount > 1) {
                     Sequence seq = new Sequence(grammar);
                     seq.add(t);
+                    row.get(t).subMap = new TableMap();
                     for (int j=0; j<altCount; j++) {
                         TokenSet set = ruleSets.get(row.get(t).alts.get(j));
                         SingleTokenSet sts = set.nthTokens(seq);
-                        row.get(t).subMap = new TableMap();
                         TableMap map1 = row.get(t).subMap;
                         for (int t1 : sts) {
                             if (map1.containsKey(t1))

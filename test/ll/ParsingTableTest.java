@@ -25,4 +25,11 @@ public class ParsingTableTest {
         ParsingTable table = new ParsingTable(g);
         table.createLL(2);
     }
+
+    @Test
+    void testLL_3() {
+        Grammar g = TestGrammars.LL3();
+        ParsingTable table = new ParsingTable(g);
+        table.createLL(3);
+    }
 }
