@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 
 public class ParsingTableTest {
     @Test
-    void testLL1() {
+    void testStdLL1() {
         Grammar g = TestGrammars.stdLL1();
         ParsingTable table = new ParsingTable(g);
-        table.createLL1();
+        table.createLL(1);
     }
 
     @Test
