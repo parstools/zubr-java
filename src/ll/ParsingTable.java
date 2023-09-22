@@ -70,9 +70,14 @@ public class ParsingTable {
                 assert (!set.hasEpsilon());
                 SingleTokenSet sts = set.firstTokens();
                 for (int t: sts) {
-                    if (maps.get(i).containsKey(t))
+                    TableMap row = maps.get(i);
+                    if (row.containsKey(t)) {
+                        Sequence seq = new Sequence(grammar);
+                        seq.add(t);
+                        SingleTokenSet sts1 = set.nthTokens(seq);
                         out.println("can't create LL");
-                    maps.get(i).put(t, new TableElem(j));
+                    }
+                    row.put(t, new TableElem(j));
                     out.println(i + ":" + t + "," + j);
                 }
             }
