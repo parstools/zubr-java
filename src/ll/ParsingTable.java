@@ -92,10 +92,10 @@ public class ParsingTable {
                     Sequence seq = new Sequence(grammar);
                     seq.add(t);
                     row.get(t).subMap = new TableMap();
+                    TableMap map1 = row.get(t).subMap;
                     for (int j=0; j<altCount; j++) {
                         TokenSet set = ruleSets.get(row.get(t).alts.get(j));
                         SingleTokenSet sts = set.nthTokens(seq);
-                        TableMap map1 = row.get(t).subMap;
                         for (int t1 : sts) {
                             if (map1.containsKey(t1))
                                 map1.get(t1).alts.add(j);
@@ -106,8 +106,31 @@ public class ParsingTable {
                             if (!map1.containsKey(t1))
                                 continue;
                             int altCount1 = map1.get(t1).alts.size();
-                            if (altCount1>1)
-                                out.println("can't create LL");
+                            //------------------
+                            if (altCount1>1) {
+                                Sequence seq2 = seq.clone();
+                                seq2.add(t1);
+                                map1.get(t1).subMap = new TableMap();
+                                TableMap map2 = map1.get(t1).subMap;
+                                for (int j1=0; j1<altCount1; j1++) {
+                                    TokenSet set1 = ruleSets.get(map1.get(t1).alts.get(j1));
+                                    SingleTokenSet sts1 = set1.nthTokens(seq2);
+                                    for (int t2 : sts1) {
+                                        if (map2.containsKey(t2))
+                                            map2.get(t2).alts.add(j1);
+                                        else
+                                            map2.put(t2, new TableElem(j1));
+                                    }
+                                    for (int t2 = -1; t2 < grammar.nonterminals.size(); t2++) {
+                                        if (!map2.containsKey(t2))
+                                            continue;
+                                        int altCount2 = map2.get(t2).alts.size();
+                                        if (altCount2 > 1)
+                                            out.println("can't create LL");
+                                    }
+                                }
+                            }
+                        //------------------
                         }
                     }
                 }
