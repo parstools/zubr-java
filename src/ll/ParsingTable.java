@@ -24,7 +24,7 @@ public class ParsingTable {
         }
     }
 
-    void createLL(int k) {
+    boolean createLL(int k) {
         SetContainer sc = new SetContainer(grammar);
         sc.reset(k);
         sc.makeFirstSetsK(k);
@@ -44,7 +44,12 @@ public class ParsingTable {
                 Rule rule = nt.rules.get(j);
                 row.addAlt(rule);
             }
-            row.incLookahead(new Sequence(grammar), ruleSets);
+            if (!row.incLookahead(new Sequence(grammar), ruleSets)) {
+                out.println("LL failed");
+                return false;
+            }
         }
+        out.println("LL OK");
+        return true;
     }
 }
