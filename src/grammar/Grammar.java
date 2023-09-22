@@ -16,7 +16,7 @@ public class Grammar implements Cloneable {
     List<String> tNames = new ArrayList<>();
 
     int globalRuleCounter = 0;
-    List<Rule> globalRules = new ArrayList<>();
+    public List<Rule> globalRules = new ArrayList<>();
 
     Rule getGlobalRule(int globalIndex) {
         return globalRules.get(globalIndex);

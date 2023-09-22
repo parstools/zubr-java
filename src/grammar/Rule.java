@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Rule extends ArrayList<Symbol> {
     Grammar grammar;
-    Nonterminal owner;
+    public Nonterminal owner;
     public int globalIndex;
 
     public boolean hasNt = false;
