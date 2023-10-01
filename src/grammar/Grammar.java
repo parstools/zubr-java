@@ -52,11 +52,11 @@ public class Grammar implements Cloneable {
     }
 
     public void eliminationDirectRecursion() {
-        //while (true) {
+        while (true) {
             int index = directLeftRecursiveNt();
-          //  if (index < 0) break;
+            if (index < 0) break;
             eliminationDirectRecursionForNt(index);
-        //}
+        }
     }
 
     void eliminationDirectRecursionForNt(int index) {
@@ -64,13 +64,27 @@ public class Grammar implements Cloneable {
         List<Rule> nonrecursiveRules = new ArrayList<>();
         Nonterminal nt = nonterminals.get(index);
         for (Rule rule : nt.rules) {
-            if (rule.directLeftRecursive(index))
-                recursiveRules.add(rule);
-            else
+            if (rule.directLeftRecursive(index)) {
+                if (rule.size()>1) //without rules A->A
+                    recursiveRules.add(rule);
+            } else
                 nonrecursiveRules.add(rule);
         }
         assert (!recursiveRules.isEmpty());
         Nonterminal newNt = insertNonterminal(index);
+        nt.rules.clear();
+        for (Rule rule: nonrecursiveRules) {
+            rule.add(new Symbol(this, false, newNt.index));
+            nt.addRule(rule);
+        }
+        for (Rule rule: recursiveRules) {
+            rule.remove(0);
+            assert (!rule.isEmpty());
+            rule.owner = newNt;
+            rule.add(new Symbol(this, false, newNt.index));
+            newNt.addRule(rule);
+        }
+        newNt.addRule(new Rule(nt.grammar, newNt));
     }
 
     private Nonterminal insertNonterminal(int sourceIndex) {
