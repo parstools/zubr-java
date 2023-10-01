@@ -22,6 +22,13 @@ public class Rule extends ArrayList<Symbol> {
         return !symbol.terminal && symbol.index == ntIndex;
     }
 
+    boolean startWithNonterminal() {
+        if (isEmpty())
+            return false;
+        Symbol symbol = get(0);
+        return !symbol.terminal;
+    }
+
     void computeNonNullableCount() {
         countNonNullableSymbols = 0;
         for (Symbol symbol : this)

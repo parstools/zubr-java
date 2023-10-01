@@ -303,4 +303,20 @@ public class Grammar implements Cloneable {
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles(this, johnsonResult);
     }
+
+    RecurCycles detectRecursion() {
+        DG graph = new DG(nonterminals.size());
+        for (Nonterminal nt : nonterminals)
+            for (Rule rule : nt.rules)
+                if (rule.startWithNonterminal()) {
+                    Symbol symbol = rule.get(0);
+                    graph.addEdge(nt.index, symbol.index, rule.globalIndex);
+                }
+        List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
+        return new RecurCycles(this, johnsonResult);
+    }
+
+    public void eliminationRecursion() {
+        detectRecursion();
+    }
 }
