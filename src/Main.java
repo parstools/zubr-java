@@ -15,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.getenv;
 import static java.lang.System.out;
 
 public class Main {
@@ -313,11 +312,29 @@ public class Main {
         return n;
     }
 
+    static void testElimRecursion() {
+        List<String> lines = new ArrayList<>();
+        lines.add("E -> E + T");
+        lines.add("E -> T");
+        lines.add("T -> T * F");
+        lines.add("T -> F");
+        lines.add("F -> ( E )");
+        lines.add("F -> i");
+        Grammar grammar = new Grammar(lines);
+        List<String> lines1 = grammar.toLines();
+        lines1.forEach(out::println);
+        out.println();
+        grammar.eliminationDirectRecursion();
+        List<String> lines2 = grammar.toLines();
+        lines2.forEach(out::println);
+    }
+
     public static void main(String[] args) {
-        try {
+        /*try {
             readAllGrammars();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+        testElimRecursion();
     }
 }

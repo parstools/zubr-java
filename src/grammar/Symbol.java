@@ -4,7 +4,7 @@ import util.Hash;
 
 public class Symbol {
     public final boolean terminal;
-    public final int index;
+    public int index;
     private Grammar grammar;
     public Symbol(Grammar grammar, boolean terminal, int index) {
         this.grammar = grammar;
@@ -23,5 +23,10 @@ public class Symbol {
         h.add(terminal?1:0);
         h.add(index);
         return h.hash();
+    }
+
+    public void updateNtFrom(int updateIndex) {
+        if (!terminal && index>=updateIndex)
+            index++;
     }
 }

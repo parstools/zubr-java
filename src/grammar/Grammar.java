@@ -4,6 +4,7 @@ import graph.DG;
 import graph.JohnsonsAlgorithm;
 import graph.VertexEdge;
 import util.Hash;
+import util.Name;
 
 import java.util.*;
 
@@ -40,17 +41,82 @@ public class Grammar implements Cloneable {
             return ntNames.get(symbol.index);
     }
 
-    public int directLeftRecursiveNt() {
+    int directLeftRecursiveNt() {
         for (int i = 0; i < nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
             for (Rule rule : nt.rules)
-                if (!rule.isEmpty()) {
-                    Symbol symbol = rule.get(0);
-                    if (!symbol.terminal && symbol.index==i)
-                        return i;
-                }
+                if (rule.directLeftRecursive(i))
+                    return i;
         }
         return -1;
+    }
+
+    public void eliminationDirectRecursion() {
+        //while (true) {
+            int index = directLeftRecursiveNt();
+          //  if (index < 0) break;
+            eliminationDirectRecursionForNt(index);
+        //}
+    }
+
+    void eliminationDirectRecursionForNt(int index) {
+        List<Rule> recursiveRules = new ArrayList<>();
+        List<Rule> nonrecursiveRules = new ArrayList<>();
+        Nonterminal nt = nonterminals.get(index);
+        for (Rule rule : nt.rules) {
+            if (rule.directLeftRecursive(index))
+                recursiveRules.add(rule);
+            else
+                nonrecursiveRules.add(rule);
+        }
+        assert (!recursiveRules.isEmpty());
+        Nonterminal newNt = insertNonterminal(index);
+    }
+
+    private Nonterminal insertNonterminal(int sourceIndex) {
+        Nonterminal newNt = new Nonterminal(this);
+        newNt.rules = new ArrayList<>();
+        newNt.index = sourceIndex + 1;
+        insertName(sourceIndex);
+        updateNtIndices(newNt.index);
+        updateRuleSymbolsForInsert(newNt.index);
+        nonterminals.add(newNt.index, newNt);
+        return newNt;
+    }
+
+    private void insertName(int sourceIndex) {
+        for (Map.Entry<String, Integer> entry : ntNamesToInt.entrySet()) {
+            if (entry.getValue() > sourceIndex)
+                entry.setValue(entry.getValue() + 1);
+        }
+        ntNames.add(sourceIndex + 1, newNameFrom(ntNames.get(sourceIndex)));
+    }
+
+    private String newNameFrom(String s) {
+        if (Name.hasNameSuffixNumber(s)) {
+            int n = Name.suffixNumber(s);
+            String nameAlone = Name.nameWithoutNumber(s);
+            String newName = s;
+            do {
+                n++;
+                newName = nameAlone + String.valueOf(n);
+            } while (ntNamesToInt.containsKey(newName));
+            return newName;
+        } else return s + "1";
+    }
+
+    private void updateNtIndices(int index) {
+        for (Nonterminal nt : nonterminals)
+            if (nt.index>=index)
+                nt.index++;
+    }
+
+    private void updateRuleSymbolsForInsert(int index) {
+        for (Nonterminal nt : nonterminals) {
+            for (Rule rule : nt.rules)
+                for (Symbol symbol : rule)
+                    symbol.updateNtFrom(index);
+        }
     }
 
     public Nonterminal getNT(int ntIndex) {

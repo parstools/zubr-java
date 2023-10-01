@@ -15,6 +15,13 @@ public class Rule extends ArrayList<Symbol> {
     public int minLen = -1;
     int countNonNullableSymbols = 0;
 
+    boolean directLeftRecursive(int ntIndex) {
+        if (isEmpty())
+            return false;
+        Symbol symbol = get(0);
+        return !symbol.terminal && symbol.index == ntIndex;
+    }
+
     void computeNonNullableCount() {
         countNonNullableSymbols = 0;
         for (Symbol symbol : this)

@@ -19,6 +19,7 @@ public class Nonterminal implements Cloneable {
     public Object clone() {
         Nonterminal newNt = new Nonterminal(grammar);
         newNt.rules = new ArrayList<>(rules);
+        newNt.index = index;
         return newNt;
     }
 
