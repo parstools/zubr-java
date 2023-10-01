@@ -16,6 +16,7 @@ public class Grammar implements Cloneable {
     List<String> tNames = new ArrayList<>();
 
     int globalRuleCounter = 0;
+    boolean minLenOK = false;
     public List<Rule> globalRules = new ArrayList<>();
 
     Rule getGlobalRule(int globalIndex) {
@@ -98,9 +99,11 @@ public class Grammar implements Cloneable {
             nt.addRule(rule);
         }
         computeMinLen();
-        checkMinLen();
-        computeNonNullableCount();
-        detectCycles();
+        minLenOK = checkMinLen();
+        if (minLenOK) {
+            computeNonNullableCount();
+            detectCycles();
+        }
     }
 
     private void computeNonNullableCount() {
@@ -109,16 +112,17 @@ public class Grammar implements Cloneable {
                 rule.computeNonNullableCount();
     }
 
-    private void checkMinLen() {
+    private boolean checkMinLen() {
         int index = 0;
         for (Nonterminal nt : nonterminals) {
             if (nt.minLen < 0)
-                throw new NoMinLenGrammarException("not computed minLen for " + getNonTerminalName(index));
+                return false;
             for (Rule ruleInfo : nt.rules)
                 if (ruleInfo.minLen < 0)
-                    throw new NoMinLenGrammarException("not computed minLen for " + ruleInfo.toString());
+                    return false;
             index++;
         }
+        return true;
     }
 
     private void computeMinLen() {

@@ -127,6 +127,21 @@ public class Main {
         out.println(count + " grammars");
     }
 
+    static void readAllGrammars() throws IOException {
+        Path path = Paths.get("res/grammars.dat");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        int n = 0;
+        int count = 0;
+        while (n < lines.size()) {
+            List<String> gramLines = new ArrayList<>();
+            n = readGramLines(lines, n, gramLines);
+            Grammar grammar = new Grammar(gramLines);
+            count++;
+            n++;
+        }
+        out.println(count + " grammars");
+    }
+
     private static void testK4grammar(Grammar grammar, List<String> expectLines) {
         int n = 0;
         while ((n = testK(grammar, n, expectLines)) < expectLines.size()) {
@@ -300,7 +315,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            testK4grammars();
+            readAllGrammars();
         } catch (IOException e) {
             e.printStackTrace();
         }
