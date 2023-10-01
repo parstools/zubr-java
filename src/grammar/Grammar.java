@@ -41,6 +41,19 @@ public class Grammar implements Cloneable {
             return ntNames.get(symbol.index);
     }
 
+    int directLeftRecursiveNt() {
+        for (int i = 0; i < nonterminals.size(); i++) {
+            Nonterminal nt = nonterminals.get(i);
+            for (Rule rule : nt.rules)
+                if (!rule.isEmpty()) {
+                    Symbol symbol = rule.get(0);
+                    if (!symbol.terminal && symbol.index==i)
+                        return i;
+                }
+        }
+        return -1;
+    }
+
     public Nonterminal getNT(int ntIndex) {
         return nonterminals.get(ntIndex);
     }
@@ -113,14 +126,12 @@ public class Grammar implements Cloneable {
     }
 
     private boolean checkMinLen() {
-        int index = 0;
         for (Nonterminal nt : nonterminals) {
             if (nt.minLen < 0)
                 return false;
             for (Rule ruleInfo : nt.rules)
                 if (ruleInfo.minLen < 0)
                     return false;
-            index++;
         }
         return true;
     }
