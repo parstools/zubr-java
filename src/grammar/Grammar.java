@@ -40,7 +40,7 @@ public class Grammar implements Cloneable {
             return ntNames.get(symbol.index);
     }
 
-    int directLeftRecursiveNt() {
+    public int directLeftRecursiveNt() {
         for (int i = 0; i < nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
             for (Rule rule : nt.rules)
