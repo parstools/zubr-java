@@ -152,7 +152,7 @@ public class Main {
         int failed = 0;
         String line = lines.get(n).trim();
         assert (line.startsWith("==="));
-        int k = Integer.valueOf(line.substring(3,line.length()));
+        int k = Integer.valueOf(line.substring(3, line.length()));
         SetContainer sc = new SetContainer(grammar);
         sc.reset(k);
         sc.makeFirstSetsK(k);
@@ -186,7 +186,7 @@ public class Main {
         expectSet.parse(tokenStr);
         boolean eq = expectSet.toString().equals(tokenSet.toString());
         if (!eq) {
-            out.println("differ "+expectSet.toString() + " " + tokenSet.toString());
+            out.println("differ " + expectSet.toString() + " " + tokenSet.toString());
         }
         return eq;
     }
