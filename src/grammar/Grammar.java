@@ -4,7 +4,6 @@ import graph.DG;
 import graph.JohnsonsAlgorithm;
 import graph.VertexEdge;
 import util.Hash;
-import util.NoMinLenGrammarException;
 
 import java.util.*;
 
@@ -129,8 +128,8 @@ public class Grammar implements Cloneable {
         for (Nonterminal nt : nonterminals) {
             if (nt.minLen < 0)
                 return false;
-            for (Rule ruleInfo : nt.rules)
-                if (ruleInfo.minLen < 0)
+            for (Rule rule : nt.rules)
+                if (rule.minLen < 0)
                     return false;
         }
         return true;
