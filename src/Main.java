@@ -329,12 +329,29 @@ public class Main {
         lines2.forEach(out::println);
     }
 
+    static void testElimIndirectRecursion() {
+        List<String> lines = new ArrayList<>();
+        lines.add("A -> B a");
+        lines.add("A -> A a");
+        lines.add("A -> c");
+        lines.add("B -> B b");
+        lines.add("B -> A b");
+        lines.add("B -> d");
+        Grammar grammar = new Grammar(lines);
+        List<String> lines1 = grammar.toLines();
+        lines1.forEach(out::println);
+        out.println();
+        grammar.eliminationDirectRecursion();
+        List<String> lines2 = grammar.toLines();
+        lines2.forEach(out::println);
+    }
+
     public static void main(String[] args) {
         /*try {
             readAllGrammars();
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        testElimRecursion();
+        testElimIndirectRecursion();
     }
 }
