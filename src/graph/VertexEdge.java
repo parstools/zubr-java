@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class VertexEdge {
     private final int n;
-    private final int edge;
+    private final Object edge;
     private int hashCode;
 
-    public VertexEdge(int vertex, int edge) {
+    public VertexEdge(int vertex, Object edge) {
         this.n = vertex;
         this.edge = edge;
         this.hashCode = Objects.hash(vertex, edge);
@@ -17,7 +17,7 @@ public class VertexEdge {
         return n;
     }
 
-    public int getEdge() {
+    public Object getEdge() {
         return edge;
     }
 
@@ -38,6 +38,9 @@ public class VertexEdge {
 
     @Override
     public String toString() {
-        return "[%d,%d]".formatted(n, edge);
+        if (edge == null)
+            return "[%d,null]".formatted(n);
+        else
+            return "[%d,%s]".formatted(n, edge.toString());
     }
 }

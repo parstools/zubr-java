@@ -18,11 +18,15 @@ public class Cycles extends ArrayList<Cycle> {
             public int compare(Cycle c1, Cycle c2) {
                 int commonLen = Math.min(c1.size(), c2.size());
                 for (int i = 0; i < commonLen; i++) {
-                    int g1 = c1.get(i);
-                    int g2 = c2.get(i);
-                    if (g1 < g2)
+                    Rule g1 = c1.get(i);
+                    Rule g2 = c2.get(i);
+                    if (g1.owner.index < g2.owner.index)
                         return -1;
-                    else if (g1 > g2)
+                    else if (g1.owner.index > g2.owner.index)
+                        return 1;
+                    else if (g1.index < g2.index)
+                        return -1;
+                    else if (g1.index > g2.index)
                         return 1;
                 }
                 if (c1.size() < c2.size())

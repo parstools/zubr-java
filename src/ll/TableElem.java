@@ -8,14 +8,15 @@ import set.TokenSet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TableElem {
-    List<Integer> alts;
+    List<Rule> alts;
     TableMap subMap;
     Grammar grammar;
 
     void addAlt(Rule rule) {
-        alts.add(rule.globalIndex);
+        alts.add(rule);
     }
 
     TableElem(Grammar grammar) {
@@ -23,18 +24,18 @@ public class TableElem {
         this.alts = new ArrayList<>();
     }
 
-    boolean incLookahead(Sequence seq, List<TokenSet> ruleSets) {
+    boolean incLookahead(Sequence seq, Map<Rule, TokenSet> ruleSets) {
         subMap = new TableMap();
         for (int i = 0; i < alts.size(); i++) {
-            int globRuleIndex = alts.get(i);
-            TokenSet set = ruleSets.get(globRuleIndex);
+            Rule ithRule = alts.get(i);
+            TokenSet set = ruleSets.get(ithRule);
             SingleTokenSet sts = set.nthTokens(seq);
             if(sts.isEmpty())
                 return false;
             for (int t : sts) {
                 if (!subMap.containsKey(t))
                     subMap.put(t, new TableElem(grammar));
-                subMap.get(t).alts.add(globRuleIndex);
+                subMap.get(t).alts.add(ithRule);
             }
             for (int t = -1; t < grammar.nonterminals.size(); t++) {
                 if (!subMap.containsKey(t))

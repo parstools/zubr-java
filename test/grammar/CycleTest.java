@@ -26,7 +26,7 @@ public class CycleTest {
     @Test
     void cycle112() {
         Grammar g = TestGrammars.cycle112();
-        assertEquals("[A -> A], [B -> B], [A -> B, B -> A]",g.cycles.toString());
+        assertEquals("[A -> A], [A -> B, B -> A], [B -> B]",g.cycles.toString());
     }
 
     @Test

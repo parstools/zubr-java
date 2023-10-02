@@ -42,7 +42,7 @@ public class DG {
         }
     }
 
-    public void addEdge(int from, int to, int label) {
+    public void addEdge(int from, int to, Object label) {
         if (hasLabel) {
             from = labelToOriginal.get(from);
             to = labelToOriginal.get(to);
@@ -133,7 +133,7 @@ public class DG {
             this.edges = new ArrayList<>();
         }
 
-        public void addEdge(int from, int to, int label) {
+        public void addEdge(int from, int to, Object label) {
             edges.add(new Edge(from, to, label));
         }
 
@@ -167,9 +167,9 @@ public class DG {
     public class Edge {
         private int from;
         private int to;
-        private int label;
+        private Object label;
 
-        public Edge (int from, int to, int label) {
+        public Edge (int from, int to, Object label) {
             this.from = from;
             this.to = to;
             this.label = label;
@@ -183,7 +183,7 @@ public class DG {
             return to;
         }
 
-        public int getLabel() {
+        public Object getLabel() {
             return label;
         }
 

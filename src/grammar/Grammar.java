@@ -15,13 +15,7 @@ public class Grammar implements Cloneable {
     Map<String, Integer> tNamesToInt = new HashMap<>();
     List<String> tNames = new ArrayList<>();
 
-    int globalRuleCounter = 0;
     boolean minLenOK = false;
-    public List<Rule> globalRules = new ArrayList<>();
-
-    Rule getGlobalRule(int globalIndex) {
-        return globalRules.get(globalIndex);
-    }
 
     public String getTerminalName(int t) {
         if (t == -1)
@@ -180,8 +174,6 @@ public class Grammar implements Cloneable {
             String ruleString = line.substring(n + 2).trim();
             Nonterminal nt = nonterminals.get(ntIndex);
             Rule rule = new Rule(this, nt);
-            globalRules.add(rule);
-            globalRuleCounter++;
             rule.parse(ruleString);
             nt.addRule(rule);
         }
@@ -293,7 +285,7 @@ public class Grammar implements Cloneable {
             for (Rule rule : nt.rules)
                 if (rule.cycleSuspected()) {
                     for (Symbol symbol : rule)
-                        graph.addEdge(nt.index, symbol.index, rule.globalIndex);
+                        graph.addEdge(nt.index, symbol.index, rule);
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles(this, johnsonResult);
@@ -305,7 +297,7 @@ public class Grammar implements Cloneable {
             for (Rule rule : nt.rules)
                 if (rule.startWithNonterminal()) {
                     Symbol symbol = rule.get(0);
-                    graph.addEdge(nt.index, symbol.index, rule.globalIndex);
+                    graph.addEdge(nt.index, symbol.index, rule);
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         return new RecurCycles(this, johnsonResult);

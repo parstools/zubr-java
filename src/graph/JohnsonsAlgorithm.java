@@ -17,7 +17,7 @@ public class JohnsonsAlgorithm {
             for (DG.Edge edge : vertex.getEdges()) {
                 if (edge.getFrom() == edge.getTo()) {
                     List<VertexEdge> cycle = new ArrayList<>();
-                    cycle.add(new VertexEdge(edge.getFrom(), -1));
+                    cycle.add(new VertexEdge(edge.getFrom(), null));
                     cycle.add(new VertexEdge(edge.getTo(), edge.getLabel()));
                     allCycles.add(cycle);
                 }
@@ -39,7 +39,7 @@ public class JohnsonsAlgorithm {
         setup(graph);
         calculateUnitaryCycles(graph);
         // Always start with vertex 0
-        VertexEdge startVertex = new VertexEdge(0,-1);
+        VertexEdge startVertex = new VertexEdge(0,null);
 
         for (int i = 0; i < subGraphs.size(); i++) {
             while (subGraphs.get(i).size() > 1) {

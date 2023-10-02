@@ -73,10 +73,6 @@ public class Node {
         }
     }
 
-    int globalRuleIndex() {
-        return rules.get(ruleIndex).globalIndex;
-    }
-
     public String usedRules() {
         if (symbol.terminal)
             return "";
@@ -96,27 +92,6 @@ public class Node {
             return sb.toString();
         }
     }
-
-    public String usedGlobalRules() {
-        if (symbol.terminal)
-            return "";
-        else {
-            StringBuilder sb = new StringBuilder();
-            sb.append(String.valueOf(globalRuleIndex()));
-            if (childs != null) {
-                sb.append(symbol.toString() + "(");
-                for (int i = 0; i < childs.size(); i++) {
-                    Node child = childs.get(i);
-                    if (i > 0)
-                        sb.append(",");
-                    sb.append(child.usedGlobalRules());
-                }
-                sb.append(")");
-            }
-            return sb.toString();
-        }
-    }
-
 
     boolean ruleIndexOK() {
         return ruleIndex < rules.size();
@@ -221,7 +196,9 @@ public class Node {
         int hash;
         if (ruleHash == 0)
             ruleHash = Hash.intHash(-1);
-        ruleHash = Hash.intXor(ruleHash, globalRuleIndex());
+        Rule rule = rules.get(ruleIndex);
+        ruleHash = Hash.intXor(ruleHash, rule.owner.index);
+        ruleHash = Hash.intXor(ruleHash, rule.index);
         return grammar.cycles.xors.contains(ruleHash);
     }
 
@@ -367,9 +344,13 @@ public class Node {
                     return -1;
                 else if (r1.minLen > r2.minLen)
                     return 1;
-                else if (r1.globalIndex < r2.globalIndex)
+                else if (r1.owner.index < r2.owner.index)
                     return -1;
-                else if (r1.globalIndex > r2.globalIndex)
+                else if (r1.owner.index > r2.owner.index)
+                    return 1;
+                else if (r1.index < r2.index)
+                    return -1;
+                else if (r1.index > r2.index)
                     return 1;
                 else
                     return 0;
