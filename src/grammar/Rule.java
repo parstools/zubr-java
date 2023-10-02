@@ -76,6 +76,7 @@ public class Rule extends ArrayList<Symbol> {
     @Override
     public int hashCode() {
         Hash h = new Hash();
+        h.add(owner.index);
         for (Symbol symbol : this) {
             h.add(symbol.hashCode());
             if (symbol.terminal)
