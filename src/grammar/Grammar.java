@@ -51,14 +51,6 @@ public class Grammar implements Cloneable {
         return -1;
     }
 
-    public void eliminationDirectRecursion() {
-        while (true) {
-            int index = directLeftRecursiveNt();
-            if (index < 0) break;
-            eliminationDirectRecursionForNt(index);
-        }
-    }
-
     void eliminationDirectRecursionForNt(int index) {
         List<Rule> recursiveRules = new ArrayList<>();
         List<Rule> nonrecursiveRules = new ArrayList<>();
@@ -85,6 +77,9 @@ public class Grammar implements Cloneable {
             newNt.addRule(rule);
         }
         newNt.addRule(new Rule(nt.grammar, newNt));
+    }
+
+    private void substituteRules(RecurCycle cycle) {
     }
 
     private Nonterminal insertNonterminal(int sourceIndex) {
@@ -317,6 +312,11 @@ public class Grammar implements Cloneable {
     }
 
     public void eliminationRecursion() {
-        detectRecursion();
+        RecurCycles cycles = detectRecursion();
+        for (RecurCycle cycle: cycles)
+            if (cycle.size()==1)
+                eliminationDirectRecursionForNt(cycle.minOwner.index);
+            else
+                substituteRules(cycle);
     }
 }

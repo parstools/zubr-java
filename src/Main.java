@@ -324,7 +324,7 @@ public class Main {
         List<String> lines1 = grammar.toLines();
         lines1.forEach(out::println);
         out.println();
-        grammar.eliminationDirectRecursion();
+        grammar.eliminationRecursion();
         List<String> lines2 = grammar.toLines();
         lines2.forEach(out::println);
     }
@@ -352,6 +352,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+        //testElimRecursion();
         testElimIndirectRecursion();
     }
 }

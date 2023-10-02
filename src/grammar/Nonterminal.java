@@ -29,6 +29,7 @@ public class Nonterminal implements Cloneable {
 
     void addRule(Rule rule) {
         rules.add(rule);
+        rule.owner = this;
     }
 
     Nonterminal(Grammar grammar) {

@@ -18,9 +18,9 @@ public class RecurCycles extends ArrayList<RecurCycle> {
         Collections.sort(this, new Comparator<RecurCycle>() {
             @Override
             public int compare(RecurCycle c1, RecurCycle c2) {
-                if (c1.minOwner < c2.minOwner)
+                if (c1.minOwner.index < c2.minOwner.index)
                     return -1;
-                else if (c1.minOwner > c2.minOwner)
+                else if (c1.minOwner.index > c2.minOwner.index)
                     return 1;
                 if (c1.size() < c2.size())
                     return -1;
