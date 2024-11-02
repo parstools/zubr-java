@@ -288,7 +288,7 @@ public class TokenSet {
         for (int i = 0; i < maxLen; i++)
             for (int j = 0; j <= maxLen; j++) {
                 int combinedLen = Math.min(i + j, maxLen);
-                int target = combinedLen == maxLen ? 1 : 0;
+                int target = combinedLen == maxLen ? TIER_DONE : TIER_BUIlD;
                 Tier tier0 = tiers[TIER_BUIlD][i];
                 Tier tier1 = second.tiers[TIER_DONE][j];
                 Tier newTier = tier0.concat(tier1, combinedLen);
@@ -297,7 +297,7 @@ public class TokenSet {
         for (int i = 0; i < maxLen; i++)
             for (int j = 0; j <= maxLen; j++) {
                 int combinedLen = Math.min(i + j, maxLen);
-                int target = combinedLen == i + j ? 2 : 1;
+                int target = combinedLen < maxLen ? TIER_EOF: TIER_DONE;
                 Tier tier0 = tiers[TIER_BUIlD][i];
                 Tier tier1 = second.tiers[TIER_EOF][j];
                 Tier newTier = tier0.concat(tier1, combinedLen);
