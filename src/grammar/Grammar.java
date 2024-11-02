@@ -295,43 +295,24 @@ public class Grammar implements Cloneable {
     }
 
     private void eliminateUnreachedNonterminals() {
-        return;//todo
-        /*List<Integer> reachedList = new ArrayList<>();
-        Set<Integer> reachedSet = new HashSet<>();
-        reachedList.add(0);
-        reachedSet.add(0);
+        List<Nonterminal> reachedList = new ArrayList<>();
+        Set<Symbol> reachedSet = new HashSet<>();
+        reachedList.add(nonterminals.getFirst());
+        reachedSet.add(nonterminals.getFirst());
         int index = 0;
         while (index<reachedList.size()) {
             Nonterminal nt = nonterminals.get(index);
             for (Rule rule : nt.rules)
                 for (Symbol symbol: rule)
                     if (!symbol.terminal) {
-                        if (!reachedSet.contains(symbol.index)) {
-                            reachedList.add(symbol.index);
-                            reachedSet.add(symbol.index);
+                        if (!reachedSet.contains(symbol)) {
+                            reachedList.add((Nonterminal) symbol);
+                            reachedSet.add(symbol);
                         }
                     }
             index++;
         }
-        List<Nonterminal> nonterminals_new = new ArrayList<>();
-        List<String> ntNames_new = new ArrayList<>();
-        Map<String, Integer> ntNamesToInt_new = new HashMap<>();
-        Map<Integer,Integer> ruleMap = new HashMap<>();
-        for (Nonterminal nt : nonterminals) {
-            if (reachedSet.contains(nt.index)) {
-                int n = nonterminals_new.size();
-                String newName = ntNames.get(n);
-                ntNames_new.add(newName);
-                ntNamesToInt_new.put(newName, n);
-                ruleMap.put(nt.index,n);
-                nt.index = n;
-                nonterminals_new.add(nt);
-            }
-        }
-        nonterminals = nonterminals_new;
-        ntNames = ntNames_new;
-        ntNamesToInt = ntNamesToInt_new;
-        correctRulesIds(ruleMap);*/
+        nonterminals = reachedList;
     }
 
     public void eliminationRecursion() {
