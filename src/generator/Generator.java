@@ -10,6 +10,8 @@ import java.util.Random;
 import java.util.Stack;
 
 import static java.lang.Character.*;
+import static java.lang.System.exit;
+import static java.lang.System.out;
 
 public class Generator {
     Grammar grammar;
@@ -22,6 +24,10 @@ public class Generator {
 
 
     public Generator(Grammar grammar, int maxLen, RuleOrder ruleOrder) {
+        if (!grammar.grammarOK()) {
+            out.println("bad grammar");
+            exit(1);
+        }
         this.grammar = grammar;
         this.maxLen = maxLen;
         this.ruleOrder = ruleOrder;
