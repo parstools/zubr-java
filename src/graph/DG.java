@@ -123,6 +123,44 @@ public class DG {
     }
 
 
+    private boolean DFS(Vertex node, Set<Vertex> visited, Set<Vertex> stack) {
+        if (stack.contains(node)) {
+            return true;  // Node is in stack, is cycle
+        }
+        if (visited.contains(node)) {
+            return false; // Node precessed, no cycle
+        }
+
+        visited.add(node);
+        stack.add(node);
+
+        List<Vertex> adjList = node.getAdjacentVertices();
+        for (Vertex neighbor : adjList) {
+            if (DFS(neighbor, visited, stack)) {
+                return true;
+            }
+        }
+
+        stack.remove(node);
+        return false;
+    }
+
+    public boolean detectCycle(int index) {
+        Set<Vertex> visited = new HashSet<>();
+        Set<Vertex> stack = new HashSet<>();
+        Vertex node = vertices.get(index);
+        visited.add(node);
+        stack.add(node);
+        List<Vertex> adjList = node.getAdjacentVertices();
+        for (Vertex neighbor : adjList) {
+            if (DFS(neighbor, visited, stack)) {
+                return true;
+            }
+        }
+        stack.remove(node);
+        return false;
+    }
+
     // ### Vertex ###
     public class Vertex {
         private int id;
