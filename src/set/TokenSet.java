@@ -7,6 +7,9 @@ import util.Hash;
 public class TokenSet {
     int maxLen;
     private final Tier[][] tiers;
+    final int TIER_BUIlD = 0;
+    final int TIER_DONE = 1;
+    final int TIER_EOF = 2;
     Grammar grammar;
 
     public TokenSet(Grammar grammar, int maxLen) {
@@ -40,7 +43,7 @@ public class TokenSet {
 
     public boolean isEmptyBuild() {
         for (int i = 0; i <= maxLen; i++) {
-            Tier tier = tiers[0][i];
+            Tier tier = tiers[TIER_BUIlD][i];
             if (tier.trie != null)
                 return false;
         }
@@ -49,7 +52,7 @@ public class TokenSet {
 
     public boolean isEmptyDone() {
         for (int i = 0; i <= maxLen; i++) {
-            Tier tier = tiers[1][i];
+            Tier tier = tiers[TIER_DONE][i];
             if (tier.trie != null)
                 return false;
         }
@@ -58,7 +61,7 @@ public class TokenSet {
 
     public boolean addSeqBuild(Sequence seq) {
         assert (seq.isEmpty() || seq.get(seq.size() - 1) >= 0);
-        return tiers[0][seq.size()].addSeq(seq);
+        return tiers[TIER_BUIlD][seq.size()].addSeq(seq);
     }
 
     public boolean addSeqBuild(String str) {
@@ -66,7 +69,7 @@ public class TokenSet {
     }
 
     public boolean addSeqDone(Sequence seq) {
-        return tiers[1][seq.size()].addSeq(seq);
+        return tiers[TIER_DONE][seq.size()].addSeq(seq);
     }
 
     public boolean addSeqDone(String str) {
@@ -74,7 +77,7 @@ public class TokenSet {
     }
 
     public boolean addSeqEof(Sequence seq) {
-        return tiers[2][seq.size()].addSeq(seq);
+        return tiers[TIER_EOF][seq.size()].addSeq(seq);
     }
 
     public boolean addSeqEof(String str) {
@@ -84,7 +87,7 @@ public class TokenSet {
     public boolean containsBuild(Sequence seq) {
         if (seq.size() >= maxLen)
             return false;
-        return tiers[0][seq.size()].contains(seq);
+        return tiers[TIER_BUIlD][seq.size()].contains(seq);
     }
 
     public boolean containsBuild(String str) {
@@ -94,7 +97,7 @@ public class TokenSet {
     public boolean containsDone(Sequence seq) {
         if (seq.size() > maxLen)
             return false;
-        return tiers[1][seq.size()].contains(seq);
+        return tiers[TIER_DONE][seq.size()].contains(seq);
     }
 
     public boolean containsDone(String str) {
@@ -104,7 +107,7 @@ public class TokenSet {
     public boolean containsEof(Sequence seq) {
         if (seq.size() > maxLen)
             return false;
-        return tiers[1][seq.size()].contains(seq);
+        return tiers[TIER_DONE][seq.size()].contains(seq);
     }
 
     public boolean containsEof(String str) {
@@ -187,19 +190,19 @@ public class TokenSet {
     }
 
     public boolean addEpsilonBuild() {
-        return tiers[0][0].addSeq(new Sequence(grammar));
+        return tiers[TIER_BUIlD][0].addSeq(new Sequence(grammar));
     }
 
     public boolean addEpsilonDone() {
-        return tiers[1][0].addSeq(new Sequence(grammar));
+        return tiers[TIER_DONE][0].addSeq(new Sequence(grammar));
     }
 
     public void removeEpsilon() {
-        tiers[1][0].clear();
+        tiers[TIER_DONE][0].clear();
     }
 
     public boolean hasEpsilon() {
-        return tiers[1][0].trie != null;
+        return tiers[TIER_DONE][0].trie != null;
     }
 
     private boolean addTier(int n, Tier tier) {
@@ -236,9 +239,9 @@ public class TokenSet {
         assert (symbol.terminal);
         assert (maxLen > 0);
         for (int i = maxLen; i >= 1; i--) {
-            Trie trie = tiers[0][i - 1].trie;
+            Trie trie = tiers[TIER_BUIlD][i - 1].trie;
             if (trie != null) {
-                tiers[0][i - 1].trie = null;
+                tiers[TIER_BUIlD][i - 1].trie = null;
                 trie.appendStrings(symbol);
                 int target;
                 if (symbol.getIndex() == -1)
@@ -261,8 +264,8 @@ public class TokenSet {
 
     void done() {
         for (int i = 0; i < maxLen; i++) {
-            Tier t0 = tiers[0][i];
-            Tier t1 = tiers[1][i];
+            Tier t0 = tiers[TIER_BUIlD][i];
+            Tier t1 = tiers[TIER_DONE][i];
             t1.unionWith(t0);
             t0.trie = null;
         }
@@ -280,14 +283,14 @@ public class TokenSet {
     public TokenSet concat(TokenSet second) {
         assert (maxLen == second.maxLen);
         TokenSet result = new TokenSet(grammar, maxLen);
-        assert (tiers[0][maxLen].isEmpty());
-        assert (second.tiers[0][maxLen].isEmpty());
+        assert (tiers[TIER_BUIlD][maxLen].isEmpty());
+        assert (second.tiers[TIER_BUIlD][maxLen].isEmpty());
         for (int i = 0; i < maxLen; i++)
             for (int j = 0; j <= maxLen; j++) {
                 int combinedLen = Math.min(i + j, maxLen);
                 int target = combinedLen == maxLen ? 1 : 0;
-                Tier tier0 = tiers[0][i];
-                Tier tier1 = second.tiers[1][j];
+                Tier tier0 = tiers[TIER_BUIlD][i];
+                Tier tier1 = second.tiers[TIER_DONE][j];
                 Tier newTier = tier0.concat(tier1, combinedLen);
                 result.tiers[target][combinedLen].unionWith(newTier);
             }
@@ -295,28 +298,28 @@ public class TokenSet {
             for (int j = 0; j <= maxLen; j++) {
                 int combinedLen = Math.min(i + j, maxLen);
                 int target = combinedLen == i + j ? 2 : 1;
-                Tier tier0 = tiers[0][i];
-                Tier tier1 = second.tiers[2][j];
+                Tier tier0 = tiers[TIER_BUIlD][i];
+                Tier tier1 = second.tiers[TIER_EOF][j];
                 Tier newTier = tier0.concat(tier1, combinedLen);
                 result.tiers[target][combinedLen].unionWith(newTier);
             }
         for (int i = 0; i < maxLen; i++)
             for (int j = maxLen - i; j < maxLen; j++) {
-                Tier tier0 = tiers[0][i];
-                Tier tier1 = second.tiers[0][j];
+                Tier tier0 = tiers[TIER_BUIlD][i];
+                Tier tier1 = second.tiers[TIER_BUIlD][j];
                 Tier newTier = tier0.concat(tier1, maxLen);
-                result.tiers[1][maxLen].unionWith(newTier);
+                result.tiers[TIER_DONE][maxLen].unionWith(newTier);
             }
 
         for (int i = 0; i <= maxLen; i++)
-            result.tiers[1][i].unionWith(tiers[1][i]);
-        result.tiers[1][maxLen].unionWith(tiers[0][maxLen]);
+            result.tiers[TIER_DONE][i].unionWith(tiers[TIER_DONE][i]);
+        result.tiers[TIER_DONE][maxLen].unionWith(tiers[TIER_BUIlD][maxLen]);
         return result;
     }
 
     public void rejectBuild() {
         for (int i = 0; i <= maxLen; i++)
-            tiers[0][i].clear();
+            tiers[TIER_BUIlD][i].clear();
     }
 
     public void parse(String s) {
@@ -377,9 +380,9 @@ public class TokenSet {
     public SequenceSet getPrefixes(int prefixLen) {
         SequenceSet ss = new SequenceSet();
         for (int i = prefixLen; i <= maxLen; i++)
-            tiers[1][i].getPrefixes(prefixLen, ss);
+            tiers[TIER_DONE][i].getPrefixes(prefixLen, ss);
         for (int i = 1; i <= maxLen; i++)
-            tiers[2][i].getPrefixes(Math.min(i, prefixLen), ss);
+            tiers[TIER_EOF][i].getPrefixes(Math.min(i, prefixLen), ss);
         return ss;
     }
 
