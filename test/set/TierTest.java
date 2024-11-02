@@ -19,4 +19,14 @@ public class TierTest {
         Tier tier3 = tier0.concat(tier1, 3);
         assertEquals("+i+", tier3.toString());
     }
+
+    @Test
+    void multi() {
+        Grammar grammar = TestGrammars.stdLL1();
+        Tier tier = new Tier(grammar,3);
+        tier.addSeq("+ii");
+        tier.addSeq("+i*");
+        tier.addSeq("+i+");
+        assertEquals("+i+ +i* +ii", tier.toString());
+    }
 }

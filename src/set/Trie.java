@@ -27,14 +27,14 @@ public class Trie {
         List<String> list = new ArrayList<>();
         for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t = entry.getKey();
-            Trie value = entry.getValue();
-            List<String> subList = value.getSuffixes();
             String tName;
             if (t == -1)
                 tName = "$";
             else
                 tName = grammar.terminals.get(t).name;
-            if (subList.isEmpty())
+            Trie value = entry.getValue();
+            List<String> subList = value != null? value.getSuffixes() : null;
+            if (subList == null || subList.isEmpty())
                 list.add(tName);
             else
                 for (String s : subList) {

@@ -57,10 +57,13 @@ public class Tier {
         }
         assert (seq.size() == len);
         Trie previous = trie;
+        int h = 0;
         for (int i : seq) {
+            h++;
             Trie tr = previous.get(i);
             if (tr == null) {
-                tr = new Trie(grammar);
+                if (h < len)
+                    tr = new Trie(grammar);
                 previous.put(i, tr);
                 modified = true;
             }
