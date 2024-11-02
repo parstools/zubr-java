@@ -7,6 +7,7 @@ public abstract class Symbol {
     protected Grammar grammar;
     public String name;
     public int minLen;
+    public int maxLen;
 
     public abstract int getIndex();
 

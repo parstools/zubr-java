@@ -14,6 +14,7 @@ public class Rule extends ArrayList<Symbol> {
     public boolean hasNt = false;
     public boolean hasT = false;
     public int minLen = -1;
+    public int maxLen = -1;
     int countNonNullableSymbols = 0;
 
     public Rule clone(Nonterminal newOwner) {
@@ -66,6 +67,28 @@ public class Rule extends ArrayList<Symbol> {
                 minLen++;
             else
                 minLen += symbol.minLen;
+        return minLen != old;
+    }
+
+    boolean computeMaxLen() {
+        final int infinity = Integer.MAX_VALUE;
+        if (maxLen == infinity)
+            return false;
+        int old = maxLen;
+        maxLen = 0;
+        for (Symbol symbol : this)
+            if (!symbol.terminal && symbol.maxLen < 0) {
+                maxLen = -1;
+                return maxLen != old;
+            }
+        for (Symbol symbol : this)
+            if (symbol.terminal)
+                maxLen++;
+            else if (symbol.maxLen == infinity) {
+                maxLen = infinity;
+                return true;
+            } else
+                maxLen += symbol.maxLen;
         return minLen != old;
     }
 

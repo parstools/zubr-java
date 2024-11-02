@@ -1,6 +1,7 @@
 import generator.Generator;
 import generator.RuleOrder;
 import grammar.Grammar;
+import ll.ParsingTable;
 import set.SetContainer;
 import set.TokenSet;
 import util.NoMinLenGrammarException;
@@ -352,13 +353,24 @@ public class Main {
             out.println(generator.string());
     }
 
+    static void testFactoring() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> i E t S");
+        lines.add("S -> i E t S e S");
+        lines.add("S -> a");
+        lines.add("E -> b");
+        Grammar grammar = new Grammar(lines);
+        ParsingTable table = new ParsingTable(grammar);
+        boolean res1 = table.createLL(1);
+        boolean res2 = table.createLL(2);
+    }
+
     public static void main(String[] args) {
         /*try {
             readAllGrammars();
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-//        testElimRecursion();
-        testElimIndirectRecursion();
+        testFactoring();
     }
 }

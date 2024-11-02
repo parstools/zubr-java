@@ -164,6 +164,7 @@ public class Grammar implements Cloneable {
             nt.addRule(rule);
         }
         setMinLen();
+        computeMaxLen();
     }
 
     private void computeNonNullableCount() {
@@ -189,6 +190,34 @@ public class Grammar implements Cloneable {
             changed = false;
             for (Nonterminal nt : nonterminals) {
                 if (nt.computeMinLen())
+                    changed = true;
+            }
+        }
+    }
+
+    private void computeMaxLen() {
+        DG graph = new DG(nonterminals.size());
+        for (Nonterminal nt : nonterminals) {
+            int from = nt.getIndex();
+            for (Rule rule : nt.rules)
+                for (Symbol symbol : rule)
+                    if (!symbol.terminal) {
+                        int to = symbol.getIndex();
+                        graph.addEdge(from, to, rule);
+                    }
+        }
+        final int infinity = Integer.MAX_VALUE;
+        for (int i=0; i<nonterminals.size(); i++)
+            if (graph.detectCycle(i)) {
+                Nonterminal nt = nonterminals.get(i);
+                nt.isRecursive = true;
+                nt.maxLen = infinity;
+            }
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            for (Nonterminal nt : nonterminals) {
+                if (nt.computeMaxLen())
                     changed = true;
             }
         }
@@ -323,5 +352,6 @@ public class Grammar implements Cloneable {
             if (cycles.isEmpty()) break;
         }
         setMinLen();
+        computeMaxLen();
     }
 }
