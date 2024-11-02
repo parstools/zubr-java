@@ -19,7 +19,7 @@ public class Cycle extends ArrayList<Rule> {
         for (int i = 1; i < johnsonCycle.size(); i++) {
             Rule g = (Rule)johnsonCycle.get(i).getEdge();
             this.add(g);
-            xorHash = Hash.intXor(xorHash, g.owner.index);
+            xorHash = Hash.intXor(xorHash, g.owner.getIndex());
             xorHash = Hash.intXor(xorHash, g.index);
         }
     }

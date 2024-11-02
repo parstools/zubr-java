@@ -18,9 +18,9 @@ public class RecurCycles extends ArrayList<RecurCycle> {
         Collections.sort(this, new Comparator<RecurCycle>() {
             @Override
             public int compare(RecurCycle c1, RecurCycle c2) {
-                if (c1.minOwner.index < c2.minOwner.index)
+                if (c1.minOwner.getIndex() < c2.minOwner.getIndex())
                     return -1;
-                else if (c1.minOwner.index > c2.minOwner.index)
+                else if (c1.minOwner.getIndex() > c2.minOwner.getIndex())
                     return 1;
                 if (c1.size() < c2.size())
                     return -1;
@@ -31,9 +31,9 @@ public class RecurCycles extends ArrayList<RecurCycle> {
                 for (int i = 0; i < commonLen; i++) {
                     Rule g1 = c1.get(i);
                     Rule g2 = c2.get(i);
-                    if (g1.owner.index < g2.owner.index)
+                    if (g1.owner.getIndex() < g2.owner.getIndex())
                         return -1;
-                    else if (g1.owner.index > g2.owner.index)
+                    else if (g1.owner.getIndex() > g2.owner.getIndex())
                         return 1;
                     else if (g1.index < g2.index)
                         return -1;

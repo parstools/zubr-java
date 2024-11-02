@@ -338,12 +338,18 @@ public class Main {
         lines.add("B -> A b");
         lines.add("B -> d");
         Grammar grammar = new Grammar(lines);
+        Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
+        while (generator.next())
+            out.println(generator.string());
         List<String> lines1 = grammar.toLines();
         lines1.forEach(out::println);
         out.println();
         grammar.eliminationRecursion();
         List<String> lines2 = grammar.toLines();
         lines2.forEach(out::println);
+        generator = new Generator(grammar, 5, RuleOrder.roSort);
+        while (generator.next())
+            out.println(generator.string());
     }
 
     public static void main(String[] args) {

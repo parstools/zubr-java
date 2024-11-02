@@ -20,9 +20,9 @@ public class Cycles extends ArrayList<Cycle> {
                 for (int i = 0; i < commonLen; i++) {
                     Rule g1 = c1.get(i);
                     Rule g2 = c2.get(i);
-                    if (g1.owner.index < g2.owner.index)
+                    if (g1.owner.getIndex() < g2.owner.getIndex())
                         return -1;
-                    else if (g1.owner.index > g2.owner.index)
+                    else if (g1.owner.getIndex() > g2.owner.getIndex())
                         return 1;
                     else if (g1.index < g2.index)
                         return -1;

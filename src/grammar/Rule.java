@@ -16,6 +16,13 @@ public class Rule extends ArrayList<Symbol> {
     public int minLen = -1;
     int countNonNullableSymbols = 0;
 
+    public Rule clone(Nonterminal newOwner) {
+        Rule cloned = new Rule(grammar, newOwner);
+        for (Symbol symbol: this)
+            cloned.add(symbol.clone());
+        return cloned;
+    }
+
     boolean directLeftRecursive(int ntIndex) {
         if (isEmpty())
             return false;
@@ -28,6 +35,13 @@ public class Rule extends ArrayList<Symbol> {
             return false;
         Symbol symbol = get(0);
         return !symbol.terminal;
+    }
+
+    boolean startWithNonterminal(Nonterminal nt) {
+        if (!startWithNonterminal())
+            return false;
+        Symbol symbol = get(0);
+        return symbol.index == nt.getIndex();
     }
 
     void computeNonNullableCount() {
@@ -76,7 +90,7 @@ public class Rule extends ArrayList<Symbol> {
     @Override
     public int hashCode() {
         Hash h = new Hash();
-        h.add(owner.index);
+        h.add(owner.getIndex());
         for (Symbol symbol : this) {
             h.add(symbol.hashCode());
             if (symbol.terminal)

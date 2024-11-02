@@ -12,6 +12,11 @@ public class Symbol {
         this.index = index;
     }
 
+    public Symbol clone() {
+        Symbol cloned = new Symbol(grammar, terminal, index);
+        return cloned;
+    }
+
     @Override
     public String toString() {
         return grammar.getSymbolName(this);

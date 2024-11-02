@@ -197,7 +197,7 @@ public class Node {
         if (ruleHash == 0)
             ruleHash = Hash.intHash(-1);
         Rule rule = rules.get(ruleIndex);
-        ruleHash = Hash.intXor(ruleHash, rule.owner.index);
+        ruleHash = Hash.intXor(ruleHash, rule.owner.getIndex());
         ruleHash = Hash.intXor(ruleHash, rule.index);
         return grammar.cycles.xors.contains(ruleHash);
     }
@@ -344,9 +344,9 @@ public class Node {
                     return -1;
                 else if (r1.minLen > r2.minLen)
                     return 1;
-                else if (r1.owner.index < r2.owner.index)
+                else if (r1.owner.getIndex() < r2.owner.getIndex())
                     return -1;
-                else if (r1.owner.index > r2.owner.index)
+                else if (r1.owner.getIndex() > r2.owner.getIndex())
                     return 1;
                 else if (r1.index < r2.index)
                     return -1;

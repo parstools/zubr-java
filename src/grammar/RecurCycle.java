@@ -23,7 +23,7 @@ public class RecurCycle extends ArrayList<Rule> {
             Nonterminal minOwner1 = grammar.nonterminals.get(johnsonCycle.get(i).getN());
             if (minOwner1 != minOwner)
                 oneNt = false;
-            if (minOwner1.index < minOwner.index)
+            if (minOwner1.getIndex() < minOwner.getIndex())
                 minOwner = minOwner1;
             this.add(g);
         }

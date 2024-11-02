@@ -16,6 +16,9 @@ public class Grammar implements Cloneable {
     List<String> tNames = new ArrayList<>();
 
     boolean minLenOK = false;
+    public boolean grammarOK() {
+        return minLenOK;
+    }
 
     public String getTerminalName(int t) {
         if (t == -1)
@@ -60,30 +63,55 @@ public class Grammar implements Cloneable {
         Nonterminal newNt = insertNonterminal(index);
         nt.rules.clear();
         for (Rule rule: nonrecursiveRules) {
-            rule.add(new Symbol(this, false, newNt.index));
+            rule.add(new Symbol(this, false, newNt.getIndex()));
             nt.addRule(rule);
         }
         for (Rule rule: recursiveRules) {
             rule.remove(0);
             assert (!rule.isEmpty());
             rule.owner = newNt;
-            rule.add(new Symbol(this, false, newNt.index));
+            rule.add(new Symbol(this, false, newNt.getIndex()));
             newNt.addRule(rule);
         }
         newNt.addRule(new Rule(nt.grammar, newNt));
     }
 
-    private void substituteRules(RecurCycle cycle) {
+    private void substituteRules(Nonterminal owner, Nonterminal toSubstitute) {
+        List<Rule> newRules = new ArrayList<>();
+        for (Rule rule : owner.rules) {
+            if (rule.startWithNonterminal(toSubstitute)) {
+                for (Rule substRule : toSubstitute.rules) {
+                    Rule newRule = substRule.clone(owner);
+                    for (int k = 1; k < rule.size(); k++)
+                        newRule.add(rule.get(k));
+                    //eliminate ident rules: A->A
+                    if (newRule.size()!=1 || newRule.get(0).terminal || newRule.get(0).index != owner.getIndex()) {
+                        newRule.index = newRules.size();
+                        newRules.add(newRule);
+                    }
+                }
+            } else {
+                rule.index = newRules.size();
+                newRules.add(rule);
+            }
+        }
+        owner.rules = newRules;
+    }
+
+    private void substituteRules(RecurCycle  cycle) {
+        assert(cycle.size() >= 2);
+        substituteRules(cycle.get(0).owner, cycle.get(1).owner);
     }
 
     private Nonterminal insertNonterminal(int sourceIndex) {
         Nonterminal newNt = new Nonterminal(this);
         newNt.rules = new ArrayList<>();
-        newNt.index = sourceIndex + 1;
+        newNt.setIndex(sourceIndex + 1);
         insertName(sourceIndex);
-        updateNtIndices(newNt.index);
-        updateRuleSymbolsForInsert(newNt.index);
-        nonterminals.add(newNt.index, newNt);
+        updateNtIndices(newNt.getIndex());
+        updateRuleSymbolsForInsert(newNt.getIndex());
+        nonterminals.add(newNt.getIndex(), newNt);
+        ntNamesToInt.put(ntNames.get(newNt.getIndex()), newNt.getIndex());
         return newNt;
     }
 
@@ -96,29 +124,31 @@ public class Grammar implements Cloneable {
     }
 
     private String newNameFrom(String s) {
+        int n;
         if (Name.hasNameSuffixNumber(s)) {
-            int n = Name.suffixNumber(s);
-            String nameAlone = Name.nameWithoutNumber(s);
-            String newName = s;
-            do {
-                n++;
-                newName = nameAlone + String.valueOf(n);
-            } while (ntNamesToInt.containsKey(newName));
-            return newName;
-        } else return s + "1";
+            n = Name.suffixNumber(s);
+        } else n = 0;
+        String nameAlone = Name.nameWithoutNumber(s);
+        String newName = s;
+        do {
+            n++;
+            newName = nameAlone + String.valueOf(n);
+        } while (ntNamesToInt.containsKey(newName));
+        return newName;
     }
 
     private void updateNtIndices(int index) {
         for (Nonterminal nt : nonterminals)
-            if (nt.index>=index)
-                nt.index++;
+            if (nt.getIndex() >= index)
+                nt.incIndex();
     }
 
     private void updateRuleSymbolsForInsert(int index) {
         for (Nonterminal nt : nonterminals) {
-            for (Rule rule : nt.rules)
+            for (Rule rule : nt.rules) {
                 for (Symbol symbol : rule)
                     symbol.updateNtFrom(index);
+            }
         }
     }
 
@@ -141,7 +171,7 @@ public class Grammar implements Cloneable {
         ntNamesToInt.put(ntName, n);
         ntNames.add(ntName);
         Nonterminal nt = new Nonterminal(this);
-        nt.index = n;
+        nt.setIndex(n);
         nonterminals.add(nt);
     }
 
@@ -163,6 +193,15 @@ public class Grammar implements Cloneable {
 
     }
 
+    void setMinLen() {
+        computeMinLen();
+        minLenOK = checkMinLen();
+        if (minLenOK) {
+            computeNonNullableCount();
+            detectCycles();
+        }
+    }
+
     public Grammar(List<String> lines) {
         for (String line : lines) {
             addNT(parseNTname(line));
@@ -177,12 +216,7 @@ public class Grammar implements Cloneable {
             rule.parse(ruleString);
             nt.addRule(rule);
         }
-        computeMinLen();
-        minLenOK = checkMinLen();
-        if (minLenOK) {
-            computeNonNullableCount();
-            detectCycles();
-        }
+        setMinLen();
     }
 
     private void computeNonNullableCount() {
@@ -285,7 +319,7 @@ public class Grammar implements Cloneable {
             for (Rule rule : nt.rules)
                 if (rule.cycleSuspected()) {
                     for (Symbol symbol : rule)
-                        graph.addEdge(nt.index, symbol.index, rule);
+                        graph.addEdge(nt.getIndex(), symbol.index, rule);
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles(this, johnsonResult);
@@ -297,18 +331,96 @@ public class Grammar implements Cloneable {
             for (Rule rule : nt.rules)
                 if (rule.startWithNonterminal()) {
                     Symbol symbol = rule.get(0);
-                    graph.addEdge(nt.index, symbol.index, rule);
+                    graph.addEdge(nt.getIndex(), symbol.index, rule);
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         return new RecurCycles(this, johnsonResult);
     }
 
-    public void eliminationRecursion() {
+    void eliminationDirectRecursion() {
+        boolean wasDirectRecursion;
+        do {
+            wasDirectRecursion = false;
+            RecurCycles cycles = detectRecursion();
+            for (RecurCycle cycle: cycles)
+                if (cycle.size() == 1) {
+                    eliminationDirectRecursionForNt(cycle.minOwner.getIndex());
+                    wasDirectRecursion = true;
+                    break;
+                }
+        } while (wasDirectRecursion);
+    }
+
+    void eliminationIndirectRecursion() {
+        boolean wasIndirectRecursion = false;
         RecurCycles cycles = detectRecursion();
-        for (RecurCycle cycle: cycles)
-            if (cycle.size()==1)
-                eliminationDirectRecursionForNt(cycle.minOwner.index);
-            else
-                substituteRules(cycle);
+        for (RecurCycle cycle: cycles) {
+            if (cycle.size() < 2)
+                throw new RuntimeException("must be not direct recursion");
+            wasIndirectRecursion = true;
+            substituteRules(cycle);
+            break;
+        }
+        if (wasIndirectRecursion)
+            eliminateUnreachedNonterminals();
+    }
+
+    private void eliminateUnreachedNonterminals() {
+        return;
+        /*List<Integer> reachedList = new ArrayList<>();
+        Set<Integer> reachedSet = new HashSet<>();
+        reachedList.add(0);
+        reachedSet.add(0);
+        int index = 0;
+        while (index<reachedList.size()) {
+            Nonterminal nt = nonterminals.get(index);
+            for (Rule rule : nt.rules)
+                for (Symbol symbol: rule)
+                    if (!symbol.terminal) {
+                        if (!reachedSet.contains(symbol.index)) {
+                            reachedList.add(symbol.index);
+                            reachedSet.add(symbol.index);
+                        }
+                    }
+            index++;
+        }
+        List<Nonterminal> nonterminals_new = new ArrayList<>();
+        List<String> ntNames_new = new ArrayList<>();
+        Map<String, Integer> ntNamesToInt_new = new HashMap<>();
+        Map<Integer,Integer> ruleMap = new HashMap<>();
+        for (Nonterminal nt : nonterminals) {
+            if (reachedSet.contains(nt.index)) {
+                int n = nonterminals_new.size();
+                String newName = ntNames.get(n);
+                ntNames_new.add(newName);
+                ntNamesToInt_new.put(newName, n);
+                ruleMap.put(nt.index,n);
+                nt.index = n;
+                nonterminals_new.add(nt);
+            }
+        }
+        nonterminals = nonterminals_new;
+        ntNames = ntNames_new;
+        ntNamesToInt = ntNamesToInt_new;
+        correctRulesIds(ruleMap);*/
+    }
+
+    private void correctRulesIds(Map<Integer, Integer> ruleMap) {
+        for (Nonterminal nt : nonterminals) {
+            for (Rule rule : nt.rules)
+                for (Symbol symbol : rule)
+                    if (!symbol.terminal)
+                        symbol.index = ruleMap.get(symbol.index);
+        }
+    }
+
+    public void eliminationRecursion() {
+        while (true) {
+            eliminationDirectRecursion();
+            eliminationIndirectRecursion();
+            RecurCycles cycles = detectRecursion();
+            if (cycles.isEmpty()) break;
+        }
+        setMinLen();
     }
 }

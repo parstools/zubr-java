@@ -7,7 +7,16 @@ import java.util.List;
 
 public class Nonterminal implements Cloneable {
     Grammar grammar;
-    public int index;
+    private int index;
+    public int getIndex(){
+        return index;
+    }
+    public void setIndex(int n) {
+        index = n;
+    }
+    public void incIndex() {
+        index++;
+    }
 
     @Override
     public String toString() {
