@@ -1,6 +1,7 @@
 package generator;
 
 import grammar.Grammar;
+import grammar.Nonterminal;
 import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
@@ -38,7 +39,7 @@ public class Node {
         this.ruleHash = ruleHash;
         if (!symbol.terminal) {
             childs = new ArrayList<>();
-            rules = new ArrayList<>(grammar.getNTRules(symbol.index));
+            rules = new ArrayList<>(((Nonterminal)symbol).rules);
             if (generator.ruleOrder == RuleOrder.roSort
                     || generator.ruleOrder == RuleOrder.roRevereSort)
                 sortRules();
@@ -230,7 +231,7 @@ public class Node {
             shapeStr = "; shape = doublecircle";
         else
             shapeStr = "";
-        out.println("  P" + name + " [label = " + grammar.getSymbolName(symbol) + shapeStr + "]");
+        out.println("  P" + name + " [label = " + symbol.name + shapeStr + "]");
         if (!name.isEmpty()) {
             String upName = name.substring(0, name.length() - 1);
             out.println("  P" + upName + " -> P" + name);
@@ -256,7 +257,7 @@ public class Node {
         assert (k > 0);
         Sequence seq = new Sequence(grammar);
         if (symbol.terminal)
-            seq.add(symbol.index);
+            seq.add(symbol.getIndex());
         else {
             int remaining = k;
             for (Node child : childs) {
@@ -272,7 +273,7 @@ public class Node {
     }
 
     public void collectFirst(int ntNumber, int k, SequenceSet sset) {
-        if (!symbol.terminal && symbol.index == ntNumber) {
+        if (!symbol.terminal && symbol.getIndex() == ntNumber) {
             Sequence seq = appendTerminals(k);
             sset.add(seq);
         }
@@ -317,7 +318,7 @@ public class Node {
     }
 
     public void collectFollow(int ntNumber, int k, Stack<Sequence> stackSeq, SequenceSet sset) {
-        if (!symbol.terminal && symbol.index == ntNumber) {
+        if (!symbol.terminal && symbol.getIndex() == ntNumber) {
             Sequence seq = kSymbolsFromStack(k, stackSeq);
             sset.add(seq);
         }

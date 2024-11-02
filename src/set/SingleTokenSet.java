@@ -16,7 +16,7 @@ public class SingleTokenSet extends TreeSet<Integer> {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (int k : this)
-            sb.append(grammar.getTerminalName(k));
+            sb.append(grammar.terminals.get(k).name);
         sb.append("}");
         return sb.toString();
     }

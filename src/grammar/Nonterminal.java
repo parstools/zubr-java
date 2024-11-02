@@ -5,30 +5,16 @@ import util.Hash;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nonterminal implements Cloneable {
-    Grammar grammar;
-    private int index;
-    public int getIndex(){
-        return index;
-    }
-    public void setIndex(int n) {
-        index = n;
-    }
-    public void incIndex() {
-        index++;
-    }
-
+public class Nonterminal extends Symbol {
     @Override
-    public String toString() {
-        return grammar.getNonTerminalName(index);
+    public int getIndex() {
+        return grammar.nonterminals.indexOf(this);
     }
-
     public List<Rule> rules = new ArrayList<>();
 
     public Object clone() {
-        Nonterminal newNt = new Nonterminal(grammar);
+        Nonterminal newNt = new Nonterminal(grammar, name);
         newNt.rules = new ArrayList<>(rules);
-        newNt.index = index;
         return newNt;
     }
 
@@ -42,11 +28,11 @@ public class Nonterminal implements Cloneable {
         rules.add(rule);
     }
 
-    Nonterminal(Grammar grammar) {
+    Nonterminal(Grammar grammar, String name) {
+        super(grammar, false, name);
         this.grammar = grammar;
+        minLen = -1;
     }
-
-    public int minLen = -1;
 
     boolean computeMinLen() {
         int old = minLen;

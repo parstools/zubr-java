@@ -241,7 +241,7 @@ public class TokenSet {
                 tiers[0][i - 1].trie = null;
                 trie.appendStrings(symbol);
                 int target;
-                if (symbol.index == -1)
+                if (symbol.getIndex() == -1)
                     target = 2;
                 else if (i == maxLen)
                     target = 1;

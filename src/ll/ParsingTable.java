@@ -40,7 +40,7 @@ public class ParsingTable {
             }
         }
         for (int i = 0; i < grammar.nonterminals.size(); i++) {
-            Nonterminal nt = grammar.getNT(i);
+            Nonterminal nt = grammar.nonterminals.get(i);
             TableElem row = rows.get(i);
             for (int j = 0; j < nt.ruleCount(); j++) {
                 Rule rule = nt.rules.get(j);

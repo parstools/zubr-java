@@ -19,6 +19,12 @@ public class Hash {
         hash = (hash>>4) ^ intHash(n);
     }
 
+    public void addString(String str) {
+        for (int i = 0; i< str.length(); i++) {
+            hash = (hash>>4) ^ intHash(str.charAt(i));
+        }
+    }
+
     public void xor(int n) {
         hash = intXor(hash, n);
     }

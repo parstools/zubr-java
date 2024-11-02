@@ -29,7 +29,7 @@ public class Trie {
             int t = entry.getKey();
             Trie value = entry.getValue();
             List<String> subList = value.getSuffixes();
-            String tName = grammar.getTerminalName(t);
+            String tName = grammar.terminals.get(t).name;
             if (subList.isEmpty())
                 list.add(tName);
             else
@@ -108,7 +108,7 @@ public class Trie {
 
     public void appendStrings(Symbol symbol) {
         assert (symbol.terminal);
-        appendStrings(symbol.index);
+        appendStrings(symbol.getIndex());
     }
 
     public boolean unionWith(Trie trie) {

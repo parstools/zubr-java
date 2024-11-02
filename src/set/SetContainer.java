@@ -85,7 +85,7 @@ public class SetContainer {
             String line = lines.get(i);
             String[] parts = line.split("\t");
             assert (parts.length == 4);
-            int nt = grammar.findSymbol(parts[0]).index;
+            int nt = grammar.findSymbol(parts[0]).getIndex();
             boolean nullable = parts[1].equals("✔");
             TokenSet first = new TokenSet(grammar, 1);
             if (nullable) {
@@ -112,10 +112,10 @@ public class SetContainer {
     public void dump(PrintWriter printWriter) {
         printWriter.println("FIRST:");
         for (int i = 0; i < firstSets.size(); i++)
-            printWriter.println(grammar.getNonTerminalName(i) + " " + firstSets.get(i).toString());
+            printWriter.println(grammar.nonterminals.get(i).name + " " + firstSets.get(i).toString());
         printWriter.println("FOLLOW:");
         for (int i = 0; i < followSets.size(); i++)
-            printWriter.println(grammar.getNonTerminalName(i) + " " + followSets.get(i).toString());
+            printWriter.println(grammar.nonterminals.get(i).name + " " + followSets.get(i).toString());
     }
 
     public boolean addFirstOfRule1(TokenSet outSet, Rule rule, int start) {
@@ -176,12 +176,12 @@ public class SetContainer {
 
     TokenSet firstSetForSymbol(Symbol symbol) {
         assert (!symbol.terminal);
-        return firstSetForIndex(symbol.index);
+        return firstSetForIndex(symbol.getIndex());
     }
 
     TokenSet followSetForSymbol(Symbol symbol) {
         assert (!symbol.terminal);
-        return followSetForIndex(symbol.index);
+        return followSetForIndex(symbol.getIndex());
     }
 
     public void makeFirstSets1() {
@@ -189,7 +189,7 @@ public class SetContainer {
         do {
             changed = false;
             for (int i = grammar.nonterminals.size() - 1; i >= 0; i--) {
-                Nonterminal X = grammar.getNT(i);
+                Nonterminal X = grammar.nonterminals.get(i);
                 for (int j = X.ruleCount() - 1; j >= 0; j--) {
                     Rule rule = X.rules.get(j);
                     boolean retChanged = addFirstOfRule1(firstSetForIndex(i), rule, 0);
@@ -204,7 +204,7 @@ public class SetContainer {
         do {
             changed = false;
             for (int i = grammar.nonterminals.size() - 1; i >= 0; i--) {
-                Nonterminal X = grammar.getNT(i);
+                Nonterminal X = grammar.nonterminals.get(i);
                 for (int j = X.ruleCount() - 1; j >= 0; j--) {
                     Rule rule = X.rules.get(j);
                     TokenSet tempSet = new TokenSet(grammar, k);
@@ -226,7 +226,7 @@ public class SetContainer {
         do {
             changed = false;
             for (int i = 0; i < grammar.nonterminals.size(); i++) {
-                Nonterminal X = grammar.getNT(i);
+                Nonterminal X = grammar.nonterminals.get(i);
                 for (int j = 0; j < X.ruleCount(); j++) {
                     Rule rule = X.rules.get(j);
                     for (int k = 0; k < rule.size(); k++) {
@@ -253,7 +253,7 @@ public class SetContainer {
         do {
             changed = false;
             for (int i = 0; i < grammar.nonterminals.size(); i++) {
-                Nonterminal X = grammar.getNT(i);
+                Nonterminal X = grammar.nonterminals.get(i);
                 for (int j = 0; j < X.ruleCount(); j++) {
                     Rule rule = X.rules.get(j);
                     for (int n = 0; n < rule.size(); n++) {
@@ -271,7 +271,7 @@ public class SetContainer {
                                 }
                                 else tempSet.done();
                             }
-                            if (followSetForIndex(symbol.index).unionWith(tempSet))
+                            if (followSetForIndex(symbol.getIndex()).unionWith(tempSet))
                                 changed = true;
                         }
                     }

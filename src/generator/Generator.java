@@ -42,7 +42,7 @@ public class Generator {
     }
 
     Symbol getNT(int ntIndex) {
-        return new Symbol(grammar, false, ntIndex);
+        return grammar.nonterminals.get(ntIndex);
     }
 
     public String string() {

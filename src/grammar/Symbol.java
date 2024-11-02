@@ -2,36 +2,33 @@ package grammar;
 
 import util.Hash;
 
-public class Symbol {
+public abstract class Symbol {
     public final boolean terminal;
-    public int index;
-    private Grammar grammar;
-    public Symbol(Grammar grammar, boolean terminal, int index) {
+    protected Grammar grammar;
+    public String name;
+    public int minLen;
+
+    public abstract int getIndex();
+
+    public Symbol(Grammar grammar, boolean terminal, String name) {
         this.grammar = grammar;
         this.terminal = terminal;
-        this.index = index;
+        this.name = name;
     }
 
-    public Symbol clone() {
-        Symbol cloned = new Symbol(grammar, terminal, index);
-        return cloned;
-    }
-
-    @Override
-    public String toString() {
-        return grammar.getSymbolName(this);
+    public int hashCodeShallow() {
+        Hash h = new Hash();
+        h.add(terminal?1:0);
+        h.addString(name);
+        return h.hash();
     }
 
     @Override
     public int hashCode() {
-        Hash h = new Hash();
-        h.add(terminal?1:0);
-        h.add(index);
-        return h.hash();
+        return hashCodeShallow();
     }
 
-    public void updateNtFrom(int updateIndex) {
-        if (!terminal && index>=updateIndex)
-            index++;
-    }
-}
+    @Override
+    public String toString() {
+        return name;
+    }}

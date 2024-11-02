@@ -19,15 +19,15 @@ public class Rule extends ArrayList<Symbol> {
     public Rule clone(Nonterminal newOwner) {
         Rule cloned = new Rule(grammar, newOwner);
         for (Symbol symbol: this)
-            cloned.add(symbol.clone());
+            cloned.add(symbol);
         return cloned;
     }
 
-    boolean directLeftRecursive(int ntIndex) {
+    boolean directLeftRecursive(Nonterminal nt) {
         if (isEmpty())
             return false;
         Symbol symbol = get(0);
-        return !symbol.terminal && symbol.index == ntIndex;
+        return !symbol.terminal && symbol == nt;
     }
 
     boolean startWithNonterminal() {
@@ -41,7 +41,7 @@ public class Rule extends ArrayList<Symbol> {
         if (!startWithNonterminal())
             return false;
         Symbol symbol = get(0);
-        return symbol.index == nt.getIndex();
+        return symbol == nt;
     }
 
     void computeNonNullableCount() {
@@ -49,7 +49,7 @@ public class Rule extends ArrayList<Symbol> {
         for (Symbol symbol : this)
             if (symbol.terminal)
                 countNonNullableSymbols++;
-            else if (grammar.getNT(symbol.index).minLen > 0)
+            else if (symbol.minLen > 0)
                 countNonNullableSymbols++;
     }
 
@@ -57,7 +57,7 @@ public class Rule extends ArrayList<Symbol> {
         int old = minLen;
         minLen = 0;
         for (Symbol symbol : this)
-            if (!symbol.terminal && grammar.getNT(symbol.index).minLen < 0) {
+            if (!symbol.terminal && symbol.minLen < 0) {
                 minLen = -1;
                 return minLen != old;
             }
@@ -65,7 +65,7 @@ public class Rule extends ArrayList<Symbol> {
             if (symbol.terminal)
                 minLen++;
             else
-                minLen += grammar.getNT(symbol.index).minLen;
+                minLen += symbol.minLen;
         return minLen != old;
     }
 
@@ -78,11 +78,15 @@ public class Rule extends ArrayList<Symbol> {
         Scanner scanner = new Scanner(input);
         while (scanner.hasNext()) {
             String symbolName = scanner.next();
-            Symbol symbol = grammar.findSymbolAndAddTerminal(symbolName);
-            if (symbol.terminal)
-                hasT = true;
-            else
+            Symbol symbol = grammar.findNt(symbolName);
+            if (symbol!=null) {
                 hasNt = true;
+            } else {
+                symbol = grammar.findT(symbolName);
+                if (symbol == null)
+                    symbol = new Terminal(grammar, symbolName);
+                hasT = true;
+            }
             add(symbol);
         }
     }
@@ -92,9 +96,9 @@ public class Rule extends ArrayList<Symbol> {
         Hash h = new Hash();
         h.add(owner.getIndex());
         for (Symbol symbol : this) {
-            h.add(symbol.hashCode());
+            h.add(symbol.hashCodeShallow());
             if (symbol.terminal)
-                h.add(grammar.getTerminalName(symbol.index).hashCode());
+                h.add(symbol.hashCode());
         }
         return h.hash();
     }
