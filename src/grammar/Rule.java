@@ -83,8 +83,10 @@ public class Rule extends ArrayList<Symbol> {
                 hasNt = true;
             } else {
                 symbol = grammar.findT(symbolName);
-                if (symbol == null)
+                if (symbol == null) {
                     symbol = new Terminal(grammar, symbolName);
+                    grammar.terminals.add((Terminal) symbol);
+                }
                 hasT = true;
             }
             add(symbol);

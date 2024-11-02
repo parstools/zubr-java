@@ -16,11 +16,11 @@ public class ParsingTable {
     List<TableElem> rows;
     Map<Rule, TokenSet> ruleSets;
 
-    ParsingTable(Grammar grammar) {
+    public ParsingTable(Grammar grammar) {
         this.grammar = grammar;
     }
 
-    boolean createLL(int k) {
+    public boolean createLL(int k) {
         ruleSets = new HashMap<>();
         rows = new ArrayList<>();
         for (int i = 0; i < grammar.nonterminals.size(); i++) {

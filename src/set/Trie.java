@@ -29,7 +29,11 @@ public class Trie {
             int t = entry.getKey();
             Trie value = entry.getValue();
             List<String> subList = value.getSuffixes();
-            String tName = grammar.terminals.get(t).name;
+            String tName;
+            if (t == -1)
+                tName = "$";
+            else
+                tName = grammar.terminals.get(t).name;
             if (subList.isEmpty())
                 list.add(tName);
             else
