@@ -361,8 +361,10 @@ public class Main {
         lines.add("E -> b");
         Grammar grammar = new Grammar(lines);
         ParsingTable table = new ParsingTable(grammar);
-        boolean res1 = table.createLL(1);
-        boolean res2 = table.createLL(2);
+        for (int i = 1; i <= 4; i++) {
+            System.out.printf("table LL(k) possibility for k=%d is %b %n", i, table.createLL(i));
+            System.out.printf("need factorization for k=%d is %b %n", i, grammar.needsFactorization(i));
+        }
     }
 
     public static void main(String[] args) {

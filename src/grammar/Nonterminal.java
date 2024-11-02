@@ -80,4 +80,16 @@ public class Nonterminal extends Symbol {
             h.add(rule.hashCode());
         return h.hash();
     }
+
+    public boolean needsFactorization(int k) {
+        for (int i = 0; i < rules.size()-1; i++) {
+            Rule rule0 = rules.get(i);
+            for (int j = i + 1; j < rules.size(); j++) {
+                Rule rule1 = rules.get(j);
+                if (rule0.conflict(rule1, k))
+                    return true;
+            }
+        }
+        return false;
+    }
 }

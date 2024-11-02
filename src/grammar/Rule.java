@@ -146,4 +146,20 @@ public class Rule extends ArrayList<Symbol> {
         assert (minLen >= owner.minLen);
         return size() > 0 && !hasT && countNonNullableSymbols <= 1 && minLen == owner.minLen;
     }
+
+    public boolean conflict(Rule rule1, int k) {
+        int minLength = Math.min(this.size(), rule1.size());
+        int prefixLen = 0;
+        for (int i = 0; i < minLength; i++)
+            if (this.get(i) == rule1.get(i))
+                prefixLen++;
+            else
+                break;
+        int sum = 0;
+        for (int i=0; i<prefixLen; i++) {
+            Symbol symbol = get(i);
+            sum += symbol.maxLen;
+        }
+        return true;
+    }
 }

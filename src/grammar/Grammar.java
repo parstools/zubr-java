@@ -354,4 +354,11 @@ public class Grammar implements Cloneable {
         setMinLen();
         computeMaxLen();
     }
+
+    public boolean needsFactorization(int k) {
+        for (Nonterminal nt : nonterminals)
+            if (nt.needsFactorization(k))
+                return true;
+        return false;
+    }
 }
