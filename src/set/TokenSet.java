@@ -6,7 +6,7 @@ import util.Hash;
 
 public class TokenSet {
     int maxLen;
-    private Tier[][] tiers;
+    private final Tier[][] tiers;
     Grammar grammar;
 
     public TokenSet(Grammar grammar, int maxLen) {
