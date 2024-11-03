@@ -270,12 +270,12 @@ public class TestGrammars {
     }
     public static Grammar stdLL1() {
         List<String> lines = new ArrayList<>();
-        lines.add("E -> T E'");
-        lines.add("E' -> + T E'");
-        lines.add("E' ->");
-        lines.add("T -> F T'");
-        lines.add("T' -> * F T'");
-        lines.add("T' ->");
+        lines.add("E -> T E1");
+        lines.add("E1 -> + T E1");
+        lines.add("E1 ->");
+        lines.add("T -> F T1");
+        lines.add("T1 -> * F T1");
+        lines.add("T1 ->");
         lines.add("F -> ( E )");
         lines.add("F -> i");
         return new Grammar(lines);
