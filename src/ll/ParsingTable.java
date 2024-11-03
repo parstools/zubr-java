@@ -49,7 +49,8 @@ public class ParsingTable {
             for (Rule rule : nt.rules) {
                 TokenSet set = new TokenSet(grammar, k);
                 sc.addFirstOfRuleK(set, k, rule, 0);
-                set = set.concat(sc.followSets.get(rule.owner.getIndex()));
+                assert(rule.owner == nt);
+                set = set.concat(sc.followSets.get(nt.getIndex()));
                 assert (!set.hasEpsilon());
                 ruleSets.put(rule, set);
             }
