@@ -16,7 +16,10 @@ public class SingleTokenSet extends TreeSet<Integer> {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (int k : this)
-            sb.append(grammar.terminals.get(k).name);
+            if (k == -1)
+                sb.append("$");
+            else
+                sb.append(grammar.terminals.get(k).name);
         sb.append("}");
         return sb.toString();
     }

@@ -20,9 +20,7 @@ public class Hash {
     }
 
     public void addString(String str) {
-        for (int i = 0; i< str.length(); i++) {
-            hash = (hash>>4) ^ intHash(str.charAt(i));
-        }
+        hash = str.hashCode();
     }
 
     public void xor(int n) {

@@ -158,14 +158,14 @@ public class TokenSet {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        String buildPart = toStringPart(0);
+        String buildPart = toStringPart(TIER_BUIlD);
         if (!buildPart.isEmpty()) {
             sb.append("[");
             sb.append(buildPart);
             sb.append("]");
         }
-        String donePart = toStringPart(1);
-        String eofPart = toStringPart(2);
+        String donePart = toStringPart(TIER_DONE);
+        String eofPart = toStringPart(TIER_EOF);
         if (!donePart.isEmpty() || !eofPart.isEmpty()) {
             sb.append("{");
             sb.append(donePart);
@@ -218,13 +218,6 @@ public class TokenSet {
         return changed;
     }
 
-    public void replaceWith(TokenSet tokenSet) {
-        boolean changed = false;
-        for (int n = 0; n < 3; n++)
-            for (int i = 0; i <= maxLen; i++)
-                tiers[n][i] = tokenSet.tiers[n][i].clone();
-    }
-
     public boolean unionWithoutEps(TokenSet tokenSet) {
         boolean changed = false;
         for (int n = 0; n < 3; n++)
@@ -233,6 +226,13 @@ public class TokenSet {
                     if (addTier(n, tier))
                         changed = true;
         return changed;
+    }
+
+    public void replaceWith(TokenSet tokenSet) {
+        boolean changed = false;
+        for (int n = 0; n < 3; n++)
+            for (int i = 0; i <= maxLen; i++)
+                tiers[n][i] = tokenSet.tiers[n][i].clone();
     }
 
     public void appendStrings(Symbol symbol) {
@@ -278,6 +278,10 @@ public class TokenSet {
             for (int i = 0; i <= maxLen; i++)
                 newSet.tiers[n][i] = tiers[n][i].clone();
         return newSet;
+    }
+
+    public boolean isIntersecion(TokenSet second) {
+        return true;
     }
 
     public TokenSet concat(TokenSet second) {

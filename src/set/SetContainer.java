@@ -248,7 +248,11 @@ public class SetContainer {
     }
 
     public void makeFollowSetsK(int k) {
-        followSetForIndex(0).addSeqEof(new Sequence(grammar, "$"));
+        Sequence eofSeq = new Sequence(grammar, "$");
+        if (k == 1)
+            followSetForIndex(0).addSeqDone(eofSeq);
+        else
+            followSetForIndex(0).addSeqEof(eofSeq);
         boolean changed;
         do {
             changed = false;

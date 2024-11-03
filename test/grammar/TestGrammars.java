@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestGrammars {
+    public static Grammar tokenGrammar() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a b c d e f g");
+        return new Grammar(lines);
+    }
+
     public static Grammar grammar1() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> C C");

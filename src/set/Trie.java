@@ -7,20 +7,100 @@ import util.Hash;
 import java.util.*;
 
 public class Trie {
-    TreeMap<Integer, Trie> map = new TreeMap<>();
+    private TreeMap<Integer, Trie> map = new TreeMap<>();
+    private int h;
+
+    Trie(Grammar grammar, int h) {
+        assert(h>=0);
+        this.grammar = grammar;
+        this.h = h;
+    }
 
     Trie get(int key) {
         return map.get(key);
     }
 
-    void put(int key, Trie value) {
-        map.put(key, value);
+    boolean containsKey(int key) {
+        return map.containsKey(key);
+    }
+
+    void put(int key, Trie trie) {
+        assert (trie == null || !trie.map.isEmpty() && h == trie.h + 1);
+        map.put(key, trie);
     }
 
     Grammar grammar;
 
-    Trie(Grammar grammar) {
-        this.grammar = grammar;
+    boolean insertSuffix(Sequence seq) {
+        assert (seq.size() >= h);
+        if (seq.isEmpty())
+            return false;// epsilon
+        int h1 = 1;
+        Trie trie = null;
+        boolean modified = false;
+        for (int i = seq.size() - 1; i >= seq.size() - h + 1; i--) {
+            int token = seq.get(i);
+            Trie newTrie = new Trie(grammar, h1);
+            newTrie.put(token, trie);
+            trie = newTrie;
+            h1++;
+        }
+        int t = seq.get(seq.size() - h);
+        if (!map.containsKey(t)) {
+            put(t, trie);
+            modified = true;
+        }
+        return modified;
+    }
+
+    Trie intersection(Trie trie1) {
+        Set<Integer> set0 = map.keySet();
+        Set<Integer> set1 = trie1.map.keySet();
+        Set<Integer> intersection = new HashSet<>(set0);
+        intersection.retainAll(set1);
+        if (intersection.isEmpty())
+            return null;
+        Trie result = new Trie(grammar, h);
+        assert(h >= 1 && h == trie1.h);
+        if (h < 2) {
+            for (Integer key : intersection)
+                result.put(key, null);
+            return result;
+        } else {
+            for (Integer key : intersection) {
+                Trie sub0 = map.get(key);
+                Trie sub1 = trie1.map.get(key);
+                Trie sub = sub0.intersection(sub1);
+                if (sub !=  null)
+                    result.put(key, sub);
+            }
+            if (result.map.isEmpty())
+                return null;
+            else
+                return result;
+        }
+    }
+
+    boolean isIntersection(Trie trie1, int h) {
+        Set<Integer> set0 = map.keySet();
+        Set<Integer> set1 = trie1.map.keySet();
+        Set<Integer> intersection = new HashSet<>(set0);
+        intersection.retainAll(set1);
+        if (intersection.isEmpty())
+            return false;
+        assert(h >= 1);
+        if (h < 2)
+            return true;
+        else {
+            for (Integer key : intersection) {
+                Trie sub0 = map.get(key);
+                Trie sub1 = trie1.map.get(key);
+                Trie sub = sub0.intersection(sub1);
+                if (sub !=  null)
+                    return true;
+            }
+            return false;
+        }
     }
 
     List<String> getSuffixes() {
@@ -68,46 +148,57 @@ public class Trie {
     }
 
     public Trie clone() {
-        Trie newTrie = new Trie(grammar);
+        Trie newTrie = new Trie(grammar, h);
         for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t = entry.getKey();
-            newTrie.put(t, entry.getValue().clone());
+            Trie value = entry.getValue();
+            if (value != null) {
+                newTrie.put(t, value.clone());
+            } else
+                newTrie.put(t, null);
         }
         return newTrie;
     }
 
-    Trie clone(int prefixLen) {
-        Trie newTrie = new Trie(grammar);
-        if (prefixLen > 0) {
-            for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
-                int t = entry.getKey();
-                newTrie.put(t, entry.getValue().clone(prefixLen - 1));
-            }
+    Trie clonePrefix(int prefixLen) {
+        assert(prefixLen >= 0);
+        assert(prefixLen <= h);
+        Trie newTrie = new Trie(grammar, prefixLen);
+        if (prefixLen == 0)
+            return newTrie;
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
+            int t = entry.getKey();
+            Trie tr;
+            if (prefixLen > 1) {
+                Trie sub = entry.getValue();
+                assert (sub != null);
+                tr = sub.clonePrefix(prefixLen - 1);
+            } else
+                tr = null;
+            newTrie.put(t, tr);
         }
         return newTrie;
     }
 
-    public void appendStrings(int index) {
-        if (!map.isEmpty())
+    public void appendStrings(int token) {
+        if (map.isEmpty()) {
+            assert(h == 0);
+            put(token, null);
+        } else if (h > 1) {
             for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
-                entry.getValue().appendStrings(index);
+                Trie sub = entry.getValue();
+                assert(sub != null);
+                sub.appendStrings(token);
             }
-        else {
-            Trie tr = new Trie(grammar);
-            put(index, tr);
-        }
-    }
-
-    public int calculateSize() {
-        if (map.isEmpty())
-            return 1;
-        else {
-            int sum = 0;
+        } else {
+            assert (h == 1);
             for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
-                sum += entry.getValue().calculateSize();
+                Trie newTrie = new Trie(grammar, 1);
+                newTrie.put(token, null);
+                entry.setValue(newTrie);
             }
-            return sum;
         }
+        h++;
     }
 
     public void appendStrings(Symbol symbol) {
@@ -115,44 +206,55 @@ public class Trie {
         appendStrings(symbol.getIndex());
     }
 
+    public int calculateSize() {
+        assert (!map.isEmpty());
+        int sum = 0;
+        for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
+            Trie sub = entry.getValue();
+            if (sub != null)
+                sum += sub.calculateSize();
+        }
+        return sum;
+    }
+
     public boolean unionWith(Trie trie) {
+        assert(trie != null);
         boolean modified = false;
         for (Map.Entry<Integer, Trie> entry : trie.map.entrySet()) {
             int t = entry.getKey();
             if (map.containsKey(t)) {
-                if (get(t).unionWith(entry.getValue()))
+                Trie value = get(t);
+                if (value != null && value.unionWith(entry.getValue()))
                     modified = true;
             } else {
                 modified = true;
-                put(t, entry.getValue().clone());
+                Trie trieVal = entry.getValue();
+                Trie val = trieVal == null ? null : trieVal.clone();
+                put(t, val);
             }
         }
         return modified;
     }
 
-    public void concatPrefixes(int prefixLen, Trie trie) {
+    public Trie concatPrefixes(int prefixLen, Trie trie) {
         assert (prefixLen >= 0);
-        if (prefixLen == 0) return;
-        if (trie == null) return;
-        if (map.isEmpty()) {
-            for (Map.Entry<Integer, Trie> entry : trie.map.entrySet()) {
-                map.put(entry.getKey(), entry.getValue().clone());
-            }
-        } else {
-            appendPrefixes(prefixLen, trie);
-        }
-    }
-
-    private void appendPrefixes(int prefixLen, Trie trie) {
-        assert (!map.isEmpty());
+        if (prefixLen == 0) return clone();
+        if (trie == null) return clone();
+        prefixLen = Math.min(prefixLen, trie.h);
+        Trie result = new Trie(grammar, h + prefixLen);
         for (Map.Entry<Integer, Trie> entry : map.entrySet()) {
             int t1 = entry.getKey();
             Trie sub = entry.getValue();
-            if (sub.map.isEmpty())
-                put(t1, trie.clone(prefixLen));
-            else
-                sub.appendPrefixes(prefixLen, trie);
+            assert (sub == null || !sub.map.isEmpty());
+            Trie tr;
+            if (sub == null)
+                tr = trie.clonePrefix(prefixLen);
+            else {
+                tr = sub.concatPrefixes(prefixLen, trie);
+            }
+            result.put(t1, tr);
         }
+        return result;
     }
 
     public void getPrefixes(Sequence seq, int prefixLen, SequenceSet ss) {
@@ -187,5 +289,22 @@ public class Trie {
                 return null;
         }
         return tr;
+    }
+
+    public boolean contains(Sequence seq) {
+        Trie tr = this;
+        for (int i : seq) {
+            if (tr.h>1) {
+                tr = tr.get(i);
+                if (tr == null)
+                    return false;
+            } else
+                return tr.containsKey(i);
+        }
+        return true;
+    }
+
+    public boolean isEmpty() {
+        return map.isEmpty();
     }
 }

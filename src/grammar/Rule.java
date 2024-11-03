@@ -89,7 +89,7 @@ public class Rule extends ArrayList<Symbol> {
                 return true;
             } else
                 maxLen += symbol.maxLen;
-        return minLen != old;
+        return maxLen != old;
     }
 
     public Rule(Grammar grammar, Nonterminal owner) {

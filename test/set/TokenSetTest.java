@@ -35,7 +35,23 @@ public class TokenSetTest {
     }
 
     @Test
-    void concat1() {
+    void addTier() {
+        Grammar grammar = TestGrammars.grammar2();
+        TokenSet set1 = new TokenSet(grammar, 1);
+        set1.addSeqDone("a");
+        set1.addSeqDone("b");
+        TokenSet set2 = new TokenSet(grammar, 1);
+        set2.addSeqDone("b");
+        set2.addSeqDone("c");
+        boolean changed = set1.unionWith(set2);
+        assertTrue(changed);
+        changed = set1.unionWith(set2);
+        assertFalse(changed);
+        assertEquals("{a b c}", set1.toString());
+    }
+
+    @Test
+    void concat1toEps() {
         Grammar grammar = TestGrammars.stdLL1();
         TokenSet set1 = new TokenSet(grammar, 2);
         set1.addSeqBuild("");
@@ -45,6 +61,18 @@ public class TokenSetTest {
         assertEquals("{( i}",set2.toString());
         TokenSet set3 = set1.concat(set2);
         assertEquals("[( i]", set3.toString());
+    }
+
+    @Test
+    void concat1noEps() {
+        Grammar grammar = TestGrammars.stdLL1();
+        TokenSet set1 = new TokenSet(grammar, 2);
+        TokenSet set2 = new TokenSet(grammar, 2);
+        set2.addSeqDone("(");
+        set2.addSeqDone("i");
+        assertEquals("{( i}",set2.toString());
+        TokenSet set3 = set1.concat(set2);
+        assertEquals("{}", set3.toString());
     }
 
     @Test

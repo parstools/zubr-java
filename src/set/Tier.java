@@ -1,10 +1,6 @@
 package set;
 
 import grammar.Grammar;
-import grammar.Symbol;
-import util.Hash;
-
-import java.util.*;
 
 public class Tier {
     public boolean unionWith(Tier tier) {
@@ -12,7 +8,7 @@ public class Tier {
         if (tier.trie == null)
             return false;
         if (trie == null) {
-            trie = new Trie(grammar);
+            trie = new Trie(grammar, len);
             modified = true;
         }
         if (trie.unionWith(tier.trie))
@@ -40,7 +36,7 @@ public class Tier {
         if (trie == null)
             return 0;
         else if (len == 0)
-            return 1; //epsilon
+            return 1; // epsilon
         else
             return trie.calculateSize();
     }
@@ -49,10 +45,39 @@ public class Tier {
         return addSeq(new Sequence(grammar, str));
     }
 
-    boolean addSeq(Sequence seq) {
+    private Trie searchTrieToInsert(Sequence seq) {
+        Trie result = trie;
+        for (int t : seq) {
+            Trie value = result.get(t);
+            if (value == null) {
+                if (result.containsKey(t))
+                    return null;
+                else
+                    return result;
+            } else
+                result = value;
+        }
+        return result;
+    }
+
+    public boolean addSeq(Sequence seq) {
+        assert(len == seq.size());
         boolean modified = false;
         if (trie == null) {
-            trie = new Trie(grammar);
+            trie = new Trie(grammar, len);
+            modified = true;
+        }
+        Trie trieToInsert = searchTrieToInsert(seq);
+        if (trieToInsert == null) return false;
+        if (trieToInsert.insertSuffix(seq))
+            modified = true;
+        return modified;
+    }
+
+    /*boolean addSeq(Sequence seq) {
+        boolean modified = false;
+        if (trie == null) {
+            trie = new Trie(grammar, len);
             modified = true;
         }
         assert (seq.size() == len);
@@ -63,14 +88,14 @@ public class Tier {
             Trie tr = previous.get(i);
             if (tr == null) {
                 if (h < len)
-                    tr = new Trie(grammar);
+                    tr = new Trie(grammar, len);
                 previous.put(i, tr);
                 modified = true;
             }
             previous = tr;
         }
         return modified;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -90,18 +115,12 @@ public class Tier {
     }
 
     public boolean contains(Sequence seq) {
+        assert(len == seq.size());
         if (trie == null)
             return false;
         if (len == 0)
-            return true;
-        assert (seq.size() == len);
-        Trie tr = trie;
-        for (int i : seq) {
-            tr = tr.get(i);
-            if (tr == null)
-                return false;
-        }
-        return true;
+            return true;// epsilon
+        return trie.contains(seq);
     }
 
     public boolean contains(String str) {
@@ -110,11 +129,14 @@ public class Tier {
 
     public Tier concat(Tier tier, int newLen) {
         int prefixLen = newLen - len;
-        Tier result = new Tier(grammar, len);
+        Tier result = new Tier(grammar, newLen);
         if (trie == null || tier.trie == null)
             return result;
-        result.trie = trie.clone();
-        result.trie.concatPrefixes(prefixLen, tier.trie);
+        if (len == 0) {
+            assert (trie.isEmpty()); // epsilon
+            result.trie = tier.trie.clonePrefix(prefixLen);
+        } else
+            result.trie = trie.concatPrefixes(prefixLen, tier.trie);
         return result;
     }
 
@@ -139,5 +161,26 @@ public class Tier {
     public void nthTokens(Sequence seq, SingleTokenSet sts) {
         if (trie != null)
             trie.nthTokens(seq, sts);
+    }
+
+    public Tier intersection(Tier tier1) {
+        assert(len == tier1.len);
+        if (trie == null || tier1.trie == null)
+            return null;
+        Trie resTrie = trie.intersection(tier1.trie);
+        if (resTrie == null)
+            return null;
+        else {
+            Tier resTier = new Tier(grammar, len);
+            resTier.trie = resTrie;
+            return resTier;
+        }
+    }
+
+    public boolean isIntersection(Tier tier1) {
+        assert(len == tier1.len);
+        if (trie == null || tier1.trie == null)
+            return false;
+        return trie.isIntersection(tier1.trie, len);
     }
 }

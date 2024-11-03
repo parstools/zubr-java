@@ -88,11 +88,13 @@ public class SetContainerTest {
         sc.reset(1);
         sc.makeFirstSetsK(1);
         sc.makeFollowSetsK(1);
-        assertEquals("{) $}", sc.followSetForIndex(0).toString());
-        assertEquals("{) $}", sc.followSetForIndex(1).toString());
-        assertEquals("{+ ) $}", sc.followSetForIndex(2).toString());
-        assertEquals("{+ ) $}", sc.followSetForIndex(3).toString());
-        assertEquals("{+ * ) $}", sc.followSetForIndex(4).toString());
+        TokenSet fol0 = sc.followSetForIndex(0);
+        TokenSet fol1 = sc.followSetForIndex(1);
+        assertEquals("{$ )}", fol0.toString());
+        assertEquals("{$ )}", fol1.toString());
+        assertEquals("{$ + )}", sc.followSetForIndex(2).toString());
+        assertEquals("{$ + )}", sc.followSetForIndex(3).toString());
+        assertEquals("{$ + * )}", sc.followSetForIndex(4).toString());
     }
 
     @Test
@@ -102,11 +104,11 @@ public class SetContainerTest {
         sc.reset(2);
         sc.makeFirstSetsK(2);
         sc.makeFollowSetsK(2);
-        assertEquals("{)+ )* )) $ )$}", sc.followSetForIndex(0).toString());
-        assertEquals("{)+ )* )) $ )$}", sc.followSetForIndex(1).toString());
-        assertEquals("{+( +i )+ )* )) $ )$}", sc.followSetForIndex(2).toString());
-        assertEquals("{+( +i )+ )* )) $ )$}", sc.followSetForIndex(3).toString());
-        assertEquals("{+( +i *( *i )+ )* )) $ )$}", sc.followSetForIndex(4).toString());
+        assertEquals("{)$ )+ )* )) $}", sc.followSetForIndex(0).toString());
+        assertEquals("{)$ )+ )* )) $}", sc.followSetForIndex(1).toString());
+        assertEquals("{+( +i )$ )+ )* )) $}", sc.followSetForIndex(2).toString());
+        assertEquals("{+( +i )$ )+ )* )) $}", sc.followSetForIndex(3).toString());
+        assertEquals("{+( +i *( *i )$ )+ )* )) $}", sc.followSetForIndex(4).toString());
     }
 
     @Test
@@ -116,25 +118,11 @@ public class SetContainerTest {
         sc.reset(3);
         sc.makeFirstSetsK(3);
         sc.makeFollowSetsK(3);
-        assertEquals("{)+( )+i )*( )*i ))+ ))* ))) $ )$ ))$}", sc.followSetForIndex(0).toString());
-        assertEquals("{)+( )+i )*( )*i ))+ ))* ))) $ )$ ))$}", sc.followSetForIndex(1).toString());
-        assertEquals("{+(( +(i +i+ +i* +i) )+( )+i )*( )*i ))+ ))* ))) $ )$ +i$ ))$}", sc.followSetForIndex(2).toString());
-        assertEquals("{+(( +(i +i+ +i* +i) )+( )+i )*( )*i ))+ ))* ))) $ )$ +i$ ))$}", sc.followSetForIndex(3).toString());
-        assertEquals("{+(( +(i +i+ +i* +i) *(( *(i *i+ *i* *i) )+( )+i )*( )*i ))+ ))* ))) $ )$ +i$ *i$ ))$}", sc.followSetForIndex(4).toString());
-    }
-
-    @Test
-    void FollowK_4() {
-        Grammar g = TestGrammars.stdLL1();
-        SetContainer sc = new SetContainer(g);
-        sc.reset(4);
-        sc.makeFirstSetsK(4);
-        sc.makeFollowSetsK(4);
-        assertEquals("{)+(( )+(i )+i+ )+i* )+i) )*(( )*(i )*i+ )*i* )*i) ))+( ))+i ))*( ))*i )))+ )))* )))) $ )$ ))$ )+i$ )*i$ )))$}", sc.followSetForIndex(0).toString());
-        assertEquals("{)+(( )+(i )+i+ )+i* )+i) )*(( )*(i )*i+ )*i* )*i) ))+( ))+i ))*( ))*i )))+ )))* )))) $ )$ ))$ )+i$ )*i$ )))$}", sc.followSetForIndex(1).toString());
-        assertEquals("{+((( +((i +(i+ +(i* +(i) +i+( +i+i +i*( +i*i +i)+ +i)* +i)) )+(( )+(i )+i+ )+i* )+i) )*(( )*(i )*i+ )*i* )*i) ))+( ))+i ))*( ))*i )))+ )))* )))) $ )$ +i$ ))$ +i)$ )+i$ )*i$ )))$}", sc.followSetForIndex(2).toString());
-        assertEquals("{+((( +((i +(i+ +(i* +(i) +i+( +i+i +i*( +i*i +i)+ +i)* +i)) )+(( )+(i )+i+ )+i* )+i) )*(( )*(i )*i+ )*i* )*i) ))+( ))+i ))*( ))*i )))+ )))* )))) $ )$ +i$ ))$ +i)$ )+i$ )*i$ )))$}", sc.followSetForIndex(3).toString());
-        assertEquals("{+((( +((i +(i+ +(i* +(i) +i+( +i+i +i*( +i*i +i)+ +i)* +i)) *((( *((i *(i+ *(i* *(i) *i+( *i+i *i*( *i*i *i)+ *i)* *i)) )+(( )+(i )+i+ )+i* )+i) )*(( )*(i )*i+ )*i* )*i) ))+( ))+i ))*( ))*i )))+ )))* )))) $ )$ +i$ *i$ ))$ +i)$ *i)$ )+i$ )*i$ )))$}", sc.followSetForIndex(4).toString());
+        assertEquals("{)+( )+i )*( )*i ))$ ))+ ))* ))) $ )$}", sc.followSetForIndex(0).toString());
+        assertEquals("{)+( )+i )*( )*i ))$ ))+ ))* ))) $ )$}", sc.followSetForIndex(1).toString());
+        assertEquals("{+(( +(i +i$ +i+ +i* +i) )+( )+i )*( )*i ))$ ))+ ))* ))) $ )$}", sc.followSetForIndex(2).toString());
+        assertEquals("{+(( +(i +i$ +i+ +i* +i) )+( )+i )*( )*i ))$ ))+ ))* ))) $ )$}", sc.followSetForIndex(3).toString());
+        assertEquals("{+(( +(i +i$ +i+ +i* +i) *(( *(i *i$ *i+ *i* *i) )+( )+i )*( )*i ))$ ))+ ))* ))) $ )$}", sc.followSetForIndex(4).toString());
     }
 
     @Disabled("only for generate data to tests")

@@ -34,7 +34,10 @@ public class Sequence extends ArrayList<Integer> {
         else {
             StringBuilder sb = new StringBuilder();
             for (int k : this)
-                sb.append(grammar.terminals.get(k).name);
+                if (k == -1)
+                    sb.append("$");
+                else
+                    sb.append(grammar.terminals.get(k).name);
             return sb.toString();
         }
     }
