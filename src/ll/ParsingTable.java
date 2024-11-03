@@ -20,6 +20,21 @@ public class ParsingTable {
         this.grammar = grammar;
     }
 
+    private boolean isConflict() {
+        for (Nonterminal nt : grammar.nonterminals)
+            for (int i = 0; i < nt.rules.size()-1; i++) {
+                Rule rule0 = nt.rules.get(i);
+                TokenSet ts0 = ruleSets.get(rule0);
+                for (int j = i + 1; j < nt.rules.size(); j++) {
+                    Rule rule1 = nt.rules.get(j);
+                    TokenSet ts1 = ruleSets.get(rule1);
+                    if (ts0.isIntersecion(ts1))
+                        return true;
+                }
+            }
+        return false;
+    }
+
     public boolean createLL(int k) {
         ruleSets = new HashMap<>();
         rows = new ArrayList<>();
@@ -39,7 +54,8 @@ public class ParsingTable {
                 ruleSets.put(rule, set);
             }
         }
-        for (int i = 0; i < grammar.nonterminals.size(); i++) {
+        return !isConflict();
+        /*for (int i = 0; i < grammar.nonterminals.size(); i++) {
             Nonterminal nt = grammar.nonterminals.get(i);
             TableElem row = rows.get(i);
             for (int j = 0; j < nt.ruleCount(); j++) {
@@ -49,6 +65,6 @@ public class ParsingTable {
             if (!row.incLookahead(new Sequence(grammar), ruleSets))
                 return false;
         }
-        return true;
+        return true;*/
     }
 }

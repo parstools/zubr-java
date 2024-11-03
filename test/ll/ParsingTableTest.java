@@ -16,6 +16,15 @@ public class ParsingTableTest {
     }
 
     @Test
+    void testCanonical() {
+        Grammar g = TestGrammars.canonicalForm();
+        g.eliminationRecursion();
+        ParsingTable table = new ParsingTable(g);
+        boolean res1 = table.createLL(3);
+        assertTrue(res1);
+    }
+
+    @Test
     void testLL_1() {
         Grammar g = TestGrammars.LL1();
         ParsingTable table = new ParsingTable(g);

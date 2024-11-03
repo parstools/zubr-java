@@ -281,7 +281,11 @@ public class TokenSet {
     }
 
     public boolean isIntersecion(TokenSet second) {
-        return true;
+        for (int n = 0; n < 3; n++)
+            for (int i = 0; i <= maxLen; i++)
+                if (tiers[n][i].isIntersection(second.tiers[n][i]))
+                    return true;
+        return false;
     }
 
     public TokenSet concat(TokenSet second) {
