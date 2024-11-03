@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Rule extends ArrayList<Symbol> {
+    private final int infinity = Integer.MAX_VALUE;
     Grammar grammar;
     public Nonterminal owner;
     //public int globalIndex;
@@ -71,7 +72,6 @@ public class Rule extends ArrayList<Symbol> {
     }
 
     boolean computeMaxLen() {
-        final int infinity = Integer.MAX_VALUE;
         if (maxLen == infinity)
             return false;
         int old = maxLen;
@@ -155,11 +155,15 @@ public class Rule extends ArrayList<Symbol> {
                 prefixLen++;
             else
                 break;
-        int sum = 0;
+        int maxExpandedLen = 0;
         for (int i=0; i<prefixLen; i++) {
             Symbol symbol = get(i);
-            sum += symbol.maxLen;
+            if (symbol.maxLen == infinity) {
+                maxExpandedLen = infinity;
+                break;
+            } else
+                maxExpandedLen += symbol.maxLen;
         }
-        return true;
+        return maxExpandedLen  >= k;
     }
 }
