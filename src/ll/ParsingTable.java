@@ -51,7 +51,7 @@ public class ParsingTable {
                 sc.addFirstOfRuleK(set, k, rule, 0);
                 assert(rule.owner == nt);
                 set = set.concat(sc.followSets.get(nt.getIndex()));
-                assert (!set.hasEpsilon());
+                assert (set.dbgWellFormedLLSet());
                 ruleSets.put(rule, set);
             }
         }

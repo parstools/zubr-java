@@ -23,6 +23,34 @@ public class TokenSet {
         }
     }
 
+    //check if last result is well-formed
+    boolean dbgNoBuild() {
+        for (Tier tier: tiers[TIER_BUIlD])
+            if (!tier.isEmpty())
+                return false;
+        return true;
+    }
+
+    boolean dbgNoShortDone() {
+        for (Tier tier: tiers[TIER_DONE]) {
+            if (tier.len == maxLen)
+                continue;
+            if (!tier.isEmpty())
+                return false;
+        }
+        return true;
+    }
+
+    boolean dbgNoEmptyAndMaxEOF() {
+        if (!tiers[TIER_EOF][0].isEmpty()) return false;
+        if (!tiers[TIER_EOF][maxLen].isEmpty()) return false;
+        return true;
+    }
+
+    public boolean dbgWellFormedLLSet() {
+        return dbgNoBuild() && dbgNoShortDone() && dbgNoEmptyAndMaxEOF();
+    }
+
     public int calculateSize() {
         int sum = 0;
         for (int n = 0; n < 3; n++)
