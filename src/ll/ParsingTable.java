@@ -55,7 +55,8 @@ public class ParsingTable {
                 ruleSets.put(rule, set);
             }
         }
-        return !isConflict();
+        if (isConflict()) return false;
+        return true;
         /*for (int i = 0; i < grammar.nonterminals.size(); i++) {
             Nonterminal nt = grammar.nonterminals.get(i);
             TableElem row = rows.get(i);
