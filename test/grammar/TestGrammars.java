@@ -307,4 +307,26 @@ public class TestGrammars {
         lines.add("A -> c");
         return new Grammar(lines);
     }
+
+    public static Grammar LLstar() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a S C");
+        lines.add("S ->");
+        lines.add("C -> A b S");
+        lines.add("C -> c");
+        lines.add("A -> a A");
+        lines.add("A ->");
+        return new Grammar(lines);
+    }
+
+    public static Grammar LLstar1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> A B A");
+        lines.add("S ->");
+        lines.add("A -> a A");
+        lines.add("A ->");
+        lines.add("B -> b B");
+        lines.add("B ->");
+        return new Grammar(lines);
+    }
 }

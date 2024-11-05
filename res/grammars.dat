@@ -13,6 +13,42 @@ S ->
 A -> a a b S
 A -> c
 
+;LL(*)
+S -> a S C
+S ->
+C -> A b S
+C -> c
+A -> A a
+A ->
+
+;LL(*)
+;if repeat a*, it doesn't know it is before or after b*
+;if would be a*b+a*, will be LL(2)
+;regular expression: a*b*a*
+;main problem: b may exists or may not exists
+;knowledge is in two cases: meeting b or meeting $
+;if meet $ - no backtrack needed, if meet b, read b, next read a
+; S: first is if 'a' or 'b', second if $
+; A: a* both, first is if a+b* second if b*a*
+; B: LL(1) first 'b', second 'a' or $
+;manually is posssible write it without backtracking with nested block while:
+;while (c=='a') getc();
+;if (c=='b') {
+;   while (c=='b') getc();
+;   if (c!='a' && c != EOF)
+;     error();
+;   while (c=='a') getc();
+;   if (c != EOF)
+;        error();
+;} else if (c!=EOF)
+;   return;
+;return;
+S -> A B A
+S ->
+A -> a A
+A ->
+B -> b B
+B ->
 
 ;test with https://www.cs.princeton.edu/courses/archive/spring22/cos320/LL1/index.html
 ;https://cs.stackexchange.com/questions/93144/why-is-this-grammar-an-ll2-grammar
