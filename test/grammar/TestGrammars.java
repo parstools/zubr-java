@@ -329,4 +329,17 @@ public class TestGrammars {
         lines.add("B ->");
         return new Grammar(lines);
     }
+
+    public static Grammar factor() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> i E t S");
+        lines.add("S -> a");
+        lines.add("S -> a E");
+        lines.add("S -> i E t a");
+        lines.add("S -> b E");
+        lines.add("S -> i E t S e S");
+        lines.add("S -> i E i a");
+        lines.add("E -> e");
+        return new Grammar(lines);
+    }
 }

@@ -147,6 +147,19 @@ public class Rule extends ArrayList<Symbol> {
         return size() > 0 && !hasT && countNonNullableSymbols <= 1 && minLen == owner.minLen;
     }
 
+    int expandedLen(int prefixLen) {
+        int result = 0;
+        for (int i=0; i<prefixLen; i++) {
+            Symbol symbol = get(i);
+            if (symbol.maxLen == infinity) {
+                result = infinity;
+                break;
+            } else
+                result += symbol.maxLen;
+        }
+        return result;
+    }
+
     public boolean conflict(Rule rule1, int k) {
         int minLength = Math.min(this.size(), rule1.size());
         int prefixLen = 0;
@@ -155,15 +168,26 @@ public class Rule extends ArrayList<Symbol> {
                 prefixLen++;
             else
                 break;
-        int maxExpandedLen = 0;
-        for (int i=0; i<prefixLen; i++) {
-            Symbol symbol = get(i);
-            if (symbol.maxLen == infinity) {
-                maxExpandedLen = infinity;
+        return expandedLen(prefixLen)  >= k;
+    }
+
+    public Rule getCommonPrefix(Rule other) {
+        Rule result = new Rule(grammar, owner);
+        for (int i = 0; i < Math.min(this.size(), other.size()); i++) {
+            if (get(i) != other.get(i))
                 break;
-            } else
-                maxExpandedLen += symbol.maxLen;
+            result.add(get(i));
         }
-        return maxExpandedLen  >= k;
+        return result;
+    }
+
+    public boolean startWith(Rule bestPrefix) {
+        if (this.size() < bestPrefix.size())
+            return false;
+        for (int i = 0; i < bestPrefix.size(); i++) {
+            if (get(i) != bestPrefix.get(i))
+                return false;
+        }
+        return true;
     }
 }

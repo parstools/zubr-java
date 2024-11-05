@@ -9,6 +9,16 @@ public abstract class Symbol {
     public int minLen;
     public int maxLen;
 
+    public static int compare(Symbol symbol0, Symbol symbol1) {
+        if (symbol0.terminal!=symbol1.terminal) {
+          if (symbol0.terminal)
+              return 1;
+          else
+              return -1;
+        }
+        return Integer.compare(symbol0.getIndex(), symbol1.getIndex());
+    }
+
     public abstract int getIndex();
 
     public Symbol(Grammar grammar, boolean terminal, String name) {

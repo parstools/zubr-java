@@ -85,6 +85,8 @@ public class Grammar implements Cloneable {
         Nonterminal newNt = new Nonterminal(this, newNameFrom(owner.name));
         newNt.rules = new ArrayList<>();
         nonterminals.add(owner.getIndex() + 1, newNt);
+        newNt.computeMinLen();
+        newNt.computeMaxLen();
         return newNt;
     }
 
@@ -360,5 +362,28 @@ public class Grammar implements Cloneable {
             if (nt.needsFactorization(k))
                 return true;
         return false;
+    }
+
+    public void factorization(int k) {
+        if (!needsFactorization(k))
+            return;
+        while (true) {
+            boolean changed = false;
+            List<Nonterminal> newNonTerminals = new ArrayList<>();
+            for (Nonterminal nt : nonterminals) {
+                Nonterminal newNt = nt.factorRules(k);
+                newNonTerminals.add(nt);
+                if (newNt != null) {
+                    newNt.name = newNameFrom(nt.name);
+                    newNt.computeMinLen();
+                    newNt.computeMaxLen();
+                    newNonTerminals.add(newNt);
+                    changed = true;
+                }
+            }
+            if (!changed)
+                break;
+            nonterminals = newNonTerminals;
+        }
     }
 }

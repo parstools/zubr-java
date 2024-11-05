@@ -3,6 +3,7 @@ package grammar;
 import util.Hash;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Nonterminal extends Symbol {
@@ -91,5 +92,50 @@ public class Nonterminal extends Symbol {
             }
         }
         return false;
+    }
+
+    public Nonterminal factorRules(int k) {
+        List<Rule> sortedRules = new ArrayList<>(rules);
+        Collections.sort(sortedRules, (r1, r2) -> {
+            int size1 = r1.size(), size2 = r2.size();
+            int minSize = Math.min(size1, size2);
+            for (int i = 0; i < minSize; i++) {
+                int cmp = compare(r1.get(i), r2.get(i));
+                if (cmp != 0) {
+                    return cmp;
+                }
+            }
+            return Integer.compare(size1, size2);
+        });
+        Rule bestPrefix = new Rule(grammar, this);
+        int bestLen = Integer.MAX_VALUE;
+        for (int i = 0; i < sortedRules.size()-1; i++) {
+            Rule current = sortedRules.get(i);
+            Rule next = sortedRules.get(i+1);
+            Rule commonPrefix = current.getCommonPrefix(next);
+            int prefixLen = commonPrefix.size();
+            if (commonPrefix.expandedLen(prefixLen) >= k) {
+                if (prefixLen < bestLen || bestLen == Integer.MAX_VALUE) {
+                    bestPrefix = commonPrefix;
+                    bestLen = prefixLen;
+                }
+            }
+        }
+        if (bestPrefix.isEmpty())
+            return null;
+        Nonterminal newNt = new Nonterminal(grammar, "");
+        List<Rule> newRules = new ArrayList<>();
+        for (Rule rule: rules) {
+            if (rule.startWith(bestPrefix)) {
+                rule.subList(0, bestPrefix.size()).clear();
+                newNt.addRule(rule);
+            } else {
+                newRules.add(rule);
+            }
+        }
+        bestPrefix.add(newNt);
+        newRules.add(0, bestPrefix);
+        this.rules = newRules;
+        return newNt;
     }
 }
