@@ -1,2 +1,2 @@
-# llk-java
+# Zubr
 Parser LL(k) kit 
