@@ -55,6 +55,10 @@ public class Generator {
         return root.string();
     }
 
+    public Sequence seq() {
+        return root.seq();
+    }
+
     public String parenString() {
         return root.parenString();
     }

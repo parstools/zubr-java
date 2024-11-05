@@ -50,6 +50,21 @@ public class Node {
         }
     }
 
+    public Sequence seq() {
+        Sequence buildSeq = new Sequence(grammar);
+        seq(buildSeq);
+        return buildSeq;
+    }
+
+    private void seq(Sequence buildSeq) {
+        if (symbol.terminal) {
+            buildSeq.add(symbol.getIndex());
+        } else {
+            for (Node child : childs)
+                child.seq(buildSeq);
+        }
+    }
+
     public String string() {
         if (symbol.terminal)
             return symbol.toString();
