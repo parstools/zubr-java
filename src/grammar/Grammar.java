@@ -11,6 +11,10 @@ import java.util.*;
 public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
     public List<Terminal> terminals = new ArrayList<>();
+    private boolean transformed;
+    public boolean transformed() {
+        return transformed;
+    }
 
     boolean minLenOK = false;
     public boolean grammarOK() {
@@ -52,6 +56,7 @@ public class Grammar implements Cloneable {
             newNt.addRule(rule);
         }
         newNt.addRule(new Rule(nt.grammar, newNt));
+        transformed = true;
     }
 
     private void substituteRules(Nonterminal owner, Nonterminal toSubstitute) {
@@ -140,7 +145,7 @@ public class Grammar implements Cloneable {
     }
 
     public Grammar() {
-
+        //empty costructor for cloning
     }
 
     void setMinLen() {
@@ -321,6 +326,7 @@ public class Grammar implements Cloneable {
             if (cycle.size() < 2)
                 throw new RuntimeException("must be not direct recursion");
             wasIndirectRecursion = true;
+            transformed = true;
             substituteRules(cycle);
             break;
         }
@@ -376,6 +382,7 @@ public class Grammar implements Cloneable {
             for (Nonterminal nt : nonterminals) {
                 Nonterminal newNt = nt.factorRules(k);
                 newNonTerminals.add(nt);
+                transformed = true;
                 if (newNt != null) {
                     newNt.name = newNameFrom(nt.name);
                     newNt.computeMinLen();
