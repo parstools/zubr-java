@@ -3,7 +3,6 @@ import generator.RuleOrder;
 import grammar.Grammar;
 import ll.ParsingTable;
 import set.Sequence;
-import set.SequenceSet;
 import set.SetContainer;
 import set.TokenSet;
 import util.NoMinLenGrammarException;
@@ -131,6 +130,15 @@ public class Main {
         out.println(count + " grammars");
     }
 
+    static int testAmbig(Grammar grammar) {
+        for (int len = 1; len <=12; len++) {
+            int res = testAmbig(grammar, len, 10000);
+            if (res<=0)
+                return res;
+        }
+        return 1;
+    }
+
     static int testAmbig(Grammar grammar, int maxLen, int limit) {
         Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
         int counter = 0;
@@ -165,7 +173,7 @@ public class Main {
             grammar.factorization(1);
             ParsingTable table = new ParsingTable(grammar);
             boolean res1 = table.createLL(1);
-            int test = testAmbig(grammar, 12, 10000);
+            int test = testAmbig(grammar);
             if (test>=0 && !res1) {
                 out.println("-----------------");
                 gramLines.forEach(out::println);
