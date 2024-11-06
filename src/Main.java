@@ -2,6 +2,8 @@ import generator.Generator;
 import generator.RuleOrder;
 import grammar.Grammar;
 import ll.ParsingTable;
+import set.Sequence;
+import set.SequenceSet;
 import set.SetContainer;
 import set.TokenSet;
 import util.NoMinLenGrammarException;
@@ -127,6 +129,27 @@ public class Main {
         out.println(count + " grammars");
     }
 
+    static int testAmbig(Grammar grammar, int maxLen, int limit) {
+        Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
+        int counter = 0;
+        boolean broken = false;
+        boolean ambig = false;
+        SequenceSet ss = new SequenceSet();
+        while (generator.next()) {
+            counter++;
+            Sequence seq = generator.seq();
+            if (ss.contains(seq))
+                return -1;
+            ss.add(seq);
+            if (counter >= limit) {
+                broken = true;
+                break;
+            }
+        }
+        if (broken) return 0;
+        else return 1;
+    }
+
     static void readAllGrammars() throws IOException {
         Path path = Paths.get("res/grammars.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -136,6 +159,15 @@ public class Main {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
+            grammar.eliminationRecursion();
+            grammar.factorization(1);
+            ParsingTable table = new ParsingTable(grammar);
+            boolean res1 = table.createLL(1);
+            int test = testAmbig(grammar, 12, 10000);
+            if (test>=0 && !res1) {
+                out.println("-----------------");
+                gramLines.forEach(out::println);
+            }
             count++;
             n++;
         }
@@ -368,11 +400,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        /*try {
+        try {
             readAllGrammars();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        testFactoring();
-    }
+        }
+     }
 }
