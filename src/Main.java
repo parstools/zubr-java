@@ -3,6 +3,7 @@ import generator.RuleOrder;
 import grammar.Grammar;
 import ll.ParsingTable;
 import set.Sequence;
+import set.SequenceSet;
 import set.SetContainer;
 import set.TokenSet;
 import util.NoMinLenGrammarException;
@@ -130,16 +131,17 @@ public class Main {
         out.println(count + " grammars");
     }
 
-    static int testAmbig(Grammar grammar) {
+    static int testAmbig(Grammar grammar, List<String> ambigInfo) {
         for (int len = 1; len <=12; len++) {
-            int res = testAmbig(grammar, len, 10000);
-            if (res<=0)
+            int res = testAmbig(grammar, len, 10000, ambigInfo);
+            if (res < 0)
                 return res;
         }
         return 1;
     }
 
-    static int testAmbig(Grammar grammar, int maxLen, int limit) {
+    static int testAmbig(Grammar grammar, int maxLen, int limit, List<String> ambigInfo) {
+        ambigInfo.clear();
         Generator generator = new Generator(grammar, maxLen, RuleOrder.roSort);
         int counter = 0;
         boolean broken = false;
@@ -148,9 +150,16 @@ public class Main {
         while (generator.next()) {
             counter++;
             Sequence seq = generator.seq();
-            if (smap.containsKey(seq))
+            String paren = generator.parenString();
+            if (smap.containsKey(seq)) {
+                ambigInfo.add(seq.toString());
+                String prev = smap.get(seq);
+                ambigInfo.add(prev);
+                ambigInfo.add(paren);
                 return -1;
-            smap.put(seq, generator.parenString());
+            }
+            //smap.put(seq, paren);
+            smap.put(seq,paren);
             if (counter >= limit) {
                 broken = true;
                 break;
@@ -172,8 +181,9 @@ public class Main {
             grammar.eliminationRecursion();
             grammar.factorization(1);
             ParsingTable table = new ParsingTable(grammar);
-            boolean res1 = table.createLL(1);
-            int test = testAmbig(grammar);
+            boolean res1 = table.createLL(4);
+            List<String> ambigInfo = new ArrayList<>();
+            int test = testAmbig(grammar, ambigInfo);
             if (test>=0 && !res1) {
                 out.println("-----------------");
                 gramLines.forEach(out::println);
