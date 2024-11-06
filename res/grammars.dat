@@ -93,6 +93,7 @@ G -> L
 G -> s
 S -> i b t G
 L -> i b t L e G
+L -> s
 
 ; + and * equal priority, but * has right-hand connection
 ; warning, it can't be such defined, because conflict
