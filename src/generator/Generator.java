@@ -25,8 +25,7 @@ public class Generator {
 
     public Generator(Grammar grammar, int maxLen, RuleOrder ruleOrder) {
         if (!grammar.grammarOK()) {
-            out.println("bad grammar");
-            exit(1);
+            throw new RuntimeException("bad grammar for generator");
         }
         this.grammar = grammar;
         this.maxLen = maxLen;
