@@ -64,7 +64,6 @@ A -> b B
 B -> A
 B -> a A
 
-
 ; solution 'dangling else' by L07SecondTry.pdf (17 LALR and 17 LR(1))
 ;S=stmt, e=Expr, i=if, t=then, W=WithElse, o=Other statements
 S -> i e t S
@@ -89,14 +88,12 @@ S -> i b t S e S
 S -> i b t S
 S -> s
 
-
 ;else L-long s else, S- short bez else, G-general (conflict LR(1))
 G -> S
 G -> L
 G -> s
 S -> i b t G
 L -> i b t L e G
-
 
 ; + and * equal priority, but * has right-hand connection
 ; warning, it can't be such defined, because conflict
@@ -145,7 +142,6 @@ E -> E * E
 E -> ( E )
 E -> i
 E -> n
-
 
 ;is not SLR - example from Ch4b.pdf, 14 states LR1, 10 states Lalr
 S -> L = R
@@ -202,7 +198,6 @@ E -> B
 B -> 0
 B -> 1
 
-
 ;book page 148 LR(2) i LL(3)
 X -> Y
 X -> b Y a
@@ -222,7 +217,6 @@ S -> a B e
 S -> b A e
 A -> c
 B -> c
-
 
 ; if will error?
 ; <HTML> -> <DocType Opt> '<html' <Parameters> '>' <Head> <Frameset> <Body> '</html>'
@@ -253,7 +247,6 @@ F -> U +
 U -> c
 U -> ( E )
 
-
 ;example to test error recovery
 ;bi=i+i+ii, next continuations ;,+,e (e it's out because after is i)
 ;best see - what is after i, = or +
@@ -279,7 +272,6 @@ C ->
 ;example recovery with replacement, for example error in keyword then
 ;iaaaea
 E -> i a t a e a
-
 
 ;first version simplan language
 E -> D B
