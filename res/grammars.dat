@@ -82,7 +82,7 @@ U -> i e t S
 U -> i e t M e U
 
 ;if .. then .. else - simple (9 states LALR and 16 LR(1))
-;correct if choosed S7, if cchoosed reduction - even is error analysis ibtibtses
+;correct if choosed S7, if choosed reduction - even is error analysis ibtibtses
 S -> i b t S e S
 S -> i b t S
 S -> s
