@@ -154,9 +154,12 @@ public class Grammar implements Cloneable {
 
     public Grammar(List<String> lines) {
         for (String line : lines) {
+            assert(!line.isEmpty());
+            if (line.charAt(0) == ';') continue;
             addNT(parseNTname(line));
         }
         for (String line : lines) {
+            if (line.charAt(0) == ';') continue;
             String ntName = parseNTname(line);
             int n = line.indexOf("->");
             String ruleString = line.substring(n + 2).trim();

@@ -354,10 +354,6 @@ public class Main {
     private static int readGramLines(List<String> lines, int n, List<String> gramLines) {
         while (n < lines.size()) {
             String line = lines.get(n).trim();
-            if (!line.isEmpty() && line.charAt(0) == ';') {
-                n++;
-                continue;
-            }
             if (line.isEmpty() || line.equals("---") || line.startsWith("===")) break;
             gramLines.add(line);
             n++;
