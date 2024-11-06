@@ -43,7 +43,7 @@ public class Sequence extends ArrayList<Integer> {
     }
 
     public boolean isEof() {
-        return size() > 0 && get(size() - 1) == -1;
+        return size() > 0 && getLast() == -1;
     }
 
     public Sequence clone() {
