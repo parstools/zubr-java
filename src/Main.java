@@ -16,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.out;
 
@@ -134,13 +136,13 @@ public class Main {
         int counter = 0;
         boolean broken = false;
         boolean ambig = false;
-        SequenceSet ss = new SequenceSet();
+        Map<Sequence, String> smap = new HashMap<>();
         while (generator.next()) {
             counter++;
             Sequence seq = generator.seq();
-            if (ss.contains(seq))
+            if (smap.containsKey(seq))
                 return -1;
-            ss.add(seq);
+            smap.put(seq, generator.parenString());
             if (counter >= limit) {
                 broken = true;
                 break;
