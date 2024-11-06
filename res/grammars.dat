@@ -44,7 +44,6 @@ A ->
 ;   return;
 ;return;
 S -> A B A
-S ->
 A -> a A
 A ->
 B -> b B
