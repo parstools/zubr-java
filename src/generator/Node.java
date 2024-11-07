@@ -209,7 +209,6 @@ public class Node {
     }
 
     boolean isRuleCycle() {
-        int hash;
         if (ruleHash == 0)
             ruleHash = Hash.intHash(-1);
         Rule rule = rules.get(ruleIndex);
@@ -226,8 +225,7 @@ public class Node {
         if (!ruleIndexOK())
             return false;
         childs.clear();
-        initSuffix(0, nodeMaxLen);
-        return true;
+        return initSuffix(0, nodeMaxLen);
     }
 
     boolean next() {
