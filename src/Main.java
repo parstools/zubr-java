@@ -3,7 +3,6 @@ import generator.RuleOrder;
 import grammar.Grammar;
 import ll.ParsingTable;
 import set.Sequence;
-import set.SequenceSet;
 import set.SetContainer;
 import set.TokenSet;
 import util.NoMinLenGrammarException;
@@ -181,12 +180,23 @@ public class Main {
             grammar.eliminationRecursion();
             grammar.factorization(1);
             ParsingTable table = new ParsingTable(grammar);
-            boolean res1 = table.createLL(4);
+            int resk = -1;
+            for (int k=1; k<=6; k++) {
+                boolean res = table.createLL(k);
+                if (res) {
+                    resk = k;
+                    break;
+                }
+            }
             List<String> ambigInfo = new ArrayList<>();
             int test = testAmbig(grammar, ambigInfo);
-            if (test>=0 && !res1) {
-                out.println("-----------------");
+            if (test>=0 && resk>1) {
+                out.printf("---------%d--------%n",resk);
                 gramLines.forEach(out::println);
+                if (grammar.transformed()) {
+                    out.println("==transformed==");
+                    grammar.toLines().forEach(out::println);
+                }
             }
             count++;
             n++;
