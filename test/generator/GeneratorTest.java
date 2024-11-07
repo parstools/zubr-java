@@ -174,4 +174,11 @@ public class GeneratorTest {
         while (generator.next()) {
         }
     }
+
+    @Test
+    void stackOverflow() {
+        Generator generator = new Generator(TestGrammars.generatorStackOverflow(), 20, RuleOrder.roOriginal);
+        while (generator.next()) {
+        }
+    }
 }

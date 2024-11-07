@@ -15,6 +15,8 @@ public class GenerateTest {
         while (true) {
             g.createRandom(i);
             i++;
+            g.toLines().forEach(System.out::println);
+            System.out.println();
             Generator generator = new Generator(g, 30, RuleOrder.roOriginal);
             int limit = 100;
             int counter = 0;
@@ -24,10 +26,10 @@ public class GenerateTest {
                     break;
             }
             if (counter==limit) {
-                g.toLines().forEach(System.out::println);
-                System.out.println();
+//                g.toLines().forEach(System.out::println);
+//                System.out.println();
                 cnt++;
-                if (cnt >= 100)
+                if (cnt >= 1000)
                     break;
             }
         }

@@ -95,6 +95,31 @@ public class Nonterminal extends Symbol {
         return false;
     }
 
+    boolean checkRulesDiffer() {
+        List<Rule> sortedRules = new ArrayList<>(rules);
+        Collections.sort(sortedRules, (r1, r2) -> {
+            int size1 = r1.size(), size2 = r2.size();
+            int minSize = Math.min(size1, size2);
+            for (int i = 0; i < minSize; i++) {
+                int cmp = compare(r1.get(i), r2.get(i));
+                if (cmp != 0) {
+                    return cmp;
+                }
+            }
+            return Integer.compare(size1, size2);
+        });
+        for (int i = 0; i < sortedRules.size()-1; i++) {
+            Rule current = sortedRules.get(i);
+            Rule next = sortedRules.get(i + 1);
+            if (current.size() != next.size())
+                continue;
+            Rule commonPrefix = current.getCommonPrefix(next);
+            if (commonPrefix.size() == current.size())
+                return false;
+        }
+        return true;
+    }
+
     public Nonterminal factorRules(int k) {
         List<Rule> sortedRules = new ArrayList<>(rules);
         Collections.sort(sortedRules, (r1, r2) -> {

@@ -378,4 +378,15 @@ public class TestGrammars {
         lines.add("B -> B A");
         return new Grammar(lines);
     }
+
+    public static Grammar generatorStackOverflow() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> b A");
+        lines.add("S ->");
+        lines.add("S -> A A");
+        lines.add("A -> a A");
+        lines.add("A -> b A");
+        lines.add("A -> S S S");
+        return new Grammar(lines);
+    }
 }

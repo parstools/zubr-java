@@ -20,7 +20,16 @@ public class Grammar implements Cloneable {
 
     boolean minLenOK = false;
     public boolean grammarOK() {
-        return minLenOK;
+        return minLenOK && rulesDiffer();
+    }
+
+    private boolean rulesDiffer() {
+        for (int i = 0; i < nonterminals.size(); i++) {
+            Nonterminal nt = nonterminals.get(i);
+            if (!nt.checkRulesDiffer())
+                return false;
+        }
+        return true;
     }
 
     int directLeftRecursiveNt() {
