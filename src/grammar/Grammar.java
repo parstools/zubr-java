@@ -11,6 +11,8 @@ import java.util.*;
 public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
     public List<Terminal> terminals = new ArrayList<>();
+    Nonterminal startNt = null;
+
     private boolean transformed;
     public boolean transformed() {
         return transformed;
@@ -395,5 +397,15 @@ public class Grammar implements Cloneable {
                 break;
             nonterminals = newNonTerminals;
         }
+    }
+
+    public Nonterminal addStartNt() {
+        if (startNt!=null)
+            return startNt;
+        startNt = new Nonterminal(this, "");
+        Rule startRule = new Rule(this, startNt);
+        startRule.add(nonterminals.get(0));
+        startNt.rules.add(startRule);
+        return startNt;
     }
 }

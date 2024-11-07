@@ -342,4 +342,14 @@ public class TestGrammars {
         lines.add("E -> e");
         return new Grammar(lines);
     }
+
+    public static Grammar LRwiki() {
+        List<String> lines = new ArrayList<>();
+        lines.add("E -> E * B");
+        lines.add("E -> E + B");
+        lines.add("E -> B");
+        lines.add("B -> 0");
+        lines.add("B -> 1");
+        return new Grammar(lines);
+    }
 }

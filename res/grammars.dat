@@ -106,6 +106,7 @@ E -> T
 T -> T * i
 T -> i
 
+;typical grammar not LR(0), from 7.12 page.195 Compiler Construction : Waite, William M., Goos, Gerhard
 E -> E + T
 E -> T
 T -> T * F
