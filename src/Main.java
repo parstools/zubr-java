@@ -1,6 +1,8 @@
 import generator.Generator;
 import generator.RuleOrder;
 import grammar.Grammar;
+import grammar.Nonterminal;
+import grammar.Rule;
 import ll.ParsingTable;
 import set.Sequence;
 import set.SetContainer;
@@ -177,6 +179,18 @@ public class Main {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
+
+            int cnt = 0, cnt1 = 0;
+            for (Nonterminal nt: grammar.nonterminals) {
+                cnt += nt.rules.size();
+                for (Rule rule :nt.rules)
+                    cnt1 += rule.size();
+            }
+//            if (grammar.terminals.size()>10) {
+//                gramLines.forEach(out::println);
+//            }
+            out.printf("%f %f%n",(double)cnt/grammar.nonterminals.size(), (double)cnt1/cnt);
+            /*
             grammar.eliminationRecursion();
             grammar.factorization(1);
             ParsingTable table = new ParsingTable(grammar);
@@ -197,7 +211,7 @@ public class Main {
                     out.println("==transformed==");
                     grammar.toLines().forEach(out::println);
                 }
-            }
+            }*/
             count++;
             n++;
         }

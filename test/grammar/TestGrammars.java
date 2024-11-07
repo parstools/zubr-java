@@ -352,4 +352,30 @@ public class TestGrammars {
         lines.add("B -> 1");
         return new Grammar(lines);
     }
+
+    public static Grammar generatorRecursion() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a");
+        lines.add("S -> S a");
+        return new Grammar(lines);
+    }
+
+    public static Grammar generatorTwoSame() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> a");
+        lines.add("S -> a");
+        return new Grammar(lines);
+    }
+
+    public static Grammar generatorStack() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> A A");
+        lines.add("S -> c");
+        lines.add("S -> b B");
+        lines.add("A ->");
+        lines.add("B -> S A B");
+        lines.add("B -> S c c");
+        lines.add("B -> B A");
+        return new Grammar(lines);
+    }
 }

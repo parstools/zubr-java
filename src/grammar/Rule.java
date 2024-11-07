@@ -3,6 +3,7 @@ package grammar;
 import util.Hash;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Rule extends ArrayList<Symbol> {
@@ -189,5 +190,23 @@ public class Rule extends ArrayList<Symbol> {
                 return false;
         }
         return true;
+    }
+
+    public void fillRandom(Random random) {
+        int count = random.nextInt(4);
+        for (int i = 0; i < count; i++) {
+            int ifTerminal = random.nextInt(2);
+            if (count == 1)
+                ifTerminal = 1;
+            if (ifTerminal == 1) {
+                Terminal t = grammar.terminals.get(random.nextInt(grammar.terminals.size()));
+                hasT = true;
+                add(t);
+            } else {
+                Nonterminal nt = grammar.nonterminals.get(random.nextInt(grammar.nonterminals.size()));
+                hasNt = true;
+                add(nt);
+            }
+        }
     }
 }

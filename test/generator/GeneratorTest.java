@@ -153,4 +153,25 @@ public class GeneratorTest {
         }
         //out.println(counter0);
     }
+
+    @Test
+    void recursion() {
+        Generator generator = new Generator(TestGrammars.generatorRecursion(), 20, RuleOrder.roOriginal);
+        while (generator.next()) {
+        }
+    }
+
+    @Test
+    void twoSame() {
+        Generator generator = new Generator(TestGrammars.generatorTwoSame(), 20, RuleOrder.roOriginal);
+        while (generator.next()) {
+        }
+    }
+
+    @Test
+    void stack() {
+        Generator generator = new Generator(TestGrammars.generatorStack(), 20, RuleOrder.roOriginal);
+        while (generator.next()) {
+        }
+    }
 }

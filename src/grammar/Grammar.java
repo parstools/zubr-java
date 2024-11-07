@@ -179,6 +179,36 @@ public class Grammar implements Cloneable {
         computeMaxLen();
     }
 
+    void createRandom(int seedBase) {
+        Random randBase = new Random(seedBase);
+        do {
+            int seed = randBase.nextInt();
+            nonterminals.clear();
+            terminals.clear();
+            Random random = new Random(seed);
+            int ntCount = random.nextInt(3) + 1;
+            for (int i = 0; i < ntCount; i++) {
+                String name;
+                if (i == 0)
+                    name = "S";
+                else {
+                    char letterChar = (char) ('A' + i - 1);
+                    name = String.valueOf(letterChar);
+                }
+                addNT(name);
+            }
+            int tCount = random.nextInt(3) + 2;
+            for (int i = 0; i < ntCount; i++) {
+                char letterChar = (char) ('a' + i);
+                addT(String.valueOf(letterChar));
+            }
+            for (Nonterminal nt : nonterminals)
+                nt.fillRandom(random);
+            setMinLen();
+            computeMaxLen();
+        } while (!grammarOK());
+    }
+
     private void computeNonNullableCount() {
         for (Nonterminal nt : nonterminals)
             for (Rule rule : nt.rules)

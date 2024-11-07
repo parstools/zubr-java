@@ -5,6 +5,7 @@ import util.Hash;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Nonterminal extends Symbol {
     @Override
@@ -137,5 +138,14 @@ public class Nonterminal extends Symbol {
         newRules.add(0, bestPrefix);
         this.rules = newRules;
         return newNt;
+    }
+
+    public void fillRandom(Random random) {
+        int ruleCount = random.nextInt(3) + 1;
+        for (int i = 0; i < ruleCount ; i++) {
+            Rule rule = new Rule(grammar,this);
+            rule.fillRandom(random);
+            addRule(rule);
+        }
     }
 }

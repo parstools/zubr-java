@@ -172,7 +172,7 @@ U ->
 F -> ( E )
 F -> i
 
-;from http://en.wikipedia.org/wiki/LR_parser simpe not LR(0) reduction-reduction conflict, is SLR
+;from http://en.wikipedia.org/wiki/LR_parser simple not LR(0) reduction-reduction conflict, is SLR
 E -> A 1
 E -> B 2
 A -> 1
