@@ -1,8 +1,6 @@
 import generator.Generator;
 import generator.RuleOrder;
 import grammar.Grammar;
-import grammar.Nonterminal;
-import grammar.Rule;
 import ll.ParsingTable;
 import set.Sequence;
 import set.SetContainer;
@@ -174,48 +172,39 @@ public class Main {
         Path path = Paths.get("res/grammars.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         int n = 0;
-        int count = 0;
+        int counter = 0;
         while (n < lines.size()) {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
 
-            int cnt = 0, cnt1 = 0;
-            for (Nonterminal nt: grammar.nonterminals) {
-                cnt += nt.rules.size();
-                for (Rule rule :nt.rules)
-                    cnt1 += rule.size();
-            }
-//            if (grammar.terminals.size()>10) {
-//                gramLines.forEach(out::println);
-//            }
-            out.printf("%f %f%n",(double)cnt/grammar.nonterminals.size(), (double)cnt1/cnt);
-            /*
-            grammar.eliminationRecursion();
-            grammar.factorization(1);
-            ParsingTable table = new ParsingTable(grammar);
-            int resk = -1;
-            for (int k=1; k<=6; k++) {
-                boolean res = table.createLL(k);
-                if (res) {
-                    resk = k;
-                    break;
-                }
-            }
+            out.printf("%d: ",counter);
+
             List<String> ambigInfo = new ArrayList<>();
             int test = testAmbig(grammar, ambigInfo);
-            if (test>=0 && resk>1) {
-                out.printf("---------%d--------%n",resk);
-                gramLines.forEach(out::println);
-                if (grammar.transformed()) {
-                    out.println("==transformed==");
-                    grammar.toLines().forEach(out::println);
+            if(test<0)
+                out.println("ambiguous");
+            else {
+                grammar.eliminationRecursion();
+                grammar.factorization(1);
+                ParsingTable table = new ParsingTable(grammar);
+                int resk = -1;
+                for (int k=1; k<=6; k++) {
+                    boolean res = table.createLL(k);
+                    if (res) {
+                        resk = k;
+                        break;
+                    }
                 }
-            }*/
-            count++;
+                if (resk>=1)
+                    out.printf("LL(%d)%n",resk);
+                else
+                    out.println("no LL(k)");
+            }
+            counter++;
             n++;
         }
-        out.println(count + " grammars");
+        out.println(counter + " grammars");
     }
 
     private static void testK4grammar(Grammar grammar, List<String> expectLines) {
