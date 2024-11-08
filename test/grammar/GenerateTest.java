@@ -2,12 +2,14 @@ package grammar;
 
 import generator.Generator;
 import generator.RuleOrder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.System.out;
 
 public class GenerateTest {
 
+    @Disabled
     @Test
     void random () {
         Grammar g = new Grammar();

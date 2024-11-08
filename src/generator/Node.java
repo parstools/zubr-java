@@ -6,7 +6,6 @@ import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
-import util.Hash;
 
 import java.util.*;
 
@@ -123,8 +122,9 @@ public class Node {
             reservedLen -= grammar.getMinLen(rule.get(i));
         if (reservedLen < grammar.getMinLen(rule.get(start)))
             return false;
-        assert (reservedLen <= nodeMaxLen);
-        int childRuleHash;
+        assert (reservedLen <= maxLen);
+        assert (maxLen <= nodeMaxLen);
+        //Can be generated longer than reservedLen, up to maxLen
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
         childs.add(child);
         if (!child.symbol.terminal)

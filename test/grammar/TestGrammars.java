@@ -360,13 +360,6 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar generatorTwoSame() {
-        List<String> lines = new ArrayList<>();
-        lines.add("S -> a");
-        lines.add("S -> a");
-        return new Grammar(lines);
-    }
-
     public static Grammar generatorStack() {
         List<String> lines = new ArrayList<>();
         lines.add("S -> A A");

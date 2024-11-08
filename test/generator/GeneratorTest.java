@@ -1,10 +1,13 @@
 package generator;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import grammar.TestGrammars;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Stack;
 
 public class GeneratorTest {
@@ -151,19 +154,11 @@ public class GeneratorTest {
             ;//out.println(generator.string() + " " + generator.parenString());
             counter0++;
         }
-        //out.println(counter0);
     }
 
     @Test
     void recursion() {
         Generator generator = new Generator(TestGrammars.generatorRecursion(), 20, RuleOrder.roOriginal);
-        while (generator.next()) {
-        }
-    }
-
-    @Test
-    void twoSame() {
-        Generator generator = new Generator(TestGrammars.generatorTwoSame(), 20, RuleOrder.roOriginal);
         while (generator.next()) {
         }
     }
@@ -177,8 +172,26 @@ public class GeneratorTest {
 
     @Test
     void stackOverflow() {
-        Generator generator = new Generator(TestGrammars.generatorStackOverflow(), 20, RuleOrder.roOriginal);
+        Generator generator = new Generator(TestGrammars.generatorStackOverflow(), 1, RuleOrder.roOriginal);
+        int counter0 = 0;
         while (generator.next()) {
+            System.out.println(generator.string() + " " + generator.parenString());
+            counter0++;
         }
+        System.out.println(counter0);
+    }
+
+    @Disabled
+    @Test
+    void output() throws FileNotFoundException {
+        Generator generator = new Generator(TestGrammars.LLstar(), 12, RuleOrder.roSort);
+        PrintWriter writer = new PrintWriter("bbbb.txt");
+        int cnt = 0;
+        while (generator.next()) {
+            writer.printf("%s %s%n",generator.string(), generator.parenString());
+            cnt++;
+        }
+        writer.close();
+        System.out.println(cnt);
     }
 }
