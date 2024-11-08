@@ -16,7 +16,7 @@ public class Hash {
     }
 
     public void add(int n) {
-        hash = (hash>>4) ^ intHash(n);
+        hash = ((hash >>> 5) | (hash << (Integer.SIZE - 5))) ^ intHash(n);
     }
 
     public void addString(String str) {
