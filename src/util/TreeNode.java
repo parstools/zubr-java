@@ -48,30 +48,38 @@ class TreeNode {
     }
 
     public void print() {
+        toLines().forEach(out::println);
+    }
+
+    public List<String> toLines() {
+        List<String> lines = new ArrayList<>();
+        String line = "";
         Stack<Boolean> lastStack = new Stack<>();
         TreeNode ancestor = this;
         while (ancestor !=  null) {
             lastStack.push(ancestor.last());
             ancestor = ancestor.parent;
         }
-
         lastStack.pop();
         while (!lastStack.empty()) {
             boolean last = lastStack.pop();
             if (!last) {
                 if (!lastStack.empty())
-                    out.print("│   ");
+                    line = line.concat("│   ");
                 else
-                    out.print("├── ");
+                    line = line.concat("├── ");
             } else {
                 if (!lastStack.empty())
-                    out.print("    ");
+                    line = line.concat("    ");
                 else
-                    out.print("└── ");
+                    line = line.concat("└── ");
             }
         }
-        out.println(text);
-        for (TreeNode child: children)
-            child.print();
+        line = line.concat(text);
+        lines.add(line);
+        for (TreeNode child: children) {
+            lines.addAll(child.toLines());
+        }
+        return lines;
     }
 }
