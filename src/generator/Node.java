@@ -27,16 +27,10 @@ public class Node {
     final int nodeMaxLen;
 
     public Node(Generator generator, Symbol symbol, int nodeMaxLen) {
-        this(generator, symbol, nodeMaxLen, 0);
-    }
-
-    private int ruleHash;
-    public Node(Generator generator, Symbol symbol, int nodeMaxLen, int ruleHash) {
         this.nodeMaxLen = nodeMaxLen;
         this.generator = generator;
         this.grammar = generator.grammar;
         this.symbol = symbol;
-        this.ruleHash = ruleHash;
         if (!symbol.terminal) {
             childs = new ArrayList<>();
             rules = new ArrayList<>(((Nonterminal)symbol).rules);
@@ -131,10 +125,7 @@ public class Node {
             return false;
         assert (reservedLen <= nodeMaxLen);
         int childRuleHash;
-        if (reservedLen == nodeMaxLen) {
-            childRuleHash = ruleHash;
-        } else childRuleHash = 0;
-        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen, childRuleHash);
+        Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
         childs.add(child);
         if (!child.symbol.terminal)
             if (!child.next())
