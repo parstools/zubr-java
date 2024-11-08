@@ -6,6 +6,7 @@ import grammar.Rule;
 import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
+import util.AsciiNode;
 
 import java.util.*;
 
@@ -80,6 +81,15 @@ public class Node {
             sb.append(")");
             return sb.toString();
         }
+    }
+
+    public AsciiNode tree() {
+        AsciiNode node = new AsciiNode(symbol.toString());
+        if (!symbol.terminal) {
+            for (Node child : childs)
+                node.addChild(child.tree());
+        }
+        return node;
     }
 
     public String usedRules() {

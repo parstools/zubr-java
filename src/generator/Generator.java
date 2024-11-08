@@ -5,6 +5,7 @@ import grammar.Symbol;
 import set.Sequence;
 import set.SequenceSet;
 import set.TokenSet;
+import util.AsciiNode;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -12,8 +13,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import static java.lang.Character.*;
-import static java.lang.System.exit;
-import static java.lang.System.out;
 
 public class Generator {
     Grammar grammar;
@@ -63,6 +62,10 @@ public class Generator {
 
     public String parenString() {
         return root.parenString();
+    }
+
+    public AsciiNode tree() {
+        return root.tree();
     }
 
     public boolean next() {
