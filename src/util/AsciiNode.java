@@ -6,12 +6,12 @@ import java.util.Stack;
 
 import static java.lang.System.out;
 
-class TreeNode {
+public class AsciiNode {
     private String text;
-    private List<TreeNode> children;
-    private TreeNode parent;
+    private List<AsciiNode> children;
+    private AsciiNode parent;
 
-    public TreeNode(String text) {
+    public AsciiNode(String text) {
         this.text = text;
         this.children = new ArrayList<>();
     }
@@ -23,13 +23,13 @@ class TreeNode {
             return parent.children.getLast() == this;
     }
 
-    public void addChild(TreeNode child) {
+    public void addChild(AsciiNode child) {
         children.add(child);
         child.parent = this;
     }
 
-    public TreeNode addChild(String text) {
-        TreeNode child = new TreeNode(text);
+    public AsciiNode addChild(String text) {
+        AsciiNode child = new AsciiNode(text);
         addChild(child);
         return child;
     }
@@ -38,7 +38,7 @@ class TreeNode {
         return text;
     }
 
-    public List<TreeNode> getChildren() {
+    public List<AsciiNode> getChildren() {
         return children;
     }
 
@@ -55,7 +55,7 @@ class TreeNode {
         List<String> lines = new ArrayList<>();
         String line = "";
         Stack<Boolean> lastStack = new Stack<>();
-        TreeNode ancestor = this;
+        AsciiNode ancestor = this;
         while (ancestor !=  null) {
             lastStack.push(ancestor.last());
             ancestor = ancestor.parent;
@@ -77,7 +77,7 @@ class TreeNode {
         }
         line = line.concat(text);
         lines.add(line);
-        for (TreeNode child: children) {
+        for (AsciiNode child: children) {
             lines.addAll(child.toLines());
         }
         return lines;
