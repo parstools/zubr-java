@@ -12,6 +12,7 @@ public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
     public List<Terminal> terminals = new ArrayList<>();
     Nonterminal startNt = null;
+    public Set<Integer> cycleRules = new HashSet<>();
 
     private boolean transformed;
     public boolean transformed() {
@@ -332,6 +333,11 @@ public class Grammar implements Cloneable {
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles(this, johnsonResult);
+        for (Cycle c: cycles)
+            for (Rule r: c) {
+                int globKey = (r.owner.getIndex() << 10) + r.index;
+                cycleRules.add(globKey);
+            }
     }
 
     RecurCycles detectRecursion() {

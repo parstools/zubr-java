@@ -208,16 +208,30 @@ public class Node {
             return initSuffix(canNextIndex + 1, maxLen - (canNextIndex >= 0 ? sumlens[canNextIndex] : 0));
     }
 
+    int globKey() {
+        return (symbol.getIndex() << 10) + ruleIndex;
+    }
+
+    void addCycleRule() {
+        int key = globKey();
+        if (grammar.cycleRules.contains(key))
+            generator.cycleRules.add(key);
+    }
+
+    void removeCycleRule() {
+        int key = globKey();
+        if (grammar.cycleRules.contains(key))
+            generator.cycleRules.remove(key);
+    }
+
     boolean isRuleCycle() {
-        if (ruleHash == 0)
-            ruleHash = Hash.intHash(-1);
-        Rule rule = rules.get(ruleIndex);
-        ruleHash = Hash.intXor(ruleHash, rule.owner.getIndex());
-        ruleHash = Hash.intXor(ruleHash, rule.index);
-        return grammar.cycles.xors.contains(ruleHash);
+        int key = globKey();
+        return (generator.cycleRules.contains(key));
     }
 
     private boolean initWithNextCorrectRule() {
+        if (ruleIndex>=0)
+            removeCycleRule();
         ruleIndex++;
         while (ruleIndex < rules.size() &&
                 ((rules.get(ruleIndex).minLen > nodeMaxLen) || isRuleCycle()))
@@ -225,6 +239,7 @@ public class Node {
         if (!ruleIndexOK())
             return false;
         childs.clear();
+        addCycleRule();
         return initSuffix(0, nodeMaxLen);
     }
 

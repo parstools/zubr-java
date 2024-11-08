@@ -6,7 +6,9 @@ import set.Sequence;
 import set.SequenceSet;
 import set.TokenSet;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 import static java.lang.Character.*;
@@ -21,6 +23,7 @@ public class Generator {
     int maxLen;
 
     Random rand;
+    Set<Integer> cycleRules = new HashSet<>();
 
 
     public Generator(Grammar grammar, int maxLen, RuleOrder ruleOrder) {

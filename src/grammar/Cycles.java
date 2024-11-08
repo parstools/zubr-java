@@ -7,7 +7,6 @@ import java.util.*;
 
 public class Cycles extends ArrayList<Cycle> {
     Grammar grammar;
-    public Set<Integer> xors = new HashSet<>();
 
     Cycles(Grammar grammar, List<List<VertexEdge>> johnsonResult) {
         this.grammar = grammar;
@@ -37,9 +36,6 @@ public class Cycles extends ArrayList<Cycle> {
                     return 0;
             }
         });
-
-        for (Cycle cycle: this)
-            xors.add(cycle.xorHash);
     }
 
     @Override

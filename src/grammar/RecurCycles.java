@@ -6,7 +6,6 @@ import java.util.*;
 
 public class RecurCycles extends ArrayList<RecurCycle> {
     Grammar grammar;
-    public Set<Integer> xors = new HashSet<>();
 
     RecurCycles(Grammar grammar, List<List<VertexEdge>> johnsonResult) {
         this.grammar = grammar;
