@@ -5,21 +5,23 @@ import generator.RuleOrder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import static java.lang.System.out;
 
 public class GenerateTest {
 
     @Disabled
     @Test
-    void random () {
+    void random () throws FileNotFoundException {
         Grammar g = new Grammar();
         int cnt = 0, i = 0;
+        PrintWriter writer = new PrintWriter("generated.dat");
         while (true) {
             g.createRandom(i);
             i++;
-            g.toLines().forEach(System.out::println);
-            System.out.println();
-            Generator generator = new Generator(g, 30, RuleOrder.roOriginal);
+            Generator generator = new Generator(g, 20, RuleOrder.roOriginal);
             int limit = 100;
             int counter = 0;
             while (generator.next()) {
@@ -28,12 +30,17 @@ public class GenerateTest {
                     break;
             }
             if (counter==limit) {
-//                g.toLines().forEach(System.out::println);
-//                System.out.println();
+                System.out.printf("%d %d%n",cnt,i);
+                writer.printf(";%d%n",cnt);
+                g.toLines().forEach(writer::println);
+                writer.println();
+                if (cnt % 10 == 0)
+                    writer.flush();
                 cnt++;
                 if (cnt >= 1000)
                     break;
             }
         }
+        writer.close();
     }
 }
