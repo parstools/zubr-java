@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import grammar.TestGrammars;
+import util.AsciiNode;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -176,6 +177,20 @@ public class GeneratorTest {
         int counter0 = 0;
         while (generator.next()) {
             System.out.println(generator.string() + " " + generator.parenString());
+            counter0++;
+        }
+        System.out.println(counter0);
+    }
+
+    @Test
+    void generatorStack1() {
+        Generator generator = new Generator(TestGrammars.generatorStack1(), 2, RuleOrder.roSort);
+        int counter0 = 0;
+        while (generator.next()) {
+            System.out.println(counter0);
+            System.out.println(generator.string() + " " + generator.parenString());
+            AsciiNode tree = generator.tree();
+            tree.print();
             counter0++;
         }
         System.out.println(counter0);
