@@ -1,0 +1,31 @@
+package lr;
+
+import grammar.Grammar;
+
+public class LALR extends Transitions {
+    boolean efficient;
+    LALR(Grammar g) {
+        if (efficient) {
+            createFromLR0(new LR0(new Grammar()));
+        } else {
+            createFromLR1(new LR1(new Grammar()));
+        }
+
+    }
+
+    private void createFromLR1(LR1 lr1) {
+
+    }
+
+    private void createFromLR0(LR0 lr0) {
+
+    }
+
+    LALR(LR1 parser) {
+        createFromLR1(parser);
+    }
+
+    LALR(LR0 parser) {
+        createFromLR0(parser);
+    }
+}

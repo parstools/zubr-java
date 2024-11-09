@@ -343,13 +343,33 @@ public class TestGrammars {
         return new Grammar(lines);
     }
 
-    public static Grammar LRwiki() {
+    //https://pl.wikipedia.org/wiki/Generowanie_parser%C3%B3w_LR
+    public static Grammar LRwikiLR0() {
         List<String> lines = new ArrayList<>();
         lines.add("E -> E * B");
         lines.add("E -> E + B");
         lines.add("E -> B");
         lines.add("B -> 0");
         lines.add("B -> 1");
+        return new Grammar(lines);
+    }
+
+    public static Grammar LRwikiSLR() {
+        List<String> lines = new ArrayList<>();
+        lines.add("E -> A 1");
+        lines.add("E -> B 2");
+        lines.add("A -> 1");
+        lines.add("B -> 1");
+        return new Grammar(lines);
+    }
+
+    public static Grammar LRwikiLR1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> L = R");
+        lines.add("S -> R");
+        lines.add("L -> * R");
+        lines.add("L -> i");
+        lines.add("R -> L");
         return new Grammar(lines);
     }
 

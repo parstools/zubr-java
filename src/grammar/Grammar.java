@@ -11,6 +11,7 @@ import java.util.*;
 public class Grammar implements Cloneable {
     public List<Nonterminal> nonterminals = new ArrayList<>();
     public List<Terminal> terminals = new ArrayList<>();
+    static public Terminal EOF = new Terminal(null,"");
     Nonterminal startNt = null;
     public Set<Integer> cycleRules = new HashSet<>();
 
