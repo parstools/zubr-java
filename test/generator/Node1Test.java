@@ -71,7 +71,6 @@ public class Node1Test {
         assertEquals("eeded",node.string());
         assertTrue(node.next());
         assertEquals("eeedd",node.string());
-        node.next();
         assertFalse(node.next());
     }
 }

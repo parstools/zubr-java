@@ -327,22 +327,24 @@ public class Grammar implements Cloneable {
     void detectCycles() {
         DG graph = new DG(nonterminals.size());
         for (Nonterminal nt : nonterminals)
-            for (Rule rule : nt.rules) {
-                    for (Symbol symbol : rule)
-                        if (!symbol.terminal)
-                            graph.addEdge(nt.getIndex(), symbol.getIndex(), rule);
+            for (Rule rule : nt.rules)
+                if (rule.cycleSuspected()) {
+                    for (Symbol symbol : rule) {
+                        assert (!symbol.terminal);
+                        graph.addEdge(nt.getIndex(), symbol.getIndex(), rule);
+                    }
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles(this, johnsonResult);
         for (Cycle c: cycles)
             for (Rule r: c) {
-                int globKey = ruleToKey(r.owner, r.index);
+                int globKey = ruleToKey(r.owner, r);
                 cycleRules.add(globKey);
             }
     }
 
-    public static int ruleToKey(Symbol symbol, int ruleIndex) {
-        return (symbol.getIndex() * 1000) + ruleIndex;
+    public static int ruleToKey(Symbol symbol, Rule rule) {
+        return (symbol.getIndex() * 1000) + rule.index;
     }
 
     RecurCycles detectRecursion() {

@@ -177,29 +177,32 @@ public class Main {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
-
-            gramLines.forEach(out::println);
-
             List<String> ambigInfo = new ArrayList<>();
             int test = testAmbig(grammar, ambigInfo);
-            if(test<0)
-                out.println("ambiguous");
-            else {
+            if(test<0) { //ambiguous
+                n++;
+                continue;
+            } else {
+                out.printf("%d: ", counter);
                 grammar.eliminationRecursion();
-                grammar.factorization(1);
-                ParsingTable table = new ParsingTable(grammar);
-                int resk = -1;
-                for (int k=1; k<=6; k++) {
-                    boolean res = table.createLL(k);
-                    if (res) {
-                        resk = k;
-                        break;
+                if (grammar.stayRecursion)
+                    out.println("recursive");
+                else {
+                    grammar.factorization(1);
+                    ParsingTable table = new ParsingTable(grammar);
+                    int resk = -1;
+                    for (int k = 1; k <= 6; k++) {
+                        boolean res = table.createLL(k);
+                        if (res) {
+                            resk = k;
+                            break;
+                        }
                     }
+                    if (resk >= 1)
+                        out.printf("LL(%d)%n", resk);
+                    else
+                        out.println("no LL(k)");
                 }
-                if (resk>=1)
-                    out.printf("LL(%d)%n",resk);
-                else
-                    out.println("no LL(k)");
             }
             counter++;
             n++;
