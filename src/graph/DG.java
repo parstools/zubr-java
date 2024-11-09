@@ -43,10 +43,12 @@ public class DG {
     }
 
     public void addEdge(int from, int to, Object label) {
+        assert(from>=0 && to >=0);
         if (hasLabel) {
             from = labelToOriginal.get(from);
             to = labelToOriginal.get(to);
         }
+        assert(from>=0 && to >=0);
         vertices.get(from).addEdge(from, to, label);
     }
 
