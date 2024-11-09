@@ -327,8 +327,7 @@ public class Grammar implements Cloneable {
     void detectCycles() {
         DG graph = new DG(nonterminals.size());
         for (Nonterminal nt : nonterminals)
-            for (Rule rule : nt.rules)
-                if (rule.cycleSuspected()) {
+            for (Rule rule : nt.rules) {
                     for (Symbol symbol : rule)
                         graph.addEdge(nt.getIndex(), symbol.getIndex(), rule);
                 }

@@ -143,11 +143,6 @@ public class Rule extends ArrayList<Symbol> {
         return sb.toString();
     }
 
-    boolean cycleSuspected() {
-        assert (minLen >= owner.minLen);
-        return size() > 0 && !hasT && countNonNullableSymbols <= 1 && minLen == owner.minLen;
-    }
-
     int expandedLen(int prefixLen) {
         int result = 0;
         for (int i=0; i<prefixLen; i++) {
