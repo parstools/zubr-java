@@ -389,7 +389,7 @@ public class Grammar implements Cloneable {
         reachedSet.add(nonterminals.getFirst());
         int index = 0;
         while (index<reachedList.size()) {
-            Nonterminal nt = nonterminals.get(index);
+            Nonterminal nt = reachedList.get(index);
             for (Rule rule : nt.rules)
                 for (Symbol symbol: rule)
                     if (!symbol.terminal) {
