@@ -329,15 +329,20 @@ public class Grammar implements Cloneable {
         for (Nonterminal nt : nonterminals)
             for (Rule rule : nt.rules) {
                     for (Symbol symbol : rule)
-                        graph.addEdge(nt.getIndex(), symbol.getIndex(), rule);
+                        if (!symbol.terminal)
+                            graph.addEdge(nt.getIndex(), symbol.getIndex(), rule);
                 }
         List<List<VertexEdge>> johnsonResult = JohnsonsAlgorithm.calculateCycles(graph);
         cycles = new Cycles(this, johnsonResult);
         for (Cycle c: cycles)
             for (Rule r: c) {
-                int globKey = (r.owner.getIndex() << 10) + r.index;
+                int globKey = ruleToKey(r.owner, r.index);
                 cycleRules.add(globKey);
             }
+    }
+
+    public static int ruleToKey(Symbol symbol, int ruleIndex) {
+        return (symbol.getIndex() * 1000) + ruleIndex;
     }
 
     RecurCycles detectRecursion() {

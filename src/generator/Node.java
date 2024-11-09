@@ -88,6 +88,7 @@ public class Node {
             return new AsciiNode(symbol.toString());
         } else {
             String name = symbol.toString() + "(" + ruleIndex + ")";
+            name += "=" + String.valueOf(Grammar.ruleToKey(symbol,ruleIndex));
             AsciiNode node = new AsciiNode(name);
             for (Node child : childs)
                 node.addChild(child.tree());
@@ -215,7 +216,7 @@ public class Node {
     }
 
     int globKey() {
-        return (symbol.getIndex() << 10) + ruleIndex;
+        return Grammar.ruleToKey(symbol, ruleIndex);
     }
 
     void addCycleRule() {
