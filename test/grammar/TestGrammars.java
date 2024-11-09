@@ -401,9 +401,7 @@ public class TestGrammars {
         List<String> lines = new ArrayList<>();
         lines.add("S -> c B c");
         lines.add("S -> A a A");
-        lines.add("S -> b b B");
-        lines.add("A -> b b b");
-        lines.add("A -> b b S");
+        lines.add("S -> b B");
         lines.add("A -> B b");
         lines.add("B -> S c");
         lines.add("B -> A b a");

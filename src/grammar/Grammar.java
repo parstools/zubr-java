@@ -18,6 +18,7 @@ public class Grammar implements Cloneable {
     public boolean transformed() {
         return transformed;
     }
+    public boolean stayRecursion;
 
     boolean minLenOK = false;
     public boolean grammarOK() {
@@ -403,11 +404,17 @@ public class Grammar implements Cloneable {
     }
 
     public void eliminationRecursion() {
+        int cnt = 0;
         while (true) {
             eliminationDirectRecursion();
             eliminationIndirectRecursion();
             RecurCycles cycles = detectRecursion();
             if (cycles.isEmpty()) break;
+            cnt++;
+            if (cnt >= 5) {
+                stayRecursion = true;
+                break;
+            }
         }
         setMinLen();
         computeMaxLen();

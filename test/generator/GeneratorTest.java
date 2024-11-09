@@ -182,7 +182,7 @@ public class GeneratorTest {
 
     @Test
     void generatorStack1() {
-        Generator generator = new Generator(TestGrammars.generatorStack1(), 2, RuleOrder.roOriginal);
+        Generator generator = new Generator(TestGrammars.generatorStack1(), 2, RuleOrder.roSort);
         int counter0 = 0;
         while (generator.next()) {
             counter0++;
