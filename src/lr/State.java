@@ -7,7 +7,7 @@ import grammar.Symbol;
 
 import java.util.HashSet;
 
-public class State extends HashSet<ItemLR0> {
+public abstract class State extends HashSet<ItemLR0> {
     Grammar grammar;
     long longHash = 0;
 
@@ -22,15 +22,12 @@ public class State extends HashSet<ItemLR0> {
     void closure() {
         boolean isModified;
         do {
-            isModified = false;
             HashSet<ItemLR0> newItems = new HashSet<>();
             for (ItemLR0 item: this) {
                 Nonterminal nt = item.NtAfterDot();
                 if (nt != null)
-                    for (Rule rule: nt.rules) {
-                        ItemLR0 newItem = new ItemLR0(rule, 0);
-                        newItems.add(newItem);
-                    }
+                    for (Rule rule: nt.rules)
+                        add(newItems, rule, item);
             }
             isModified = this.addAll(newItems);
         } while (isModified);
@@ -38,6 +35,8 @@ public class State extends HashSet<ItemLR0> {
         for (ItemLR0 item: this)
             longHash = ror(longHash,10) ^  item.hashCode();
     }
+
+    abstract void add(HashSet<ItemLR0> newItems, Rule rule, ItemLR0 itemFrom);
 
     public State goto_(Symbol symbol) {
         State newState = new StateLR0(grammar);
