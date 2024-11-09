@@ -9,10 +9,9 @@ import static java.lang.System.out;
 
 public class FactorizationTest {
     @Test
-    void factozrization() {
+    void factorization() {
         Grammar g = TestGrammars.factor();
         g.factorization(1);
         List<String> lines1 = g.toLines();
-        lines1.forEach(out::println);
     }
 }
