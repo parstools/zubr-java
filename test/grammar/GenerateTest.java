@@ -17,7 +17,7 @@ public class GenerateTest {
     void random () throws FileNotFoundException {
         Grammar g = new Grammar();
         int cnt = 0, i = 0;
-        PrintWriter writer = new PrintWriter("generated.dat");
+        PrintWriter writer = new PrintWriter("generated100k.dat");
         while (true) {
             g.createRandom(i);
             i++;
@@ -34,10 +34,10 @@ public class GenerateTest {
                 writer.printf(";%d%n",cnt);
                 g.toLines().forEach(writer::println);
                 writer.println();
-                if (cnt % 10 == 0)
+                if (cnt % 100 == 0)
                     writer.flush();
                 cnt++;
-                if (cnt >= 1000)
+                if (cnt >= 100000)
                     break;
             }
         }

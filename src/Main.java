@@ -169,10 +169,12 @@ public class Main {
     }
 
     static void readAllGrammars() throws IOException {
-        Path path = Paths.get("res/grammars.dat");
+        Path path = Paths.get("res/deepLL.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         int n = 0;
         int counter = 0;
+
+        PrintWriter writer = new PrintWriter("deepLL.dat");
         while (n < lines.size()) {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
@@ -184,6 +186,7 @@ public class Main {
                 continue;
             } else {
                 out.printf("%d: ", counter);
+                //gramLines.forEach(out::println);
                 grammar.eliminationRecursion();
                 if (grammar.stayRecursion)
                     out.println("recursive");
@@ -191,22 +194,31 @@ public class Main {
                     grammar.factorization(1);
                     ParsingTable table = new ParsingTable(grammar);
                     int resk = -1;
-                    for (int k = 1; k <= 6; k++) {
+                    for (int k = 1; k <= 9; k++) {
                         boolean res = table.createLL(k);
                         if (res) {
                             resk = k;
                             break;
                         }
                     }
-                    if (resk >= 1)
+                    if (resk >= 1) {
                         out.printf("LL(%d)%n", resk);
-                    else
+                        if (resk>3) {
+                            writer.printf(";LL(%d)%n", resk);
+                            if (gramLines.getFirst().charAt(0)==';')
+                                gramLines.remove(0);
+                            gramLines.forEach(writer::println);
+                            writer.println();
+                            writer.flush();
+                        }
+                    } else
                         out.println("no LL(k)");
                 }
             }
             counter++;
             n++;
         }
+        writer.close();
         out.println(counter + " grammars");
     }
 

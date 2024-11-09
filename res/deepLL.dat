@@ -1,0 +1,2505 @@
+;LL(4)
+S -> B a A
+S -> B c A
+A -> a b
+A -> A b b
+A -> c c
+B ->
+B -> A B
+
+;LL(7)
+S -> A B c
+S -> S c b
+A -> a B c
+A -> B A
+B -> c
+B -> a
+
+;LL(4)
+S -> A A S
+S -> a b
+A -> b a
+A -> A b
+
+;LL(4)
+S -> b B A
+A -> b b
+A -> a c c
+B -> A a B
+B ->
+B -> a B
+
+;LL(4)
+S -> A B c
+S -> B c a
+A -> a
+A -> A a b
+A -> b A b
+B -> a
+B -> c A
+
+;LL(4)
+S ->
+S -> a A b
+A -> a a c
+A -> B A
+A ->
+B -> b a
+B -> B b
+
+;LL(4)
+S -> S B a
+S -> b
+A -> c
+A -> b a b
+B ->
+B -> b
+B -> A c B
+
+;LL(4)
+S -> a
+S -> A B
+A -> B b A
+A -> c
+B -> c c
+B ->
+B -> B c a
+
+;LL(5)
+S -> B c a
+S -> B B
+A ->
+A -> a c
+A -> S a
+B -> A b
+
+;LL(6)
+S -> c
+S -> A a B
+A -> a
+A -> A c
+A ->
+B -> B a c
+B -> c c
+B -> a
+
+;LL(4)
+S -> A A b
+S -> c
+S -> b S a
+A -> c c
+A -> S a
+B -> B B
+B -> b
+B -> a
+
+;LL(5)
+S -> b b
+S -> B a a
+A -> a a
+A -> a a b
+A -> A b c
+B -> c
+B -> A A B
+B -> a
+
+;LL(5)
+S -> B c b
+S -> c S
+A -> A b
+A -> a
+A -> b
+B -> c A B
+B -> b
+
+;LL(5)
+S -> A b c
+S ->
+A -> b
+A -> A A c
+A -> a
+B ->
+B -> S b b
+
+;LL(5)
+S -> B c
+S -> A a b
+A -> c c
+A -> B A a
+B -> a b
+B -> c
+
+;LL(4)
+S -> A b a
+S -> A S
+S -> a a b
+A -> b b a
+A -> a
+A -> b a A
+
+;LL(5)
+S -> b
+S -> a
+S -> B c b
+A -> A c b
+A -> a
+B -> c
+B -> A B b
+B -> a b
+
+;LL(5)
+S -> A A c
+A -> a a
+A -> B a
+A -> b a a
+B -> b
+B -> b B
+B -> c B
+
+;LL(5)
+S -> B c B
+S -> a
+A -> b a
+A -> a b a
+A ->
+B -> A b
+B -> b B a
+
+;LL(9)
+S -> B B B
+S -> a S c
+S -> B S
+A ->
+A -> a b
+B -> A b a
+
+;LL(4)
+S -> A c a
+S -> a S b
+S -> A S
+A -> c
+A -> b c a
+B ->
+
+;LL(4)
+S -> b b
+S -> b a b
+S -> A A S
+A -> a
+A -> A b
+
+;LL(4)
+S -> c S a
+S -> b
+S -> S A b
+A -> B B a
+B -> c
+B -> a
+
+;LL(4)
+S -> A B c
+S -> A a
+S -> S a
+A -> a b
+A -> a B A
+A -> B b
+B -> b b c
+B -> B b b
+
+;LL(6)
+S -> A a B
+S -> c
+S -> S b b
+A -> B a
+A -> a A
+B ->
+B -> a b c
+
+;LL(4)
+S -> A B c
+S -> c
+A -> b b
+A -> c
+B -> b c
+B -> c A a
+B -> A B
+
+;LL(6)
+S -> A a
+S -> a c
+S -> B b c
+A -> c c
+A -> B b A
+A -> b c b
+B -> a b b
+B -> b
+
+;LL(4)
+S -> a A B
+A ->
+A -> B A
+B -> b c a
+B -> c
+
+;LL(4)
+S -> b B c
+S -> B b b
+S -> A a
+A -> b a
+A -> A B c
+B -> c
+B -> a
+
+;LL(5)
+S -> A c A
+S -> a a a
+S -> b a c
+A -> a B
+A -> B c c
+A -> a a A
+B -> a
+B ->
+
+;LL(4)
+S -> a b a
+S -> A b A
+S -> b b b
+A -> b b
+A -> A a a
+A -> A a b
+
+;LL(4)
+S -> c S A
+S ->
+S -> B A S
+A -> c B c
+B -> a
+B -> b
+
+;LL(4)
+S -> S c
+S -> A a a
+S -> B B b
+A -> b
+B -> S b b
+B -> a
+
+;LL(6)
+S -> b A B
+S -> B c
+A ->
+A -> A B a
+A -> S c
+B -> b c c
+B -> b
+B -> c a a
+
+;LL(6)
+S -> S a b
+S -> A a
+A -> c c
+A -> S B b
+B -> c
+B -> b
+B -> a
+
+;LL(7)
+S -> b
+S -> B B S
+S -> B A B
+A -> b b a
+A -> c
+B -> A a b
+B -> c
+
+;LL(6)
+S -> B A a
+S -> S c
+A ->
+A -> c
+A -> a b A
+B ->
+B -> b c a
+B -> a B
+
+;LL(4)
+S -> A a
+S -> a a b
+A -> a
+A -> A A b
+
+;LL(4)
+S -> c
+S -> A b c
+A ->
+A -> B c
+A -> b
+B -> c
+B -> b B a
+B -> a B
+
+;LL(4)
+S -> a
+S -> b A
+A -> B a a
+A ->
+A -> c B B
+B -> c a b
+B -> A b
+
+;LL(4)
+S -> B c S
+S -> A B
+A ->
+A -> B a A
+B -> c a
+B -> c
+
+;LL(4)
+S -> a A
+S -> B c a
+S -> b a
+A -> A b
+A -> B c c
+A -> B a
+B -> c b
+B ->
+B -> A b b
+
+;LL(4)
+S -> c b b
+S -> B A
+S -> a
+A -> B c c
+B -> b
+B -> a B c
+B -> c b
+
+;LL(4)
+S -> A c
+S -> B B A
+S ->
+A -> a c A
+A -> B c b
+A -> b A
+B -> a
+
+;LL(5)
+S -> c A b
+S ->
+S -> B B
+A -> c A
+A -> a B A
+A -> a
+B -> c
+B -> b
+B -> a a a
+
+;LL(4)
+S -> A a S
+S -> A b
+A -> b b
+A ->
+A -> A a b
+
+;LL(4)
+S -> B A c
+S -> b S
+A -> b B A
+A -> c
+B -> a
+B -> c b
+B -> c
+
+;LL(4)
+S -> b A
+S ->
+A -> a
+A -> B a b
+B -> b
+B -> a b B
+B -> a B
+
+;LL(4)
+S -> B A
+A -> c A
+A -> b
+A -> a b a
+B -> b a
+B -> a
+B -> a B
+
+;LL(4)
+S -> A A S
+S -> c c c
+S -> a c a
+A -> b a B
+A -> b
+A -> A c b
+B -> b
+B -> c
+B -> a
+
+;LL(4)
+S -> B b A
+S -> b c a
+A -> b a
+A -> B B
+A -> c a B
+B -> c
+B -> b B a
+
+;LL(6)
+S -> A A A
+A -> b b a
+A -> A b
+A -> a a
+
+;LL(7)
+S -> b A b
+S -> A S
+A -> b a b
+A -> b b b
+A -> A a
+
+;LL(4)
+S ->
+S -> b a a
+S -> B B A
+A ->
+A -> b c
+A -> a c
+B -> b
+B -> B a
+
+;LL(4)
+S -> B b
+A -> S c c
+A -> c
+B -> a
+B -> B B c
+B -> b
+
+;LL(4)
+S -> A B c
+S -> A c a
+A ->
+A -> a c
+A -> A a
+B ->
+B -> b a
+B -> b
+
+;LL(4)
+S -> b B
+S ->
+S -> A A B
+A -> b b
+A -> A B c
+A -> a
+B ->
+B -> b c
+
+;LL(4)
+S -> a A S
+S -> b A a
+A -> a
+A -> A b
+
+;LL(6)
+S -> a a
+S -> A a b
+S ->
+A -> b a b
+A -> a A
+A -> a b A
+
+;LL(4)
+S -> A b b
+S -> b
+S ->
+A -> c c
+A -> B A
+B -> b a b
+B -> c
+
+;LL(4)
+S ->
+S -> b
+S -> A a
+A -> c B c
+A -> B c A
+B ->
+B -> b
+
+;LL(5)
+S -> A B a
+S -> b
+S -> S c
+A -> a A
+A -> b A
+A ->
+B -> a
+B -> c c
+
+;LL(4)
+S ->
+S -> A A S
+S -> A B
+A -> A c
+A -> a A a
+A -> B c
+B -> a c c
+
+;LL(5)
+S -> A A b
+A -> B a
+A -> A c
+B ->
+B -> A a b
+B -> a a c
+
+;LL(4)
+S -> c
+S -> A B
+S ->
+A ->
+A -> a A
+A -> B A
+B -> a c c
+
+;LL(4)
+S -> c A c
+S -> A B a
+S -> b
+A -> B a
+B ->
+B -> b
+B -> A b b
+
+;LL(4)
+S -> c B c
+S -> a B
+A -> a
+A -> A c
+A -> B c b
+B -> A a c
+B -> a
+
+;LL(6)
+S -> b B
+S -> a a S
+S -> B a
+A -> a a b
+A -> c
+B -> A a A
+B -> c B
+
+;LL(4)
+S -> B a B
+S ->
+S -> S b a
+A ->
+A -> b B
+B -> a
+B -> b
+B -> B b
+
+;LL(4)
+S -> A b a
+A -> b A a
+A ->
+A -> A a b
+
+;LL(5)
+S ->
+S -> A b
+S -> S b a
+A -> b b A
+A -> a
+A -> a A
+
+;LL(4)
+S -> S a
+S -> A c a
+A -> a
+A -> a c
+A -> a B A
+B -> B c b
+B -> c c
+
+;LL(5)
+S ->
+S -> A c
+S -> c
+A -> b
+A -> A A a
+A -> a B c
+B -> c b
+B -> a
+
+;LL(7)
+S -> A B
+S -> B a B
+S -> a b S
+A -> a
+A -> c c
+B -> A a
+B -> B c c
+
+;LL(4)
+S -> B a
+S ->
+S -> c c
+A -> a
+A -> B a
+B -> A a b
+B -> A b c
+
+;LL(5)
+S -> b
+S -> A B c
+A -> b
+A -> c
+A -> B A
+B -> c c
+B -> a
+
+;LL(4)
+S -> a
+S -> A a S
+S -> A b A
+A -> a a b
+A -> A b
+
+;LL(4)
+S -> c A B
+S ->
+A -> a c
+A -> B A c
+A -> b c
+B -> c a
+B -> a
+B -> b
+
+;LL(4)
+S -> A B b
+A -> b c
+A -> B b
+B -> a
+B -> A c a
+B -> c
+
+;LL(4)
+S -> c
+S -> B A a
+A -> b
+A -> c b b
+B ->
+B -> A A B
+B -> c
+
+;LL(4)
+S -> B B
+S -> c b b
+A -> a
+A ->
+A -> c A b
+B -> A b b
+B -> A b c
+
+;LL(4)
+S -> b
+S -> a S A
+S -> B A B
+A -> c
+A -> a b
+B -> A a
+B -> c A a
+B -> c
+
+;LL(6)
+S -> a S b
+S -> a B a
+S -> A B S
+A -> A a b
+A -> a
+A -> B b
+B -> c b b
+B -> c
+
+;LL(5)
+S -> A b
+S -> A a
+A -> b A
+A -> B c b
+A -> c A
+B -> b
+
+;LL(4)
+S -> A B
+A -> b
+A -> B a c
+B -> A c a
+B -> A c
+B -> b b b
+
+;LL(4)
+S -> b
+S -> B a B
+S -> a B
+A ->
+B -> a a
+B -> c a
+B -> B A b
+
+;LL(4)
+S -> A b a
+S -> c B S
+S -> a
+A -> c
+A -> A b
+B -> b a
+B -> A c
+
+;LL(4)
+S -> B c b
+S -> a S
+S ->
+A -> b c
+A -> A b c
+A -> A b b
+B -> a b
+B -> b B b
+B -> B a
+
+;LL(5)
+S -> c
+S -> A b
+A -> B c c
+B -> c B b
+B -> c a a
+B -> a B
+
+;LL(4)
+S -> S a
+S -> a b A
+S -> A S b
+A -> a
+A -> b b a
+
+;LL(4)
+S -> c c B
+S -> A a
+A -> c
+A -> A c
+A -> A c b
+B -> c
+
+;LL(5)
+S -> c c b
+S -> A b
+S ->
+A -> a B A
+A -> a
+A -> c b c
+B -> S b
+B -> a c
+
+;LL(4)
+S -> A a b
+S -> b
+A -> c b b
+A -> B b A
+B -> c B b
+B ->
+
+;LL(7)
+S -> A A A
+A -> b b a
+A -> a a a
+A -> A b
+
+;LL(4)
+S -> A a B
+S -> A S
+S -> a
+A -> b B b
+A -> a
+B -> c c
+B -> b c
+B -> c a A
+
+;LL(4)
+S -> a A A
+S -> B c
+S ->
+A -> b A A
+A -> c
+A -> a
+B -> c
+B -> S a
+B ->
+
+;LL(7)
+S -> A b a
+S -> a
+S -> b
+A -> b B B
+A -> B b A
+B -> c b b
+B -> b
+
+;LL(8)
+S -> a c
+S -> B A A
+A -> S A b
+A -> A a
+A -> c B a
+B -> b
+
+;LL(5)
+S -> B a b
+S -> A A
+A -> b
+A -> c c
+B -> b c
+B -> A B
+
+;LL(4)
+S -> A A
+S -> a
+S -> b
+A -> a b
+A -> b a b
+A -> A a
+
+;LL(4)
+S -> A S
+S ->
+A -> b
+A -> b B c
+B -> b b a
+B -> B a c
+B -> a A b
+
+;LL(4)
+S -> c c
+S ->
+S -> B b
+A -> b
+B -> c B
+B -> A A
+B -> b B
+
+;LL(4)
+S -> B c
+S -> a
+S -> b a S
+A ->
+A -> A b
+A -> B c b
+B -> c
+B -> A a
+
+;LL(4)
+S -> A a
+A -> B B b
+B -> c
+B -> c c b
+B -> B a c
+
+;LL(4)
+S -> B a
+S -> c
+A -> a b
+A -> A a
+B -> b A B
+B -> A a
+
+;LL(4)
+S -> B b A
+S ->
+A -> a
+A -> c
+B ->
+B -> A b
+B -> B c
+
+;LL(5)
+S -> B c
+S -> a
+S -> B a
+A ->
+A -> A c
+A -> B c
+B -> A b
+B -> c b a
+
+;LL(4)
+S -> B b c
+S -> A A B
+A -> A c
+A -> b
+B -> S b
+B -> a b
+
+;LL(4)
+S -> B c b
+S -> b A b
+A -> b
+A ->
+B -> a A B
+B -> b c A
+B ->
+
+;LL(4)
+S -> A A S
+S -> b a a
+S -> b
+A -> b
+A -> A a
+
+;LL(5)
+S -> S a
+S -> a A A
+A -> B c
+A -> b A
+A -> a b
+B -> c c b
+B -> c
+
+;LL(4)
+S -> A c A
+S -> S A
+A -> B a
+A -> b a b
+B -> b
+B -> B a
+
+;LL(4)
+S -> b a b
+S -> A b S
+S -> A a
+A -> a
+A -> b
+A -> b a A
+
+;LL(4)
+S -> A S
+S -> b c c
+A -> b
+A -> A c a
+A -> A c
+B ->
+
+;LL(4)
+S -> a a b
+S ->
+S -> B a c
+A ->
+A -> B b
+B -> A a a
+B -> A b
+
+;LL(6)
+S -> B A b
+A -> b
+A -> b a A
+A -> b B b
+B -> b b
+B -> a B
+
+;LL(4)
+S -> A c B
+S -> B a
+S -> c
+A -> a
+A -> b c
+A -> A B c
+B -> a a
+B -> b
+B ->
+
+;LL(4)
+S -> A a b
+S -> A b S
+A -> a
+A -> A b
+
+;LL(5)
+S -> B B
+S -> A a S
+S -> b
+A -> B b c
+A -> A c
+B -> b a c
+B -> a
+
+;LL(5)
+S -> B A a
+A ->
+A -> c b b
+B -> c
+B -> B A a
+
+;LL(5)
+S -> A a a
+S ->
+S -> b
+A -> b a b
+A -> b A
+A -> a A
+
+;LL(4)
+S -> A A a
+S -> B a b
+S -> c
+A -> a
+B ->
+B -> a B
+B -> c B
+
+;LL(5)
+S -> A a a
+S ->
+S -> S b
+A ->
+A -> S b
+A -> A b a
+
+;LL(4)
+S -> a
+S -> B A c
+S -> b
+A -> b b a
+A -> b
+B -> a
+B -> B A b
+
+;LL(4)
+S ->
+S -> A c
+A -> B b
+A -> a B
+A -> c a
+B -> a c b
+B -> A a
+
+;LL(4)
+S -> B a
+S -> A a c
+A -> a b
+A -> A c
+A ->
+B -> c
+B -> S c b
+B -> B b c
+
+;LL(4)
+S -> A c c
+S -> b
+S -> c
+A -> c b
+A -> b c A
+A -> c A b
+B ->
+
+;LL(4)
+S -> b a a
+S -> A a
+S ->
+A -> a a a
+A -> a b A
+A -> a A
+
+;LL(4)
+S -> A a c
+S -> B A S
+S -> a
+A -> b b b
+A -> B c
+A -> B a A
+B -> b
+
+;LL(5)
+S -> c
+S -> c A
+S -> B S
+A -> a B
+A -> a
+B -> b
+B -> c a c
+B -> B a a
+
+;LL(5)
+S -> B a B
+S -> a A
+S -> c
+A -> b a c
+A -> b c
+A ->
+B -> a A c
+B -> c B b
+
+;LL(6)
+S -> b
+S -> a
+S -> B A c
+A -> a
+A -> c
+B -> c
+B -> A a A
+B -> c B
+
+;LL(4)
+S -> B A
+S -> A a
+S -> b
+A -> c a
+A -> b b b
+B ->
+B -> b A B
+
+;LL(5)
+S -> b A
+S -> A B
+S -> S c a
+A -> b
+A -> B S a
+A ->
+B -> a b
+
+;LL(4)
+S -> c c c
+S -> B c b
+S -> S a
+A -> b S
+B -> c
+B -> b c b
+B -> B S a
+
+;LL(4)
+S -> c S
+S -> a
+S -> A b A
+A -> A a a
+A -> B a c
+A ->
+B -> a b
+B -> a a
+B ->
+
+;LL(4)
+S -> A b
+S -> c
+S -> A b b
+A -> b A
+A -> c c
+A -> c A
+B -> S a A
+
+;LL(5)
+S -> S a A
+S -> A a b
+S -> S b
+A -> B b c
+A ->
+B -> a
+B -> b c
+
+;LL(4)
+S -> A b c
+S -> S B b
+S -> a
+A -> c b c
+A -> c
+A -> B c
+B -> c
+B -> b
+B -> B a
+
+;LL(8)
+S ->
+S -> B A a
+S -> b
+A -> b a
+A -> c a a
+A -> a A c
+B -> b
+B -> A c
+B -> S c b
+
+;LL(4)
+S -> B c
+S ->
+A -> b c c
+A -> A b b
+A -> B c c
+B ->
+B -> A b c
+
+;LL(8)
+S -> B a A
+S -> B B a
+S -> a
+A -> B b
+A ->
+B -> b a b
+B -> A a
+
+;LL(5)
+S -> A b a
+S -> a S a
+S -> S a b
+A -> a b
+A -> b A
+
+;LL(4)
+S -> A A a
+S -> c a a
+A -> B a B
+A -> A a c
+A -> b
+B -> c
+B -> a b
+
+;LL(4)
+S -> b a
+S ->
+S -> A b b
+A -> a b b
+A -> a b
+A -> A A a
+
+;LL(6)
+S -> b B B
+S -> B b a
+A -> S b B
+B -> b
+B -> b a
+B -> B c
+
+;LL(4)
+S -> A a b
+S -> a c c
+S -> B b A
+A -> a
+B -> A B
+B -> b
+B -> c B c
+
+;LL(4)
+S -> B c c
+A -> b
+A -> a
+A -> c
+B -> a
+B -> A B
+
+;LL(4)
+S -> B S
+S ->
+S -> B a
+A ->
+A -> B a
+B -> c c
+B -> A b c
+
+;LL(5)
+S -> B a b
+S -> c S
+A ->
+A -> A b
+A -> S a
+B -> a A c
+B -> c c
+B -> B b
+
+;LL(4)
+S -> B a
+A -> A b
+A -> a
+B -> c
+B -> b b
+B -> b A B
+
+;LL(7)
+S -> a
+S -> B B c
+S -> c b A
+A -> S a S
+B -> a c
+B -> c
+B -> b
+
+;LL(4)
+S -> B c c
+A -> b a
+B -> A B a
+B -> b b A
+B -> b B
+
+;LL(7)
+S ->
+S -> c c
+S -> a B b
+A -> c
+A -> b a
+A -> b a a
+B -> A b B
+B -> c b
+B -> c b A
+
+;LL(4)
+S -> B c
+S -> b
+A -> b
+A -> c c a
+A -> a A
+B -> A A c
+B -> a c c
+
+;LL(4)
+S -> a A A
+S -> b b
+S -> B c A
+A -> a
+A -> c
+B -> a B a
+B -> c B
+B -> b A c
+
+;LL(5)
+S -> S A B
+S -> a
+S ->
+A -> B b
+A -> c c A
+A -> c c
+B -> b c
+B -> c a
+
+;LL(4)
+S -> B A
+A ->
+A -> c a a
+B ->
+B -> b
+B -> A c B
+
+;LL(5)
+S -> c A c
+A -> b
+A -> b B c
+A -> A A a
+B -> B b c
+B -> a c
+B -> b
+
+;LL(6)
+S -> c
+S -> A b b
+S -> A B a
+A -> a a b
+A -> c b
+A -> B c
+B -> S b
+
+;LL(8)
+S -> b B
+S -> A B S
+S -> a S A
+A -> a b c
+A -> b
+B -> a
+
+;LL(6)
+S -> B B A
+S -> B S a
+S -> S a b
+A -> b
+A -> b c
+B -> b
+B -> c c c
+
+;LL(4)
+S -> a c c
+S -> A b
+A -> b
+A -> c A
+A -> a A
+B ->
+B -> c S
+
+;LL(6)
+S -> a a
+S -> A B b
+A -> B b c
+A -> b B A
+B -> b b
+B -> c
+B -> a
+
+;LL(5)
+S -> a c b
+S -> b A S
+A -> a B
+A -> c B
+A -> A b
+B ->
+B -> c B
+B -> a b
+
+;LL(4)
+S -> c B
+S -> c
+S -> B A a
+A -> c
+A -> A A b
+A -> b b a
+B -> a a
+
+;LL(5)
+S ->
+S -> A A a
+A -> b b
+A -> a A
+A -> a b A
+
+;LL(4)
+S -> c b A
+S -> c A b
+S -> a c
+A -> a S
+A -> a
+A -> a A
+B -> a
+
+;LL(4)
+S -> A B B
+S -> b
+A -> a
+A -> B a A
+B -> b
+B -> a
+
+;LL(4)
+S -> a B a
+S ->
+S -> B a c
+A -> b B
+A -> c a
+A -> B b a
+B ->
+B -> A c
+
+;LL(4)
+S -> B b a
+S -> c b B
+A -> c b A
+A -> a c c
+A -> b
+B -> a B b
+B -> c
+B -> b B
+
+;LL(5)
+S -> S c A
+S -> B B A
+A -> b a b
+A -> a b B
+B -> c
+B -> B c a
+B -> a c
+
+;LL(6)
+S -> b B c
+A -> c a b
+A -> c
+A -> c a
+B -> A A B
+B ->
+B -> A c A
+
+;LL(5)
+S -> a
+S ->
+S -> A A S
+A -> B a b
+A -> a a
+B -> b
+B -> B c
+B -> A a
+
+;LL(4)
+S -> B c
+S -> c a a
+S -> B a a
+A ->
+A -> b
+B ->
+B -> b B a
+B -> c a B
+
+;LL(5)
+S -> b S B
+S -> a
+S -> a A S
+A -> c
+A -> c b a
+B -> a a c
+B -> a b
+
+;LL(5)
+S -> A A B
+A -> c b c
+A -> a
+A -> b
+B -> b A c
+B -> A A
+
+;LL(5)
+S -> A A A
+A -> b b
+A -> A a
+A -> A a b
+
+;LL(5)
+S -> a A A
+S -> B A
+S -> B a
+A -> b
+A -> a c
+B -> a c
+B -> a b a
+B -> A B c
+
+;LL(4)
+S ->
+S -> A a
+A -> a a b
+A -> b A
+A -> a A
+
+;LL(4)
+S -> A A b
+S ->
+A -> a a b
+A -> A a
+
+;LL(4)
+S -> A A
+A -> a b
+A -> B B a
+B -> c c
+B -> A a a
+
+;LL(4)
+S -> B c B
+A -> S a
+B -> B b a
+B -> B c
+B -> b
+
+;LL(5)
+S ->
+S -> B A a
+S -> a b b
+A -> c b S
+A -> B c c
+B -> c
+B -> B b
+
+;LL(4)
+S -> A B a
+S -> c A c
+S -> A c
+A -> B a
+A -> A S b
+B -> b
+B -> c
+
+;LL(4)
+S -> c B c
+A -> b c
+A -> b A b
+B -> c
+B -> b b c
+B -> A a B
+
+;LL(6)
+S -> c
+S -> B b a
+S ->
+A -> A c
+A -> b
+A -> a
+B -> a b a
+B -> A B
+
+;LL(4)
+S -> b
+S -> A A b
+A -> a b
+A -> a b b
+A -> A b a
+
+;LL(5)
+S -> B B
+S -> b
+S ->
+A -> c c b
+A -> B a c
+A -> c
+B -> A b
+B -> c
+B -> a b c
+
+;LL(4)
+S -> a B A
+S -> B c
+A -> c b b
+B ->
+B -> b B c
+B -> A B
+
+;LL(4)
+S -> A c B
+S -> B b
+A -> B c A
+A -> a
+A -> b
+B -> a
+B ->
+
+;LL(5)
+S ->
+S -> a a b
+S -> A A a
+A -> a a b
+A -> b a b
+A -> A b a
+
+;LL(4)
+S -> B c c
+S -> a
+A -> A a
+A -> c
+A -> B A b
+B -> A b a
+
+;LL(7)
+S -> a A a
+S -> A A S
+S -> a
+A -> b a b
+A -> A b
+
+;LL(5)
+S -> A b
+S -> b
+S -> A a
+A -> S a b
+A -> A a a
+
+;LL(5)
+S -> B A c
+S -> c
+A -> b
+A -> c
+A -> a c a
+B -> a
+B ->
+B -> a A B
+
+;LL(4)
+S -> S b a
+S -> A c b
+S -> A A a
+A -> S c b
+A -> c c a
+A -> b
+B -> B c
+B ->
+B -> S c B
+
+;LL(4)
+S -> B A
+S -> c
+A -> a c b
+B -> c
+B -> A B
+B -> c B
+
+;LL(4)
+S -> A A A
+S ->
+A -> b
+A -> B c
+A -> A b a
+B -> a b
+
+;LL(4)
+S -> B b
+A ->
+A -> B a B
+A -> c
+B -> a c b
+B -> A c a
+
+;LL(6)
+S -> a A c
+A -> B B
+A -> c A
+A -> a B
+B -> c
+B -> a b c
+B -> a a
+
+;LL(6)
+S -> B a b
+S -> S B c
+S -> c
+A -> S a A
+A -> c b
+A -> c
+B -> b b b
+B -> B c
+
+;LL(4)
+S -> B A b
+A -> c a c
+A -> a
+B -> A B
+B -> c
+B ->
+
+;LL(4)
+S -> A a b
+S -> A b S
+A -> a
+A -> A b
+
+;LL(4)
+S ->
+S -> B a B
+S -> B B
+A -> a b a
+A -> b
+B -> A b
+B -> B a a
+
+;LL(4)
+S -> B a c
+S -> B A
+A -> a
+B -> c c B
+B -> a
+B -> A B b
+
+;LL(4)
+S -> a c b
+S -> B B a
+A -> a
+A -> A A b
+B -> A c b
+
+;LL(5)
+S -> a a
+S -> b
+S -> B c a
+A -> c
+A -> B c
+A -> B c b
+B -> c
+B -> A b
+B -> a b a
+
+;LL(8)
+S -> c B a
+S -> c c B
+S -> c B S
+A -> c c a
+A -> b
+A -> a c a
+B -> A c
+B -> c a B
+
+;LL(4)
+S -> A a a
+S -> b
+S -> b c
+A -> c
+A -> b
+A -> B a A
+B -> a
+B -> c
+B -> b a
+
+;LL(4)
+S -> A S a
+S -> c a
+A -> c
+A -> B b A
+B -> a
+B -> c
+B -> a a b
+
+;LL(4)
+S -> A A S
+S -> b a a
+A -> a b
+A -> A b a
+A -> b b
+
+;LL(4)
+S -> B b c
+S -> B b b
+A -> b
+A ->
+B -> c c
+B -> c A B
+
+;LL(5)
+S -> a B b
+S -> a a c
+S -> S c
+A -> a a a
+A -> a
+B -> S A b
+B -> c a
+B -> S B
+
+;LL(4)
+S -> A B A
+A -> b B c
+B -> c
+B -> B b
+
+;LL(4)
+S ->
+S -> B b
+A -> B b c
+A -> A c
+B -> a c
+B -> A a
+B ->
+
+;LL(9)
+S -> A B B
+A -> B B a
+A -> a B
+A -> A c
+B -> c c b
+B -> a a
+
+;LL(5)
+S -> A B B
+S -> c
+A -> a
+A -> A b
+A ->
+B -> a c b
+B -> b c
+B -> b
+
+;LL(4)
+S ->
+S -> A B
+A -> b b A
+A -> b
+A -> B A
+B -> a
+B -> c b
+B -> b c
+
+;LL(6)
+S -> S c
+S -> B B a
+A -> a b a
+A -> c c b
+B -> A B c
+B -> A a b
+
+;LL(4)
+S -> c
+S -> B a c
+A -> b
+A -> c b
+A ->
+B -> b
+B -> a
+B -> A a B
+
+;LL(4)
+S -> B a
+S -> b b c
+S -> b a B
+A ->
+A -> b B b
+A -> B a a
+B -> A c
+
+;LL(4)
+S -> c
+S -> B c
+S -> A a b
+A -> c
+A -> b
+A -> a
+B -> A a B
+B -> c a b
+
+;LL(4)
+S -> B a
+S -> A c b
+A ->
+A -> a
+B -> b
+B -> A c B
+B -> a b B
+
+;LL(5)
+S -> B a
+S -> A A c
+A -> c
+A -> b c a
+B -> A c
+B -> A a B
+B -> b
+
+;LL(5)
+S -> S B
+S -> c b a
+S -> b
+A -> A b c
+A -> a c c
+A -> A b
+B -> A b
+B -> b b a
+
+;LL(5)
+S -> S b
+S -> A a c
+S -> A b
+A -> b B c
+A -> c B c
+A -> a c a
+B -> a
+B -> B A c
+B -> b c
+
+;LL(4)
+S -> c A B
+S -> B b a
+S -> A a a
+A ->
+A -> b A
+B ->
+B -> a c B
+B -> c
+
+;LL(4)
+S -> S a
+S -> b B
+S -> A A a
+A -> b a b
+A -> b
+A -> A B c
+B -> c a
+
+;LL(4)
+S -> b a b
+S -> A A b
+S -> a
+A -> a b
+A -> b b
+A -> A a
+
+;LL(7)
+S -> c
+S -> B b B
+S -> S c
+A ->
+A -> b a b
+B -> A a
+B -> a B b
+
+;LL(4)
+S -> A c c
+A -> b
+A ->
+A -> B c A
+B -> a
+B -> b
+
+;LL(4)
+S -> B b
+S -> b
+A -> a
+B -> a a
+B -> b B
+B -> A B
+
+;LL(4)
+S -> A A
+S ->
+A -> B a b
+A -> a
+B -> a
+B -> b
+B -> B b c
+
+;LL(4)
+S ->
+S -> A A
+S -> a
+A -> B a c
+A -> B A a
+B -> a
+B -> c c b
+
+;LL(5)
+S -> A a a
+S -> b
+A -> b a b
+A -> b A
+A -> a A
+
+;LL(4)
+S -> c
+S -> B S
+S -> c a A
+A ->
+A -> S a b
+B -> B a c
+B -> b
+
+;LL(4)
+S -> A b
+S -> a c S
+S ->
+A -> a c
+A -> B A
+B -> a
+B -> B c b
+
+;LL(4)
+S -> B b
+S ->
+A -> b
+A -> c c
+A -> A b a
+B -> S c A
+B -> A A A
+
+;LL(4)
+S -> A a a
+S -> S b
+A ->
+A -> A a
+A -> A a b
+
+;LL(5)
+S -> a A B
+S ->
+S -> A b S
+A -> b B B
+A -> b
+B -> b b c
+B -> b a
+B -> a c
+
+;LL(5)
+S -> B B b
+S -> c a
+S -> A b B
+A -> a
+A -> S c
+B -> b
+B -> A c
+
+;LL(6)
+S -> A A
+S -> c
+A -> b c a
+A -> B A a
+A -> a B
+B -> c
+B -> b
+
+;LL(4)
+S -> a b b
+S -> B B a
+A -> b
+B -> c
+B -> A B b
+B -> a
+
+;LL(6)
+S -> c S c
+S -> B B A
+A -> b a
+A -> a B c
+A ->
+B -> c A b
+B -> b a
+
+;LL(5)
+S -> c
+S -> B b
+A ->
+A -> b b c
+B -> b c
+B -> b A B
+
+;LL(4)
+S -> A a B
+A -> a
+A -> B a A
+A -> b
+B -> b
+B -> a
+B -> c
+
+;LL(4)
+S ->
+S -> A B a
+A -> c
+A -> B b A
+B -> b c b
+B ->
+
+;LL(4)
+S -> a
+S -> b
+S -> b c A
+A -> c a S
+A -> B B S
+B -> b b
+B -> B c
+B -> c a
+
+;LL(4)
+S -> c B
+S -> A B c
+A -> B A
+A -> a b
+A -> c
+B -> b
+B -> c
+
+;LL(4)
+S -> b
+S -> a
+S -> b B S
+A -> c
+A -> a
+B -> A A b
+B -> b A B
+B ->
+
+;LL(4)
+S ->
+S -> B a
+S -> b
+A -> a
+A -> b
+A -> a b
+B -> a A B
+B -> b a
+B ->
+
+;LL(6)
+S ->
+S -> c S A
+S -> S A a
+A -> a a b
+A -> b
+B -> S c b
+B -> c c
+B -> A c b
+
+;LL(7)
+S -> B B B
+S -> c
+S -> S b a
+A -> b a
+A -> A a
+B -> c
+B -> c a c
+B -> A A b
+
+;LL(4)
+S -> a b b
+S -> A b S
+S -> b A B
+A -> a
+A -> b
+A -> A a c
+B ->
+
+;LL(5)
+S -> B a S
+S -> a
+S -> A B c
+A -> c a c
+B ->
+B -> a b B
+B -> c
+
+;LL(4)
+S -> b B A
+S -> c
+S -> A S b
+A -> B a
+B -> a
+B -> B a c
+B -> c c
+
+;LL(4)
+S -> b a a
+S -> A a
+A -> b
+A -> A a a
+A -> a A b
+
+;LL(6)
+S -> B B c
+S -> b
+A ->
+A -> a c
+B -> c a a
+B -> c B
+B -> a a a
+
+;LL(4)
+S -> a c c
+S -> b B a
+S -> a A b
+A -> c b b
+A -> b
+B -> b b
+B -> a
+B -> A B c
+
+;LL(5)
+S -> b
+S -> b B B
+S -> S a
+A -> a a
+A -> b a B
+A -> a
+B -> c
+B -> A c
+B -> c b
+
+;LL(4)
+S -> A S
+S -> c B
+A -> a a b
+A -> A a
+B -> a
+B ->
+B -> A b
+
+;LL(4)
+S -> b
+S -> A a b
+S -> b b b
+A -> b
+A -> A b b
+A -> A b a
+
+;LL(4)
+S -> A b
+S -> c A
+S -> c A a
+A -> c
+A -> B b c
+A -> a
+B -> A c
+B -> A b
+B -> a
+
+;LL(4)
+S -> B A
+S -> S c
+A -> a b
+A -> A b c
+A -> B b
+B -> b c
+B -> a B b
+
+;LL(4)
+S -> A c
+S -> a a c
+A -> c a b
+A -> B b
+A -> a A
+B -> B b
+B -> c A a
+
+;LL(4)
+S -> S a
+S -> c
+S -> c B b
+A -> c
+A ->
+A -> a c
+B ->
+B -> a A
+B -> b B
+
+;LL(5)
+S -> A b a
+S -> S b
+S ->
+A -> A a
+A -> b b b
+A -> A b a
+
+;LL(5)
+S -> b a a
+S ->
+S -> B A A
+A -> c
+A -> a b c
+B ->
+B -> a b b
+B -> c A B
+
+;LL(4)
+S -> A c
+A -> a
+A -> c
+A -> B c A
+B -> B c
+B -> b a
+B -> b
+
+;LL(4)
+S -> b b S
+S -> A A b
+A -> a b
+A -> b
+A -> a a A
+
+;LL(5)
+S ->
+S -> A b b
+S -> a A a
+A -> c B b
+A -> c c a
+B -> b
+B -> A S a
+B -> a c
+
+;LL(4)
+S -> b a b
+S -> A b a
+A -> a
+A -> a A
+A -> b A
+
+;LL(4)
+S -> A c
+A -> a
+A -> A a b
+A -> A c
+B -> c a b
+B -> a
+B -> b S B
+
+;LL(4)
+S -> a A B
+S -> a B
+S ->
+A -> a
+A -> b A c
+B -> c a
+B -> a A a
+B -> c A A
+
+;LL(5)
+S -> b
+S -> A a c
+S ->
+A -> B a
+A -> c A
+A ->
+B -> a
+B -> b
+B -> b A c
+
+;LL(4)
+S -> A B
+S -> B c B
+A -> c
+A -> a
+A -> A B b
+B -> c
+B -> a b a
+
+;LL(4)
+S ->
+S -> a
+S -> A A b
+A -> a a b
+A -> A a
+
+;LL(5)
+S -> A c A
+A -> b b a
+A -> B c c
+A -> c a
+B -> c a
+B -> a B
+B -> b a
+
+;LL(4)
+S -> S A
+S -> B A c
+S -> a
+A -> b
+A -> b c c
+B -> b
+B -> b S
+
+;LL(4)
+S -> B c a
+S -> a
+A -> c
+A -> b A b
+A -> a A a
+B -> S b
+B -> A a b
+B -> A b
+
+;LL(4)
+S -> A A b
+S -> B a
+A -> c
+A -> b b
+A -> a A
+B -> c a
+B -> c a b
+
+;LL(4)
+S -> a S
+S -> b A A
+S -> b A
+A -> a a
+A -> b a
+A -> b A
+
+;LL(4)
+S -> b B A
+S ->
+A -> a b
+A -> c
+B -> b
+B -> A A B
+B -> c
+
