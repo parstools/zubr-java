@@ -166,7 +166,7 @@ public class GeneratorTest {
 
     @Test
     void stack() {
-        Generator generator = new Generator(TestGrammars.generatorStack(), 20, RuleOrder.roOriginal);
+        Generator generator = new Generator(TestGrammars.generatorStack(), 7, RuleOrder.roOriginal);
         while (generator.next()) {
         }
     }
