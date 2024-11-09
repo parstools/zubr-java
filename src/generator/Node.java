@@ -84,12 +84,16 @@ public class Node {
     }
 
     public AsciiNode tree() {
-        AsciiNode node = new AsciiNode(symbol.toString());
-        if (!symbol.terminal) {
+        if (symbol.terminal) {
+            return new AsciiNode(symbol.toString());
+        } else {
+            String name = symbol.toString() + "(" + ruleIndex + ")";
+            AsciiNode node = new AsciiNode(name);
             for (Node child : childs)
                 node.addChild(child.tree());
+            return node;
         }
-        return node;
+
     }
 
     public String usedRules() {
@@ -146,11 +150,6 @@ public class Node {
         return true;
     }
 
-    void removeChildsFrom(int start) {
-        for (int i = childs.size() - 1; i >= start; i--)
-            childs.remove(i);
-    }
-
     int getLen() {
         if (symbol.terminal) {
             return 1;
@@ -200,6 +199,8 @@ public class Node {
                 canNextIndex = i;
                 break;
             } else {
+                Node child = childs.get(i);
+                child.removeCycleRule();
                 childs.remove(i);
             }
         }
@@ -231,7 +232,7 @@ public class Node {
     }
 
     private boolean initWithNextCorrectRule() {
-        if (ruleIndex>=0)
+        if (ruleIndex >= 0)
             removeCycleRule();
         ruleIndex++;
         while (ruleIndex < rules.size() &&

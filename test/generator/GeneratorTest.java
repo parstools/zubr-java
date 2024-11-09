@@ -176,24 +176,17 @@ public class GeneratorTest {
         Generator generator = new Generator(TestGrammars.generatorStackOverflow(), 1, RuleOrder.roOriginal);
         int counter0 = 0;
         while (generator.next()) {
-            System.out.println(generator.string() + " " + generator.parenString());
             counter0++;
         }
-        System.out.println(counter0);
     }
 
     @Test
     void generatorStack1() {
-        Generator generator = new Generator(TestGrammars.generatorStack1(), 2, RuleOrder.roSort);
+        Generator generator = new Generator(TestGrammars.generatorStack1(), 2, RuleOrder.roOriginal);
         int counter0 = 0;
         while (generator.next()) {
-            System.out.println(counter0);
-            System.out.println(generator.string() + " " + generator.parenString());
-            AsciiNode tree = generator.tree();
-            tree.print();
             counter0++;
         }
-        System.out.println(counter0);
     }
 
     @Disabled
@@ -207,6 +200,5 @@ public class GeneratorTest {
             cnt++;
         }
         writer.close();
-        System.out.println(cnt);
     }
 }

@@ -132,7 +132,7 @@ public class Main {
 
     static int testAmbig(Grammar grammar, List<String> ambigInfo) {
         for (int len = 1; len <=12; len++) {
-            int res = testAmbig(grammar, len, 10000, ambigInfo);
+            int res = testAmbig(grammar, len, 1000, ambigInfo);
             if (res < 0)
                 return res;
         }

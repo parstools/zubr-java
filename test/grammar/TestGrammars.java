@@ -382,4 +382,18 @@ public class TestGrammars {
         lines.add("A -> S S S");
         return new Grammar(lines);
     }
+
+    public static Grammar generatorStack1() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> A A A");
+        lines.add("S ->");
+        lines.add("S -> S a c");
+        lines.add("A -> B b");
+        lines.add("A -> a");
+        lines.add("A -> B S");
+        lines.add("B -> c B");
+        lines.add("B ->");
+        lines.add("B -> a a a");
+        return new Grammar(lines);
+    }
 }
