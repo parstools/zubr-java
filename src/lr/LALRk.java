@@ -3,8 +3,10 @@ package lr;
 import grammar.Grammar;
 
 public class LALRk extends Transitions {
+    int k;
     LALRk(Grammar g) {
-        StatesLRk states = new StatesLRk(g);
+        this.k = k;
+        StatesLRk states = new StatesLRk(g, k);
         states.createStates(this, null);
     }
 }
