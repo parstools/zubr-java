@@ -139,6 +139,10 @@ public class Node {
         assert (reservedLen <= maxLen);
         assert (maxLen <= nodeMaxLen);
         //Can be generated longer than reservedLen, up to maxLen
+        if (!childs.isEmpty()) {
+            Node lastChild = childs.getLast();
+            lastChild.removeCycleRule();
+        }
         Node child = new Node(generator, rules.get(ruleIndex).get(start), reservedLen);
         childs.add(child);
         if (!child.symbol.terminal)
@@ -221,6 +225,8 @@ public class Node {
     }
 
     void removeCycleRule() {
+        if (ruleIndex < 0)
+            return;
         int key = globKey();
         if (grammar.cycleRules.contains(key))
             generator.cycleRules.remove(key);
