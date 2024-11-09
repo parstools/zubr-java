@@ -178,7 +178,7 @@ public class Main {
             n = readGramLines(lines, n, gramLines);
             Grammar grammar = new Grammar(gramLines);
 
-            out.printf("%d: ",counter);
+            gramLines.forEach(out::println);
 
             List<String> ambigInfo = new ArrayList<>();
             int test = testAmbig(grammar, ambigInfo);

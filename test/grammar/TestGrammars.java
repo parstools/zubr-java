@@ -396,4 +396,18 @@ public class TestGrammars {
         lines.add("B -> a a a");
         return new Grammar(lines);
     }
+
+    public static Grammar eliminateRecursionHalt() {
+        List<String> lines = new ArrayList<>();
+        lines.add("S -> c B c");
+        lines.add("S -> A a A");
+        lines.add("S -> b b B");
+        lines.add("A -> b b b");
+        lines.add("A -> b b S");
+        lines.add("A -> B b");
+        lines.add("B -> S c");
+        lines.add("B -> A b a");
+        lines.add("B -> b c");
+        return new Grammar(lines);
+    }
 }
