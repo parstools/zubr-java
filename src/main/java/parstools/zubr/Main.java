@@ -175,8 +175,6 @@ public class Main {
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         int n = 0;
         int counter = 0;
-
-        PrintWriter writer = new PrintWriter("deepLL.out");
         while (n < lines.size()) {
             List<String> gramLines = new ArrayList<>();
             n = readGramLines(lines, n, gramLines);
@@ -205,14 +203,6 @@ public class Main {
                     }
                     if (resk >= 1) {
                         out.printf("LL(%d)%n", resk);
-                        if (resk>3) {
-                            writer.printf(";LL(%d)%n", resk);
-                            if (gramLines.getFirst().charAt(0)==';')
-                                gramLines.remove(0);
-                            gramLines.forEach(writer::println);
-                            writer.println();
-                            writer.flush();
-                        }
                     } else
                         out.println("no LL(k)");
                 }
@@ -220,7 +210,6 @@ public class Main {
             counter++;
             n++;
         }
-        writer.close();
         out.println(counter + " grammars");
     }
 
