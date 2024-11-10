@@ -1,12 +1,17 @@
 package parstools.zubr.grammar;
 
 import parstools.zubr.util.Hash;
+import parstools.zubr.util.ZObject;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
-public class Rule extends ArrayList<Symbol> {
+public class Rule extends ZObject implements Iterable<Symbol> {
+    private boolean computedHash;
+    void invalidateHash() {
+        computedHash = false;
+    }
+
+    private List<Symbol> symList = new ArrayList<>();
     private final int infinity = Integer.MAX_VALUE;
     Grammar grammar;
     public Nonterminal owner;
@@ -21,9 +26,13 @@ public class Rule extends ArrayList<Symbol> {
 
     public Rule clone(Nonterminal newOwner) {
         Rule cloned = new Rule(grammar, newOwner);
-        for (Symbol symbol: this)
+        for (Symbol symbol: symList)
             cloned.add(symbol);
         return cloned;
+    }
+
+    void add(Symbol symbol) {
+        symList.add(symbol);
     }
 
     boolean directLeftRecursive(Nonterminal nt) {
@@ -31,6 +40,10 @@ public class Rule extends ArrayList<Symbol> {
             return false;
         Symbol symbol = get(0);
         return !symbol.terminal && symbol == nt;
+    }
+
+    boolean isEmpty() {
+        return symList.isEmpty();
     }
 
     boolean startWithNonterminal() {
@@ -49,7 +62,7 @@ public class Rule extends ArrayList<Symbol> {
 
     void computeNonNullableCount() {
         countNonNullableSymbols = 0;
-        for (Symbol symbol : this)
+        for (Symbol symbol : symList)
             if (symbol.terminal)
                 countNonNullableSymbols++;
             else if (symbol.minLen > 0)
@@ -59,12 +72,12 @@ public class Rule extends ArrayList<Symbol> {
     boolean computeMinLen() {
         int old = minLen;
         minLen = 0;
-        for (Symbol symbol : this)
+        for (Symbol symbol : symList)
             if (!symbol.terminal && symbol.minLen < 0) {
                 minLen = -1;
                 return minLen != old;
             }
-        for (Symbol symbol : this)
+        for (Symbol symbol : symList)
             if (symbol.terminal)
                 minLen++;
             else
@@ -77,12 +90,12 @@ public class Rule extends ArrayList<Symbol> {
             return false;
         int old = maxLen;
         maxLen = 0;
-        for (Symbol symbol : this)
+        for (Symbol symbol : symList)
             if (!symbol.terminal && symbol.maxLen < 0) {
                 maxLen = -1;
                 return maxLen != old;
             }
-        for (Symbol symbol : this)
+        for (Symbol symbol : symList)
             if (symbol.terminal)
                 maxLen++;
             else if (symbol.maxLen == infinity) {
@@ -121,7 +134,7 @@ public class Rule extends ArrayList<Symbol> {
     public int hashCode() {
         Hash h = new Hash();
         h.add(owner.getIndex());
-        for (Symbol symbol : this) {
+        for (Symbol symbol : symList) {
             h.add(symbol.hashCodeShallow());
             if (symbol.terminal)
                 h.add(symbol.hashCode());
@@ -208,5 +221,47 @@ public class Rule extends ArrayList<Symbol> {
                 add(nt);
             }
         }
+    }
+
+    public int size() {
+        return symList.size();
+    }
+
+    public Symbol get(int n) {
+        return symList.get(n);
+    }
+
+    public List<Symbol> subList(int fromIndex, int toIndex) {
+        return symList.subList(fromIndex, toIndex);
+    }
+
+    public void remove(int pos) {
+        symList.remove(pos);
+    }
+
+    public Symbol getFirst() {
+        return symList.getFirst();
+    }
+
+    @Override
+    public Iterator<Symbol> iterator() {
+        return symList.iterator();
+    }
+
+    @Override
+    protected byte[] getBytes() {
+        return new byte[0];
+    }
+
+    @Override
+    public long deepHash(long seed) {
+        if (computedHash)
+            return hash;
+        for (Symbol symbol: symList) {
+            seed = symbol.deepHash(seed);
+        }
+        hash = seed;
+        computedHash = true;
+        return seed;
     }
 }

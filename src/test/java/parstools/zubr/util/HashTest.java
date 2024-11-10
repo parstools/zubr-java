@@ -1,6 +1,10 @@
 package parstools.zubr.util;
 
 import org.junit.jupiter.api.Test;
+import parstools.zubr.grammar.Grammar;
+import parstools.zubr.grammar.TestGrammars;
+import parstools.zubr.lr.StatesLR0;
+import parstools.zubr.lr.Transitions;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -55,29 +59,27 @@ public class HashTest {
         TestObject parent = new TestObject("aaa", 123,467);
         TestObject child = new TestObject("bbb", 1000,2000);
         TestObject grandchild = parent.clone();
-        long a0 = parent.computeHash(false);
-        long a1 = child.computeHash(false);
-        long a2 = grandchild.computeHash(false);
-        long b0 = parent.computeHash(true);
-        long b1 = child.computeHash(true);
-        long b2 = grandchild.computeHash(true);
-        assertEquals(a0, b0);
-        assertEquals(a1, b1);
-        assertEquals(a2, b2);
-        assertEquals(a0, a2);
+        long a0 = parent.computeHash();
+        long a1 = child.computeHash();
+        long a2 = grandchild.computeHash();
         child.addChild(grandchild);
         parent.addChild(child);
-        long c0 = parent.computeHash(false);
-        long c1 = child.computeHash(false);
-        long c2 = grandchild.computeHash(false);
-        long d0 = parent.computeHash(true);
-        long d1 = child.computeHash(true);
-        long d2 = grandchild.computeHash(true);
-        assertEquals(a0, c0);
-        assertEquals(a1, c1);
-        assertEquals(a2, c2);
-        assertNotEquals(a0, d0);
-        assertNotEquals(a1, d1);
-        assertEquals(a2, d2); //grandChild has not childs
+        long c0 = parent.computeHash();
+        long c1 = child.computeHash();
+        long c2 = grandchild.computeHash();
+        assertNotEquals(a0, c0);
+        assertNotEquals(a1, c1);
+        assertEquals(a2, c2); //grandChild has not childs
+    }
+
+    @Test
+    void cachedRuleHash() {
+        Grammar g = TestGrammars.LRwikiLR0();
+        StatesLR0 states = new StatesLR0(g);
+        Transitions transitions = new Transitions();
+        states.createStates(transitions);
+        long first = states.getFirst().computeHash();
+        long second = states.getFirst().computeHash();
+        assertEquals(first, second);
     }
 }
