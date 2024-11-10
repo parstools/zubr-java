@@ -1,10 +1,6 @@
 package parstools.zubr.util;
 
-//import net.openhft.hashing.XxHash;
-
 import prasanthj.hasher.XXHash;
-
-import java.nio.ByteBuffer;
 
 public abstract class ZObject {
     protected long hash;

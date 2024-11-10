@@ -1,9 +1,5 @@
 package parstools.zubr.set;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import parstools.zubr.generator.Generator;
 import parstools.zubr.generator.RuleOrder;
 import parstools.zubr.grammar.Grammar;
@@ -11,6 +7,10 @@ import parstools.zubr.grammar.Nonterminal;
 import parstools.zubr.grammar.Rule;
 import parstools.zubr.grammar.Symbol;
 import parstools.zubr.util.Hash;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SetContainer {
     Grammar grammar;

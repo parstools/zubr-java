@@ -12,7 +12,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
-import static java.lang.Character.*;
+import static java.lang.Character.isAlphabetic;
+import static java.lang.Character.isUpperCase;
 
 public class Generator {
     Grammar grammar;

@@ -3,8 +3,6 @@ package parstools.zubr.lr;
 import parstools.zubr.grammar.Grammar;
 import parstools.zubr.grammar.Nonterminal;
 
-import java.util.*;
-
 public class StatesLR0 extends States {
     public StatesLR0(Grammar grammar) {
         super(grammar);

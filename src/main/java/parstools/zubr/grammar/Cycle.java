@@ -3,8 +3,6 @@ package parstools.zubr.grammar;
 import parstools.zubr.graph.VertexEdge;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Cycle extends ArrayList<Rule> {
