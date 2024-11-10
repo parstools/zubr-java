@@ -1,3 +1,4 @@
+//DEPRECATED!!
 package parstools.zubr.util;
 
 //djb2
