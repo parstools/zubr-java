@@ -7,7 +7,8 @@ import parstools.zubr.grammar.Symbol;
 
 import java.util.HashSet;
 
-public abstract class State extends HashSet<ItemLR0> {
+public abstract class State {
+    private HashSet<ItemLR0> itemSet = new HashSet<>();
     Grammar grammar;
     long longHash = 0;
 
@@ -23,16 +24,16 @@ public abstract class State extends HashSet<ItemLR0> {
         boolean isModified;
         do {
             HashSet<ItemLR0> newItems = new HashSet<>();
-            for (ItemLR0 item: this) {
+            for (ItemLR0 item: itemSet) {
                 Nonterminal nt = item.NtAfterDot();
                 if (nt != null)
                     for (Rule rule: nt.rules)
                         add(newItems, rule, item);
             }
-            isModified = this.addAll(newItems);
+            isModified = itemSet.addAll(newItems);
         } while (isModified);
         longHash = 0;
-        for (ItemLR0 item: this)
+        for (ItemLR0 item: itemSet)
             longHash = ror(longHash,10) ^  item.hashCode();
     }
 
@@ -40,7 +41,7 @@ public abstract class State extends HashSet<ItemLR0> {
 
     public State goto_(Symbol symbol) {
         State newState = new StateLR0(grammar);
-        for (ItemLR0 item: this) {
+        for (ItemLR0 item: itemSet) {
             Symbol symbol1 = item.symbolAfterDot();
             if (symbol1 == symbol)
                 newState.add(item.goto_());
@@ -50,5 +51,13 @@ public abstract class State extends HashSet<ItemLR0> {
             return newState;
         } else
             return null;
+    }
+
+    private int size() {
+        return itemSet.size();
+    }
+
+    protected void add(ItemLR0 item) {
+        itemSet.add(item);
     }
 }
