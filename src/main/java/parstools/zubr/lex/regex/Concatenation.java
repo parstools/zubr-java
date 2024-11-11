@@ -34,6 +34,8 @@ public class Concatenation extends RegexExpression {
     }
 
     public boolean needRaise() {
+        if (expressions.isEmpty())
+            return false;
         assert (expressions.size() > 1);
         for (RegexExpression part: expressions)
             if (part instanceof Concatenation)
