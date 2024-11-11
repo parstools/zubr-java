@@ -59,6 +59,46 @@ public class EBNFTest {
     }
 
     @Test
+    void simpleQuantifier() throws RuntimeException {
+        String[] input = {
+                "A->a+",
+        };
+        String[] expected = {
+                "A->Aa",
+                "A->a",
+        };
+        EBNF ebnf=new EBNF(false);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    @Test
+    void simpleAlt() throws RuntimeException {
+        String[] input = {
+                "A->aB|Cd|e|",
+        };
+        String[] expected = {
+                "A->aB",
+                "A->Cd",
+                "A->e",
+                "A->",
+        };
+        EBNF ebnf=new EBNF(false);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    @Test
     void twoLines() throws RuntimeException {
         String[] input = {
                 "A->Ba*",

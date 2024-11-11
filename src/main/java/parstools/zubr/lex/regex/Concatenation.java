@@ -21,8 +21,16 @@ public class Concatenation extends RegexExpression {
 
     @Override
     public String toString() {
-        return expressions.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining());
+        StringBuilder result = new StringBuilder();
+        for (RegexExpression part: expressions) {
+            String partStr = part.toString();
+            if (part instanceof Alternation) {
+                result.append("(");
+                result.append(partStr);
+                result.append(")");
+            } else
+                result.append(partStr);
+        }
+        return result.toString();
     }
 }

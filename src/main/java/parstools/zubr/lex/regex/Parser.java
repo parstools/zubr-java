@@ -66,12 +66,12 @@ class Parser {
     private RegexExpression parseBase() throws RuntimeException {
         char current = peek();
         if (current == '(') {
-            consume(); // konsumuje '('
+            consume();
             RegexExpression expr = parseExpression();
             if (index >= pattern.length() || peek() != ')') {
                 throw new RuntimeException("Expected ')' in position " + index);
             }
-            consume(); // konsumuje ')'
+            consume();
             return expr;
         } else {
             consume();

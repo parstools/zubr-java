@@ -1,13 +1,19 @@
 package parstools.zubr.lex.regex;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Alternation extends RegexExpression {
+public class Alternation extends RegexExpression implements Iterable<RegexExpression> {
     final private List<RegexExpression> alternatives;
 
     public Alternation() {
         this.alternatives = new ArrayList<>();
+    }
+
+    @Override
+    public Iterator<RegexExpression> iterator() {
+        return alternatives.iterator();
     }
 
     public void addAlternative(RegexExpression expr) {
@@ -27,12 +33,7 @@ public class Alternation extends RegexExpression {
                 result.append("|");
             first = false;
             String altStr = alt.toString();
-            if (altStr.length() > 1) {
-                result.append("(");
-                result.append(altStr);
-                result.append(")");
-            } else
-                result.append(altStr);
+            result.append(altStr);
         }
         return result.toString();
     }
