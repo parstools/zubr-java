@@ -3,5 +3,5 @@
 * elimination chain nonterminals: if A -> A1 is only rule
 * create LL(1) table
 * create LL(k) table
-* input/EBNF (option preferRightRecursion), input/Dat
+* input/EBNF, input/Dat
 * target/Java
