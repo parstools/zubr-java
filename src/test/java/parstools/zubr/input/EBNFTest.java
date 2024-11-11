@@ -15,7 +15,7 @@ public class EBNFTest {
     }
 
     @Test
-    void convertToLR() {
+    void convertToLR() throws Exception {
         //loops changes to left recursion, suitable to LR parsers
         String[][] testCases = {
                 {"A->a?", "A->a", "A->"},
@@ -38,7 +38,7 @@ public class EBNFTest {
     }
 
     @Test
-    void convertToLL() {
+    void convertToLL() throws Exception {
         //loops changes to right recursion, suitable to LL parsers
         String[][] testCases = {
                 {"A->a?", "A->a", "A->"},
@@ -61,7 +61,7 @@ public class EBNFTest {
     }
 
     @Test
-    void twoLines() {
+    void twoLines() throws Exception {
         String[] input = {
                 "A->Ba*",
                 "A->b+",

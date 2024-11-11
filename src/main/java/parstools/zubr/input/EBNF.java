@@ -1,5 +1,7 @@
 package parstools.zubr.input;
 
+import parstools.zubr.lex.regex.Regular;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,10 @@ public class EBNF {
         lines.add(row);
     }
 
-    public void convert() {
+    public void convert() throws Exception {
         newLines = new ArrayList<>();
+        for (String line: lines) {
+            Regular reg = new Regular(line);
+        }
     }
 }
