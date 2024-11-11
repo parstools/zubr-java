@@ -1,8 +1,8 @@
 package parstools.zubr.lex.regex;
 
 public class QuantifierExpression extends RegexExpression {
-    private RegexExpression expression;
-    private Quantifier quantifier;
+    final private RegexExpression expression;
+    final private Quantifier quantifier;
 
     public QuantifierExpression(RegexExpression expression, Quantifier quantifier) {
         this.expression = expression;
@@ -19,20 +19,12 @@ public class QuantifierExpression extends RegexExpression {
 
     @Override
     public String toString() {
-        String quant;
-        switch (quantifier) {
-            case ZERO_OR_MORE:
-                quant = "*";
-                break;
-            case ONE_OR_MORE:
-                quant = "+";
-                break;
-            case ZERO_OR_ONE:
-                quant = "?";
-                break;
-            default:
-                quant = "";
-        }
+        String quant = switch (quantifier) {
+            case ZERO_OR_MORE -> "*";
+            case ONE_OR_MORE -> "+";
+            case ZERO_OR_ONE -> "?";
+            default -> "";
+        };
         String exprString = expression.toString();
         if (exprString.length() > 1)
             return "(" + exprString + ")" + quant;

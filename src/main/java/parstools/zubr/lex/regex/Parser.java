@@ -1,9 +1,7 @@
 package parstools.zubr.lex.regex;
 
-import java.util.*;
-
 class Parser {
-    private String pattern;
+    final private String pattern;
     private int index;
 
     public Parser(String pattern) {
@@ -42,7 +40,7 @@ class Parser {
             concat.addExpression(factor);
         }
         if (concat.getExpressions().size() == 1) {
-            return concat.getExpressions().get(0);
+            return concat.getExpressions().getFirst();
         }
         return concat;
     }
@@ -53,20 +51,12 @@ class Parser {
             char next = peek();
             if (next == '*' || next == '+' || next == '?') {
                 consume();
-                Quantifier quant;
-                switch (next) {
-                    case '*':
-                        quant = Quantifier.ZERO_OR_MORE;
-                        break;
-                    case '+':
-                        quant = Quantifier.ONE_OR_MORE;
-                        break;
-                    case '?':
-                        quant = Quantifier.ZERO_OR_ONE;
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown quantifier: " + next);
-                }
+                Quantifier quant = switch (next) {
+                    case '*' -> Quantifier.ZERO_OR_MORE;
+                    case '+' -> Quantifier.ONE_OR_MORE;
+                    case '?' -> Quantifier.ZERO_OR_ONE;
+                    default -> throw new RuntimeException("Unknown quantifier: " + next);
+                };
                 return new QuantifierExpression(base, quant);
             }
         }
@@ -90,11 +80,8 @@ class Parser {
     }
 
     private char peek() throws Exception {
-        if (index < pattern.length()) {
-            return pattern.charAt(index);
-        } else {
-            throw new RuntimeException("End of pattern reached, more characters expected.");
-        }
+        assert (index < pattern.length());
+        return pattern.charAt(index);
     }
 
     private void consume() {

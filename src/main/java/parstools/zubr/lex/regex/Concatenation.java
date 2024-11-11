@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Concatenation extends RegexExpression {
-    private List<RegexExpression> expressions;
+    final private List<RegexExpression> expressions;
 
     public Concatenation() {
         this.expressions = new ArrayList<>();

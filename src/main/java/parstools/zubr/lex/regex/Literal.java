@@ -1,7 +1,7 @@
 package parstools.zubr.lex.regex;
 
 public class Literal extends RegexExpression {
-    private char value;
+    final private char value;
 
     public Literal(char value) {
         this.value = value;

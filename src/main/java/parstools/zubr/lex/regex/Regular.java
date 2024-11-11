@@ -1,7 +1,7 @@
 package parstools.zubr.lex.regex;
 
 public class Regular {
-    private RegexExpression root;
+    final private RegexExpression root;
 
     public Regular(String pattern) throws Exception {
         Parser parser = new Parser(pattern);

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Alternation extends RegexExpression {
-    private List<RegexExpression> alternatives;
+    final private List<RegexExpression> alternatives;
 
     public Alternation() {
         this.alternatives = new ArrayList<>();
