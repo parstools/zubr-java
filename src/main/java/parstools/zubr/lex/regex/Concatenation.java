@@ -2,7 +2,6 @@ package parstools.zubr.lex.regex;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Concatenation extends RegexExpression {
     final private List<RegexExpression> expressions;
@@ -32,5 +31,24 @@ public class Concatenation extends RegexExpression {
                 result.append(partStr);
         }
         return result.toString();
+    }
+
+    public boolean needRaise() {
+        assert (expressions.size() > 1);
+        for (RegexExpression part: expressions)
+            if (part instanceof Concatenation)
+                return true;
+        return false;
+    }
+
+    public Concatenation raise() {
+        Concatenation result = new  Concatenation();
+        for (RegexExpression part: expressions)
+            if (part instanceof Concatenation) {
+                for (RegexExpression subpart : ((Concatenation) part).expressions)
+                    result.addExpression(subpart);
+            } else
+                result.addExpression(part);
+        return result;
     }
 }

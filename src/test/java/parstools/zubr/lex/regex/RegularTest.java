@@ -13,4 +13,43 @@ public class RegularTest {
             assertEquals(pattern, reg.toString());
         }
     }
+
+    @Test
+    void fakeGroup() throws RuntimeException {
+        String[] patterns =  {"a(bcdef)g","a(b)c","ab(cd)a","ab()dc(c)a(bc)"};
+        String[] expected = {"abcdefg","abc","abcda","abdccabc"};
+        assertEquals(patterns.length, expected.length);
+        for (int i = 0; i<patterns.length; i++) {
+            Regular reg = new Regular(patterns[i]);
+            int count = expected[i].length();
+            assertEquals(expected[i], reg.toString());
+            assertEquals(count, ((Concatenation)reg.getRoot()).getExpressions().size());
+        }
+    }
+
+    @Test
+    void fakeGroup2() throws RuntimeException {
+        String[] patterns =  {"a(bcdef)g(a|b)c"};
+        String[] expected = {"abcdefg(a|b)c"};
+        assertEquals(patterns.length, expected.length);
+        for (int i = 0; i<patterns.length; i++) {
+            Regular reg = new Regular(patterns[i]);
+            int count = 9;
+            assertEquals(expected[i], reg.toString());
+            assertEquals(count, ((Concatenation)reg.getRoot()).getExpressions().size());
+        }
+    }
+
+    @Test
+    void fakeGroup3() throws RuntimeException {
+        String[] patterns =  {"((abcdef))"};
+        String[] expected = {"abcdef"};
+        assertEquals(patterns.length, expected.length);
+        for (int i = 0; i<patterns.length; i++) {
+            Regular reg = new Regular(patterns[i]);
+            int count = 6;
+            assertEquals(expected[i], reg.toString());
+            assertEquals(count, ((Concatenation)reg.getRoot()).getExpressions().size());
+        }
+    }
 }

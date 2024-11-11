@@ -41,8 +41,11 @@ class Parser {
         }
         if (concat.getExpressions().size() == 1) {
             return concat.getExpressions().getFirst();
-        }
-        return concat;
+        } else
+            if (concat.needRaise())
+                return concat.raise();
+            else
+                return concat;
     }
 
     private RegexExpression parseFactor() throws RuntimeException {
