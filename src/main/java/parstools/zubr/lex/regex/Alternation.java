@@ -21,8 +21,20 @@ public class Alternation extends RegexExpression {
 
     @Override
     public String toString() {
-        return alternatives.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining("|"));
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for (RegexExpression alt: alternatives) {
+            if (!first)
+                result.append("|");
+            first = false;
+            String altStr = alt.toString();
+            if (altStr.length() > 1) {
+                result.append("(");
+                result.append(altStr);
+                result.append(")");
+            } else
+                result.append(altStr);
+        }
+        return result.toString();
     }
 }
