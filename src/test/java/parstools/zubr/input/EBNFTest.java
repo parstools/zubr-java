@@ -31,7 +31,9 @@ public class EBNFTest {
             ebnf.convert();
             String[] expected = fromSecondElement(testCase);
             String[] actual = ebnf.toLines();
-            assertEquals(expected, actual);
+            assertEquals(expected.length, actual.length);
+            for (int i= 0; i<expected.length; i++)
+                assertEquals(expected[i], actual[i]);
         }
     }
 
@@ -52,7 +54,9 @@ public class EBNFTest {
             ebnf.convert();
             String[] expected = fromSecondElement(testCase);
             String[] actual = ebnf.toLines();
-            assertEquals(expected, actual);
+            assertEquals(expected.length, actual.length);
+            for (int i= 0; i<expected.length; i++)
+                assertEquals(expected[i], actual[i]);
         }
     }
 
@@ -69,20 +73,13 @@ public class EBNFTest {
                 "C->aC",
                 "C->",
         };
-        String[][] testCases = {
-                {"A->a?", "A->a", "A->"},
-                {"A->a+", "A->aA", "A->a"},
-                {"A->a*", "A->aA", "A->"},
-                {"A->ab+c", "A->aBc","B->bB","B->b"},
-                {"A->a(Bc)*d?", "A->aCD","C->BcC","C->","D->d","D->"}
-        };
-        for (String[] testCase : testCases) {
-            EBNF ebnf=new EBNF(true);
-            for (String line: input)
-                ebnf.add(line);
-            ebnf.convert();
-            String[] actual = ebnf.toLines();
-            assertEquals(expected, actual);
-        }
+        EBNF ebnf=new EBNF(true);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
     }
 }
