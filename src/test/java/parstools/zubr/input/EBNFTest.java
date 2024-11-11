@@ -8,9 +8,7 @@ public class EBNFTest {
 
     String[] fromSecondElement(String[] originalArray) {
         String[] newArray = new String[originalArray.length - 1];
-        for (int i = 1; i < originalArray.length; i++) {
-            newArray[i - 1] = originalArray[i];
-        }
+        System.arraycopy(originalArray, 1, newArray, 0, originalArray.length - 1);
         return newArray;
     }
 
