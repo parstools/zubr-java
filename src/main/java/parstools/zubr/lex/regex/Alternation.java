@@ -2,7 +2,6 @@ package parstools.zubr.lex.regex;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Alternation extends RegexExpression {
     final private List<RegexExpression> alternatives;
