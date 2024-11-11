@@ -3,7 +3,7 @@ package parstools.zubr.lex.regex;
 public class Regular {
     final private RegexExpression root;
 
-    public Regular(String pattern) throws Exception {
+    public Regular(String pattern) throws RuntimeException {
         Parser parser = new Parser(pattern);
         this.root = parser.parse();
     }

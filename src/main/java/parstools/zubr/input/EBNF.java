@@ -22,7 +22,7 @@ public class EBNF {
         lines.add(row);
     }
 
-    public void convert() throws Exception {
+    public void convert()  {
         newLines = new ArrayList<>();
         for (String line: lines) {
             Regular reg = new Regular(line);

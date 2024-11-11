@@ -9,7 +9,7 @@ class Parser {
         this.index = 0;
     }
 
-    public RegexExpression parse() throws Exception {
+    public RegexExpression parse() throws RuntimeException {
         RegexExpression expr = parseExpression();
         if (index < pattern.length()) {
             throw new RuntimeException("Unexpected symbol in position " + index);
@@ -17,7 +17,7 @@ class Parser {
         return expr;
     }
 
-    private RegexExpression parseExpression() throws Exception {
+    private RegexExpression parseExpression() throws RuntimeException {
         RegexExpression term = parseTerm();
         if (index < pattern.length() && peek() == '|') {
             Alternation alt = new Alternation();
@@ -33,7 +33,7 @@ class Parser {
         }
     }
 
-    private RegexExpression parseTerm() throws Exception {
+    private RegexExpression parseTerm() throws RuntimeException {
         Concatenation concat = new Concatenation();
         while (index < pattern.length() && peek() != ')' && peek() != '|') {
             RegexExpression factor = parseFactor();
@@ -45,7 +45,7 @@ class Parser {
         return concat;
     }
 
-    private RegexExpression parseFactor() throws Exception {
+    private RegexExpression parseFactor() throws RuntimeException {
         RegexExpression base = parseBase();
         if (index < pattern.length()) {
             char next = peek();
@@ -63,7 +63,7 @@ class Parser {
         return base;
     }
 
-    private RegexExpression parseBase() throws Exception {
+    private RegexExpression parseBase() throws RuntimeException {
         char current = peek();
         if (current == '(') {
             consume(); // konsumuje '('
