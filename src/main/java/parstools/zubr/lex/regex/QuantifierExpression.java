@@ -23,7 +23,6 @@ public class QuantifierExpression extends RegexExpression {
             case ZERO_OR_MORE -> "*";
             case ONE_OR_MORE -> "+";
             case ZERO_OR_ONE -> "?";
-            default -> "";
         };
         String exprString = expression.toString();
         if (exprString.length() > 1)

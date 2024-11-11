@@ -79,7 +79,7 @@ class Parser {
         }
     }
 
-    private char peek() throws Exception {
+    private char peek() {
         assert (index < pattern.length());
         return pattern.charAt(index);
     }
