@@ -99,6 +99,121 @@ public class EBNFTest {
     }
 
     @Test
+    void noChange() throws RuntimeException {
+        String[] input = {
+                "A->aBCde",
+        };
+        String[] expected = {
+                "A->aBCde",
+        };
+        EBNF ebnf=new EBNF(false);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    @Test
+    void ConcatZERO_OR_ONE() throws RuntimeException {
+        String[] input = {
+                "A->AB?c",
+        };
+        String[] expected = {
+                "A->ABc",
+                "A->Ac",
+        };
+        EBNF ebnf=new EBNF(false);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    @Test
+    void ConcatONE_OR_MORE_left() {
+        String[] input = {
+                "A->AB+c",
+        };
+        String[] expected = {
+                "A->ACc",
+                "C->CB",
+                "C->B"
+        };
+        EBNF ebnf = new EBNF(false);
+        for (String line : input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i = 0; i < expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    void ConcatMulti() throws RuntimeException {
+        String[] input = {
+                "A->A*B?c+d",
+        };
+        String[] expected = {
+                "A->CBDd",
+                "A->CDd",
+                "C->CA",
+                "C->",
+                "D->Dc",
+                "D->c"
+        };
+        EBNF ebnf=new EBNF(false);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    void ConcatMultiTwoQuest() throws RuntimeException {
+        String[] input = {
+                "A->A*B?c+d?",
+        };
+        String[] expected = {
+                "A->A*B?c+d?",
+        };
+        EBNF ebnf=new EBNF(false);
+        for (String line: input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i= 0; i<expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    void ConcatONE_OR_MORE_right() {
+        String[] input = {
+                "A->AB+c",
+        };
+        String[] expected = {
+                "A->ACc",
+                "C->BC",
+                "C->B"
+        };
+        EBNF ebnf = new EBNF(true);
+        for (String line : input)
+            ebnf.add(line);
+        ebnf.convert();
+        String[] actual = ebnf.toLines();
+        assertEquals(expected.length, actual.length);
+        for (int i = 0; i < expected.length; i++)
+            assertEquals(expected[i], actual[i]);
+    }
+
+    @Test
     void twoLines() throws RuntimeException {
         String[] input = {
                 "A->Ba*",
