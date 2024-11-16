@@ -2,16 +2,18 @@ package parstools.zubr.input;
 
 import parstools.zubr.lex.regex.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class EBNF {
     boolean preferRightRecursion;
     List<String> lines = new ArrayList<>();
+    Set<Character> availableNtNames = new TreeSet<>();
     List<String> newLines;
 
     EBNF(boolean preferRightRecursion) {
         this.preferRightRecursion = preferRightRecursion;
+        for (char c = 'A'; c<='Z'; c++)
+            availableNtNames.add(c);
     }
 
     public String[] toLines() {
@@ -25,7 +27,8 @@ public class EBNF {
     public void convert()  {
         newLines = new ArrayList<>();
         for (String line: lines) {
-            String nt = line.substring(0,1);
+            Character nt = line.charAt(0);
+            availableNtNames.remove(nt);
             String arrow = line.substring(1,3);
             if (!arrow.equals("->"))
                 throw new RuntimeException("must be ->");
@@ -33,15 +36,48 @@ public class EBNF {
             Regular reg = new Regular(regStr);
             RegexExpression root = reg.getRoot();
             if (root instanceof Alternation) {
-                convAlternation(nt, (Alternation)reg.getRoot());
+                convertAlternation(nt, (Alternation)reg.getRoot());
             } else if (root instanceof QuantifierExpression) {
-                convQuantifierExpression(nt, (QuantifierExpression)reg.getRoot());
+                convertQuantifierExpression(nt, (QuantifierExpression)reg.getRoot());
+            } else if (root instanceof Concatenation) {
+                convertConcatenation(nt, (Concatenation)reg.getRoot());
             }
             else throw new RuntimeException("I can't convert "+line);
         }
     }
 
-    private void convQuantifierExpression(String nt, QuantifierExpression quantExpr) {
+    private void convertConcatenation(Character nt, Concatenation concat) {
+        int numStar = 0;
+        int numPlus = 0;
+        int numQuestions = 0;
+        for (RegexExpression part : concat.getExpressions()) {
+            if (part instanceof QuantifierExpression) {
+                QuantifierExpression qExpr = (QuantifierExpression) part;
+                qExpr.toString();
+                //here stop...
+                switch (qExpr.getQuantifier()) {
+                    case ZERO_OR_MORE -> numStar++;
+                    case ONE_OR_MORE -> numPlus++;
+                    case ZERO_OR_ONE -> numQuestions++;
+                }
+            }
+        }
+        if (numStar + numPlus + numQuestions == 0) {
+            newLines.add(nt + "->" + concat);
+            return;
+        }
+        boolean expandQuest = numQuestions > 1;
+        StringBuilder sb = new StringBuilder();
+        for (RegexExpression part : concat.getExpressions()) {
+            if (part instanceof QuantifierExpression)
+                ;
+            else
+                sb.append(part.toString());
+        }
+        newLines.add(sb.toString());
+    }
+
+    private void convertQuantifierExpression(Character nt, QuantifierExpression quantExpr) {
         Quantifier quant = quantExpr.getQuantifier();
         if (quant == Quantifier.ZERO_OR_ONE) {
             newLines.add(nt + "->" + quantExpr.getExpression());
@@ -59,7 +95,7 @@ public class EBNF {
         }
     }
 
-    private void convAlternation(String nt, Alternation alts) {
+    private void convertAlternation(Character nt, Alternation alts) {
         for (RegexExpression alt: alts)
             newLines.add(nt + "->" + alt);
     }
