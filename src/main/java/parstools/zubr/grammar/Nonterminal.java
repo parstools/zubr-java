@@ -31,7 +31,7 @@ public class Nonterminal extends Symbol {
         rules.add(rule);
     }
 
-    Nonterminal(Grammar grammar, String name) {
+    public Nonterminal(Grammar grammar, String name) {
         super(grammar, false, name);
         this.grammar = grammar;
         minLen = -1;

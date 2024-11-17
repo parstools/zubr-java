@@ -1,6 +1,15 @@
 package parstools.zubr.input;
 
 import org.junit.jupiter.api.Test;
+import parstools.zubr.ebnf.EBNFGrammar;
+import parstools.zubr.ebnf.EBNFRule;
+import parstools.zubr.ebnf.EBNFtoBNFConverter;
+import parstools.zubr.grammar.Grammar;
+import parstools.zubr.grammar.names.LetterNameGenerator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -120,19 +129,24 @@ public class EBNFTest {
     void ConcatZERO_OR_ONE() throws RuntimeException {
         String[] input = {
                 "A->AB?c",
+                "B->ac"
         };
-        String[] expected = {
-                "A->ABc",
-                "A->Ac",
-        };
-        EBNF ebnf=new EBNF(false);
+        List<String> expected = Arrays.asList(
+                "A -> A C c",
+                "B -> a c",
+                "C -> B",
+                "C -> ε"
+        );
+        List<EBNFRule> erules = new ArrayList<>();
         for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
-        assertEquals(expected.length, actual.length);
-        for (int i= 0; i<expected.length; i++)
-            assertEquals(expected[i], actual[i]);
+            erules.add(new EBNFRule(line));
+        EBNFGrammar egrammar = new EBNFGrammar(erules);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        List<String> actual = grammar.toLines();
+        assertEquals(expected.size(), actual.size());
+        for (int i= 0; i<expected.size(); i++)
+            assertEquals(expected.get(i), actual.get(i));
     }
 
     @Test

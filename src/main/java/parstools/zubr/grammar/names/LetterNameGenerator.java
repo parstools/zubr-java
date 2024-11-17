@@ -6,7 +6,7 @@ import java.util.TreeSet;
 public class LetterNameGenerator extends NameGenerator {
     Set<String> availableNtNames = new TreeSet<>();
 
-    LetterNameGenerator(){
+    public LetterNameGenerator(){
         for (char c = 'A'; c<='Z'; c++)
             availableNtNames.add("" + c);
     }

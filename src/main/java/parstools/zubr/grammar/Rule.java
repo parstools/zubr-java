@@ -116,9 +116,14 @@ public class Rule extends ZObject implements Iterable<Symbol> {
         if (nt == null)
             nt = new Nonterminal(grammar, ntName);
         this.grammar = grammar;
-        this.owner = grammar.findNt(ntName);
-        for (String symName: rhsNames)
-            symList.add(grammar.findSymbol(symName));
+        this.owner = nt;
+        if (rhsNames != null)
+            for (String symName: rhsNames) {
+                Symbol sym = grammar.findSymbol(symName);
+                if (sym == null)
+                    sym = new Terminal(grammar, symName);
+                symList.add(sym);
+            }
     }
 
     public void parse(String input) {
@@ -157,12 +162,15 @@ public class Rule extends ZObject implements Iterable<Symbol> {
         StringBuilder sb = new StringBuilder();
         sb.append(owner.toString());
         sb.append(" -> ");
-        for (int i = 0; i < size(); i++) {
-            Symbol symbol = get(i);
-            if (i > 0)
-                sb.append(" ");
-            sb.append(symbol.toString());
-        }
+        if (isEmpty())
+            sb.append("ε");
+        else
+            for (int i = 0; i < size(); i++) {
+                Symbol symbol = get(i);
+                if (i > 0)
+                    sb.append(" ");
+                sb.append(symbol.toString());
+            }
         return sb.toString();
     }
 

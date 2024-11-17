@@ -9,7 +9,7 @@ public class EBNFGrammar {
     Set<String> terminals = new HashSet<>();
     Set<String> nonTerminals = new HashSet<>();
     private String startSymbol;
-    EBNFGrammar(List<EBNFRule> rules) {
+    public EBNFGrammar(List<EBNFRule> rules) {
         startSymbol = rules.getFirst().nonTerminal;
         this.rules = rules;
         for (EBNFRule rule: rules)
@@ -19,7 +19,6 @@ public class EBNFGrammar {
             for (String literal: literals)
                 if (!nonTerminals.contains(literal))
                     terminals.add(literal);
-            System.out.println(terminals);
         }
     }
 }
