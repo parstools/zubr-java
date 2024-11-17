@@ -1,0 +1,37 @@
+program -> declarationPlus
+declarationPlus -> declarationPlus declaration
+declarationPlus -> declaration
+declaration -> variable
+declaration -> function
+variable -> type declarator SEMI
+declarator -> ID
+function -> type ID LPAREN parameters RPAREN block
+parameters -> formalParameter nextParameters
+parameters ->
+nextParameters -> nextParameters COMMA formalParameter
+nextParameters ->
+formalParameter -> type declarator 
+type -> TYPE_INT 
+type -> TYPE_CHAR
+block -> LBrace variableStar statStar RBrace
+variableStar -> variableStar variable
+variableStar -> 
+statStar -> statStar stat
+statStar -> 
+stat -> forStat
+stat -> expr SEMI
+stat -> block
+stat -> assignStat SEMI
+stat -> SEMI
+forStat -> FOR LPAREN assignStat SEMI expr SEMI assignStat RPAREN block
+assignStat -> ID ASSIGN expr
+expr ->  condExpr
+condExpr -> aexpr
+condExpr -> aexpr EQ aexpr
+condExpr -> aexpr LT aexpr
+aexpr -> atom atomNext
+atomNext -> atomNext PLUS atom
+atomNext -> 
+atom -> ID
+atom -> INT
+atom -> LPAREN expr RPAREN 

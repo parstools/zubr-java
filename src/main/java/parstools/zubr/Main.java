@@ -170,6 +170,28 @@ public class Main {
         else return 1;
     }
 
+    static void readCMinus() throws IOException {
+        Path path = Paths.get("src/main/resources/CMinus1.dat");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        Grammar grammar = new Grammar(lines);
+        grammar.eliminationRecursion();
+        if (grammar.stayRecursion)
+            out.println("recursive");
+        grammar.factorization(1);
+        List<String> lines1 = grammar.toLines();
+        lines1.forEach(out::println);
+        ParsingTable table = new ParsingTable(grammar);
+        int resk = -1;
+        for (int k = 1; k <= 4; k++) {
+            boolean res = table.createLL(k);
+            if (res) {
+                resk = k;
+                break;
+            }
+        }
+        out.println("k=" + resk);
+    }
+
     static void readAllGrammars() throws IOException {
         Path path = Paths.get("src/main/resources/deepLL.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
