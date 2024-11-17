@@ -2,12 +2,10 @@ package parstools.zubr.input;
 
 import org.junit.jupiter.api.Test;
 import parstools.zubr.ebnf.EBNFGrammar;
-import parstools.zubr.ebnf.EBNFRule;
 import parstools.zubr.ebnf.EBNFtoBNFConverter;
 import parstools.zubr.grammar.Grammar;
 import parstools.zubr.grammar.names.LetterNameGenerator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,22 +23,22 @@ public class EBNFTest {
     void convertToLR() throws RuntimeException {
         //loops changes to left recursion, suitable to LR parsers
         String[][] testCases = {
-                {"A->a?", "A->a", "A->"},
-                {"A->a+", "A->Aa", "A->a"},
-                {"A->a*", "A->Aa", "A->"},
-                {"A->ab+c", "A->aBc","B->Bb","B->b"},
-                {"A->a(Bc)*d?", "A->aCD","C->CBc","C->","D->d","D->"}
+                {"A->a?", "A -> B", "B -> a", "B -> ε"},
+                {"A->a+",  "A -> B", "B -> B a", "B -> a"},
+                {"A->a*",  "A -> B", "B -> B a", "B -> ε"},
+                {"A->ab+c", "A -> a B c","B -> B b","B -> b"},
+                {"A->a(Bc)*d?", "A -> a C D","C -> C B c","C -> ε","D -> d","D -> ε"}
         };
         for (String[] testCase : testCases) {
-            String input = testCase[0];
-            EBNF ebnf=new EBNF(false);
-            ebnf.add(input);
-            ebnf.convert();
+            String[] input = { testCase[0] };
+            EBNFGrammar egrammar = new EBNFGrammar(input);
+            EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+            Grammar grammar = ebnfConv.convert(egrammar);
             String[] expected = fromSecondElement(testCase);
-            String[] actual = ebnf.toLines();
-            assertEquals(expected.length, actual.length);
+            List<String> actual = grammar.toLines();
+            assertEquals(expected.length, actual.size());
             for (int i= 0; i<expected.length; i++)
-                assertEquals(expected[i], actual[i]);
+                assertEquals(expected[i], actual.get(i));
         }
     }
 

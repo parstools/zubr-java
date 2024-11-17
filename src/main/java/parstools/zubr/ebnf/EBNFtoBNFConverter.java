@@ -8,6 +8,7 @@ import parstools.zubr.lex.regex.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Converter class that transforms EBNF rules into BNF.
@@ -17,15 +18,10 @@ public class EBNFtoBNFConverter {
     private EBNFGrammar egrammar;
     boolean preferRightRecursion;
     private NameGenerator generator;
-    //private int counter; // To generate unique non-terminals like X1, X2, etc.
-    //Set<Character> availableNtNames = new TreeSet<>();
 
     public EBNFtoBNFConverter(boolean preferRightRecursion, NameGenerator generator) {
         this.preferRightRecursion = preferRightRecursion;
         this.generator = generator;
-
-//        for (char c = 'A'; c<='Z'; c++)
-//            availableNtNames.add(c);
     }
 
     public Grammar convert(EBNFGrammar egrammar) throws RuntimeException {
@@ -34,33 +30,16 @@ public class EBNFtoBNFConverter {
         grammar = new Grammar();
         for (EBNFRule rule : ebnfRules) {
             generator.registerName(rule.nonTerminal);
+            Set<String> symNames = rule.production.literals();
+            for (String symName: symNames)
+                generator.registerName(symName);
             grammar.nonterminals.add(new Nonterminal(grammar, rule.nonTerminal));
         }
 
         for (EBNFRule rule : ebnfRules) {
-
-//            String[] parts = rule.split("->");
-//            if (parts.length != 2) {
-//                throw new RuntimeException("Invalid rule (missing '->'): " + rule);
-//            }
-//            String lhs = parts[0].trim();
-//            availableNtNames.remove(lhs.charAt(0));
-//            String rhs = parts[1].trim();
-//            for (int i = 0; i < rhs.length(); i++) {
-//                char c = rhs.charAt(i);
-//                if (c>='A' && c<='Z')
-//                    availableNtNames.remove(c);
-//            }
-
-            // Parse the RHS as a Regular expression
-//            Regular regex = new Regular(rhs);
             RegexExpression expr = rule.production.getRoot();
-            // Process the expression recursively and get the RHS symbols
             List<String> rhsSymbols = processExpression(expr, rule.nonTerminal);
             grammar.addRule(new Rule(grammar, rule.nonTerminal, rhsSymbols));
-            /*// Add the production to the grammar
-            Production p = new Production(rhsSymbols);
-            grammar.addProduction(lhs, p);*/
         }
         return grammar;
     }
