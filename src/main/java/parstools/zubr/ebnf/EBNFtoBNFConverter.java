@@ -40,7 +40,7 @@ public class EBNFtoBNFConverter {
 
     private void fillGrammarSymbols(EBNFGrammar egrammar) {
         grammar = new Grammar();
-        for (String ntName: egrammar.nonTerminals) {
+        for (String ntName: egrammar.nonterminals) {
             generator.registerName(ntName);
             grammar.nonterminals.add(new Nonterminal(grammar, ntName));
         }

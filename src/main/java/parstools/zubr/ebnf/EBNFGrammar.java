@@ -8,15 +8,15 @@ import java.util.Set;
 public class EBNFGrammar {
     List<EBNFRule> rules;
     Set<String> terminals = new HashSet<>();
-    Set<String> nonTerminals = new HashSet<>();
+    Set<String> nonterminals = new HashSet<>();
     public EBNFGrammar(List<EBNFRule> rules) {
         this.rules = rules;
         for (EBNFRule rule: rules)
-            nonTerminals.add(rule.nonTerminal);
+            nonterminals.add(rule.nonTerminal);
         for (EBNFRule rule: rules) {
             Set<String> literals = rule.production.literals();
             for (String literal: literals)
-                if (!nonTerminals.contains(literal))
+                if (!nonterminals.contains(literal))
                     terminals.add(literal);
         }
     }
