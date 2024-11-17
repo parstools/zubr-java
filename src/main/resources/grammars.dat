@@ -1,3 +1,29 @@
+Expr -> Expr + Term
+Expr -> Term
+Term -> i
+
+; removed recursion
+Expr -> Term Expr1
+Expr1 -> + Term Expr1
+Expr1 -> 
+Term -> i
+         
+;https://cstheory.stackexchange.com/questions/6438/determine-if-a-ll2-grammar-is-strong
+;grammar that is LL(2), but not strong LL(2)
+S -> a A a
+S -> b A b a
+A -> b
+A ->
+
+;https://cstheory.stackexchange.com/questions/6438/determine-if-a-ll2-grammar-is-strong
+;strong LL(2), no context needed
+S -> a A a
+S -> b A2 b a
+A -> b
+A ->
+A2 -> b
+A2 ->
+
 ;https://stackoverflow.com/questions/10634197/ll2-language-that-is-not-ll1
 ;S -> a S A | epsilon
 ;A -> a^k b S | c

@@ -193,7 +193,7 @@ public class Main {
     }
 
     static void readAllGrammars() throws IOException {
-        Path path = Paths.get("src/main/resources/deepLL.dat");
+        Path path = Paths.get("src/main/resources/grammars.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         int n = 0;
         int counter = 0;
