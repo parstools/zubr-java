@@ -2,18 +2,16 @@ package parstools.zubr.lex.regex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Concatenation extends RegexExpression {
     final private List<RegexExpression> expressions;
-
     public Concatenation() {
         this.expressions = new ArrayList<>();
     }
-
     public void addExpression(RegexExpression expr) {
         expressions.add(expr);
     }
-
     public List<RegexExpression> getExpressions() {
         return expressions;
     }
@@ -52,5 +50,11 @@ public class Concatenation extends RegexExpression {
             } else
                 result.addExpression(part);
         return result;
+    }
+
+    @Override
+    void addLiteralsToSet(Set<String> literalSet) {
+        for (RegexExpression expression: expressions)
+            expression.addLiteralsToSet(literalSet);
     }
 }

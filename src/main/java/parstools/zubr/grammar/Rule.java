@@ -111,6 +111,16 @@ public class Rule extends ZObject implements Iterable<Symbol> {
         this.owner = owner;
     }
 
+    public Rule(Grammar grammar, String ntName, List<String> rhsNames) {
+        Nonterminal nt = grammar.findNt(ntName);
+        if (nt == null)
+            nt = new Nonterminal(grammar, ntName);
+        this.grammar = grammar;
+        this.owner = grammar.findNt(ntName);
+        for (String symName: rhsNames)
+            symList.add(grammar.findSymbol(symName));
+    }
+
     public void parse(String input) {
         Scanner scanner = new Scanner(input);
         while (scanner.hasNext()) {

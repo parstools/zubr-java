@@ -467,4 +467,15 @@ public class Grammar implements Cloneable {
         startNt.rules.add(startRule);
         return startNt;
     }
+
+    private void addRule(Rule rule) {
+        if (!nonterminals.contains(rule.owner))
+            nonterminals.add(rule.owner);
+        rule.owner.addRule(rule);
+    }
+
+    public void addRules(List<Rule> outRules) {
+        for (Rule rule: outRules)
+            addRule(rule);
+    }
 }

@@ -1,5 +1,7 @@
 package parstools.zubr.lex.regex;
 
+import java.util.Set;
+
 public class QuantifierExpression extends RegexExpression {
     final private RegexExpression expression;
     final private Quantifier quantifier;
@@ -12,7 +14,6 @@ public class QuantifierExpression extends RegexExpression {
     public RegexExpression getExpression() {
         return expression;
     }
-
     public Quantifier getQuantifier() {
         return quantifier;
     }
@@ -29,5 +30,10 @@ public class QuantifierExpression extends RegexExpression {
             return "(" + exprString + ")" + quant;
         else
             return exprString + quant;
+    }
+
+    @Override
+    void addLiteralsToSet(Set<String> literalSet) {
+        expression.addLiteralsToSet(literalSet);
     }
 }

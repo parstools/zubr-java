@@ -1,3 +1,4 @@
+//DEPRECATED!!
 package parstools.zubr.input;
 
 import parstools.zubr.lex.regex.*;

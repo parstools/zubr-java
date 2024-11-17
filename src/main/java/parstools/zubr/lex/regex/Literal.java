@@ -1,8 +1,9 @@
 package parstools.zubr.lex.regex;
 
+import java.util.Set;
+
 public class Literal extends RegexExpression {
     final private char value;
-
     public Literal(char value) {
         this.value = value;
     }
@@ -14,5 +15,11 @@ public class Literal extends RegexExpression {
     @Override
     public String toString() {
         return Character.toString(value);
+    }
+
+    @Override
+    void addLiteralsToSet(Set<String> literalSet) {
+        literalSet.add(""+value);//todo value ma być stringiem
+
     }
 }

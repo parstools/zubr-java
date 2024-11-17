@@ -3,6 +3,7 @@ package parstools.zubr.lex.regex;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class Alternation extends RegexExpression implements Iterable<RegexExpression> {
     final private List<RegexExpression> alternatives;
@@ -36,5 +37,11 @@ public class Alternation extends RegexExpression implements Iterable<RegexExpres
             result.append(altStr);
         }
         return result.toString();
+    }
+
+    @Override
+    void addLiteralsToSet(Set<String> literalSet) {
+        for (RegexExpression expression: alternatives)
+            expression.addLiteralsToSet(literalSet);
     }
 }
