@@ -137,10 +137,7 @@ public class EBNFTest {
                 "C -> B",
                 "C -> ε"
         );
-        List<EBNFRule> erules = new ArrayList<>();
-        for (String line: input)
-            erules.add(new EBNFRule(line));
-        EBNFGrammar egrammar = new EBNFGrammar(erules);
+        EBNFGrammar egrammar = new EBNFGrammar(input);
         EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
         Grammar grammar = ebnfConv.convert(egrammar);
         List<String> actual = grammar.toLines();
