@@ -9,9 +9,7 @@ public class EBNFGrammar {
     List<EBNFRule> rules;
     Set<String> terminals = new HashSet<>();
     Set<String> nonTerminals = new HashSet<>();
-    private String startSymbol;
     public EBNFGrammar(List<EBNFRule> rules) {
-        startSymbol = rules.getFirst().nonTerminal;
         this.rules = rules;
         for (EBNFRule rule: rules)
             nonTerminals.add(rule.nonTerminal);

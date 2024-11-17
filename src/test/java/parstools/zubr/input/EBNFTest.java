@@ -23,9 +23,9 @@ public class EBNFTest {
     void convertToLR() throws RuntimeException {
         //loops changes to left recursion, suitable to LR parsers
         String[][] testCases = {
-                {"A->a?", "A -> B", "B -> a", "B -> ε"},
-                {"A->a+",  "A -> B", "B -> B a", "B -> a"},
-                {"A->a*",  "A -> B", "B -> B a", "B -> ε"},
+                {"A->a?", "A -> a", "A -> ε"},
+                {"A->a+",  "A -> A a", "A -> a"},
+                {"A->a*",  "A -> A a", "A -> ε"},
                 {"A->ab+c", "A -> a B c","B -> B b","B -> b"},
                 {"A->a(Bc)*d?", "A -> a C D","C -> C B c","C -> ε","D -> d","D -> ε"}
         };
@@ -35,10 +35,10 @@ public class EBNFTest {
             EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
             Grammar grammar = ebnfConv.convert(egrammar);
             String[] expected = fromSecondElement(testCase);
-            List<String> actual = grammar.toLines();
-            assertEquals(expected.length, actual.size());
+            String[] actual = grammar.toArray();
+            assertEquals(expected.length, actual.length);
             for (int i= 0; i<expected.length; i++)
-                assertEquals(expected[i], actual.get(i));
+                assertEquals(expected[i], actual[i]);
         }
     }
 
@@ -46,19 +46,19 @@ public class EBNFTest {
     void convertToLL() throws RuntimeException {
         //loops changes to right recursion, suitable to LL parsers
         String[][] testCases = {
-                {"A->a?", "A->a", "A->"},
-                {"A->a+", "A->aA", "A->a"},
-                {"A->a*", "A->aA", "A->"},
-                {"A->ab+c", "A->aBc","B->bB","B->b"},
-                {"A->a(Bc)*d?", "A->aCD","C->BcC","C->","D->d","D->"}
+                {"A->a?", "A -> a", "A -> ε"},
+                {"A->a+", "A -> a A", "A -> a"},
+                {"A->a*", "A -> a A", "A -> ε"},
+                {"A->ab+c", "A -> a B c","B -> b B","B -> b"},
+                {"A->a(Bc)*d?", "A -> a C D","C -> B c C","C -> ε","D -> d","D -> ε"}
         };
         for (String[] testCase : testCases) {
-            String input = testCase[0];
-            EBNF ebnf=new EBNF(true);
-            ebnf.add(input);
-            ebnf.convert();
+            String[] input = { testCase[0] };
+            EBNFGrammar egrammar = new EBNFGrammar(input);
+            EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(true, new LetterNameGenerator());
+            Grammar grammar = ebnfConv.convert(egrammar);
             String[] expected = fromSecondElement(testCase);
-            String[] actual = ebnf.toLines();
+            String[] actual = grammar.toArray();
             assertEquals(expected.length, actual.length);
             for (int i= 0; i<expected.length; i++)
                 assertEquals(expected[i], actual[i]);
@@ -71,14 +71,13 @@ public class EBNFTest {
                 "A->a+",
         };
         String[] expected = {
-                "A->Aa",
-                "A->a",
+                "A -> A a",
+                "A -> a",
         };
-        EBNF ebnf=new EBNF(false);
-        for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i= 0; i<expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -90,16 +89,15 @@ public class EBNFTest {
                 "A->aB|Cd|e|",
         };
         String[] expected = {
-                "A->aB",
-                "A->Cd",
-                "A->e",
-                "A->",
+                "A -> a B",
+                "A -> C d",
+                "A -> e",
+                "A -> ε",
         };
-        EBNF ebnf=new EBNF(false);
-        for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i= 0; i<expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -111,13 +109,12 @@ public class EBNFTest {
                 "A->aBCde",
         };
         String[] expected = {
-                "A->aBCde",
+                "A -> a B C d e",
         };
-        EBNF ebnf=new EBNF(false);
-        for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i= 0; i<expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -138,10 +135,10 @@ public class EBNFTest {
         EBNFGrammar egrammar = new EBNFGrammar(input);
         EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
         Grammar grammar = ebnfConv.convert(egrammar);
-        List<String> actual = grammar.toLines();
-        assertEquals(expected.size(), actual.size());
+        String[] actual = grammar.toArray();
+        assertEquals(expected.size(), actual.length);
         for (int i= 0; i<expected.size(); i++)
-            assertEquals(expected.get(i), actual.get(i));
+            assertEquals(expected.get(i), actual[i]);
     }
 
     @Test
@@ -150,15 +147,14 @@ public class EBNFTest {
                 "A->AB+c",
         };
         String[] expected = {
-                "A->ACc",
-                "C->CB",
-                "C->B"
+                "A -> A C c",
+                "C -> C B",
+                "C -> B"
         };
-        EBNF ebnf = new EBNF(false);
-        for (String line : input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i = 0; i < expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -176,11 +172,10 @@ public class EBNFTest {
                 "D->Dc",
                 "D->c"
         };
-        EBNF ebnf=new EBNF(false);
-        for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i= 0; i<expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -193,11 +188,10 @@ public class EBNFTest {
         String[] expected = {
                 "A->A*B?c+d?",
         };
-        EBNF ebnf=new EBNF(false);
-        for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i= 0; i<expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -212,11 +206,10 @@ public class EBNFTest {
                 "C->BC",
                 "C->B"
         };
-        EBNF ebnf = new EBNF(true);
-        for (String line : input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(false, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i = 0; i < expected.length; i++)
             assertEquals(expected[i], actual[i]);
@@ -229,17 +222,16 @@ public class EBNFTest {
                 "A->b+",
         };
         String[] expected = {
-                "A->BC",
-                "B->bB",
-                "B->b",
-                "C->aC",
-                "C->",
+                "A -> B C",
+                "A -> b A",
+                "A -> b",
+                "C -> a C",
+                "C -> ε",
         };
-        EBNF ebnf=new EBNF(true);
-        for (String line: input)
-            ebnf.add(line);
-        ebnf.convert();
-        String[] actual = ebnf.toLines();
+        EBNFGrammar egrammar = new EBNFGrammar(input);
+        EBNFtoBNFConverter ebnfConv = new EBNFtoBNFConverter(true, new LetterNameGenerator());
+        Grammar grammar = ebnfConv.convert(egrammar);
+        String[] actual = grammar.toArray();
         assertEquals(expected.length, actual.length);
         for (int i= 0; i<expected.length; i++)
             assertEquals(expected[i], actual[i]);

@@ -8,8 +8,6 @@ import parstools.zubr.generator.RuleOrder;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import static java.lang.System.out;
-
 public class GenerateTest {
 
     @Disabled
@@ -32,7 +30,7 @@ public class GenerateTest {
             if (counter==limit) {
                 System.out.printf("%d %d%n",cnt,i);
                 writer.printf(";%d%n",cnt);
-                g.toLines().forEach(writer::println);
+                g.toList().forEach(writer::println);
                 writer.println();
                 if (cnt % 100 == 0)
                     writer.flush();

@@ -16,10 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -178,8 +175,8 @@ public class Main {
         if (grammar.stayRecursion)
             out.println("recursive");
         grammar.factorization(1);
-        List<String> lines1 = grammar.toLines();
-        lines1.forEach(out::println);
+        List<String> lines1 = grammar.toList();
+        lines1.forEach(System.out::println);
         ParsingTable table = new ParsingTable(grammar);
         int resk = -1;
         for (int k = 1; k <= 4; k++) {
@@ -411,12 +408,12 @@ public class Main {
         lines.add("F -> ( E )");
         lines.add("F -> i");
         Grammar grammar = new Grammar(lines);
-        List<String> lines1 = grammar.toLines();
-        lines1.forEach(out::println);
+        List<String> lines1 = grammar.toList();
+        lines1.forEach(System.out::println);
         out.println();
         grammar.eliminationRecursion();
-        List<String> lines2 = grammar.toLines();
-        lines2.forEach(out::println);
+        List<String> lines2 = grammar.toList();
+        lines2.forEach(System.out::println);
     }
 
     static void testElimIndirectRecursion() {
@@ -431,11 +428,11 @@ public class Main {
         Generator generator = new Generator(grammar, 5, RuleOrder.roSort);
         while (generator.next())
             out.println(generator.string());
-        List<String> lines1 = grammar.toLines();
+        List<String> lines1 = grammar.toList();
         lines1.forEach(out::println);
         out.println();
         grammar.eliminationRecursion();
-        List<String> lines2 = grammar.toLines();
+        List<String> lines2 = grammar.toList();
         lines2.forEach(out::println);
         generator = new Generator(grammar, 5, RuleOrder.roSort);
         while (generator.next())

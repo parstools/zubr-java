@@ -9,6 +9,6 @@ public class FactorizationTest {
     void factorization() {
         Grammar g = TestGrammars.factor();
         g.factorization(1);
-        List<String> lines1 = g.toLines();
+        List<String> lines1 = g.toList();
     }
 }

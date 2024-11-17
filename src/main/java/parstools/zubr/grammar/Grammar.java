@@ -302,7 +302,7 @@ public class Grammar implements Cloneable {
         return h.hash();
     }
 
-    public List<String> toLines() {
+    public List<String> toList() {
         List<String> lines = new ArrayList<>();
         for (int i = 0; i < nonterminals.size(); i++) {
             Nonterminal nt = nonterminals.get(i);
@@ -310,6 +310,10 @@ public class Grammar implements Cloneable {
                 lines.add(rule.toString());
         }
         return lines;
+    }
+
+    public String[] toArray() {
+        return toList().toArray(new String[0]);
     }
 
     public Object clone() {
