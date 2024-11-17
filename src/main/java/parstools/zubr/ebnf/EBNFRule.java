@@ -1,6 +1,6 @@
 package parstools.zubr.ebnf;
 
-import parstools.zubr.lex.regex.Regular;
+import parstools.zubr.regex.Regular;
 
 public class EBNFRule {
     String nonTerminal;

@@ -1,4 +1,4 @@
-package parstools.zubr.lex.regex;
+package parstools.zubr.regex;
 
 public enum OpType {
     CONCATENATION,

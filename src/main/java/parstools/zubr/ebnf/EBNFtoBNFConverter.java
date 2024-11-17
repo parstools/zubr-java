@@ -5,11 +5,11 @@ import parstools.zubr.grammar.Nonterminal;
 import parstools.zubr.grammar.Rule;
 import parstools.zubr.grammar.Terminal;
 import parstools.zubr.grammar.names.NameGenerator;
-import parstools.zubr.lex.regex.*;
+import parstools.zubr.regex.*;
+import parstools.zubr.regex.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Converter class that transforms EBNF rules into BNF.

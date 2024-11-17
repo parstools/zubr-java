@@ -1,4 +1,4 @@
-package parstools.zubr.lex.regex;
+package parstools.zubr.regex;
 
 public enum Quantifier {
     ZERO_OR_MORE, // *

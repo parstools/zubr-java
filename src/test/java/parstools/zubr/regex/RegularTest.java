@@ -1,6 +1,8 @@
-package parstools.zubr.lex.regex;
+package parstools.zubr.regex;
 
 import org.junit.jupiter.api.Test;
+import parstools.zubr.regex.Concatenation;
+import parstools.zubr.regex.Regular;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

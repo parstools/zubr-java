@@ -1,4 +1,4 @@
-package parstools.zubr.lex.regex;
+package parstools.zubr.regex;
 
 import java.util.ArrayList;
 import java.util.List;
