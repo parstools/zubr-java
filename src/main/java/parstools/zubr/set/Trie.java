@@ -213,6 +213,8 @@ public class Trie {
             Trie sub = entry.getValue();
             if (sub != null)
                 sum += sub.calculateSize();
+            else
+                sum += 1;
         }
         return sum;
     }

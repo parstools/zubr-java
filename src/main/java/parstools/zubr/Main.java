@@ -168,7 +168,7 @@ public class Main {
     }
 
     static void readCMinus() throws IOException {
-        Path path = Paths.get("src/main/resources/CMinus1.dat");
+        Path path = Paths.get("src/main/resources/CMinus.dat");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         Grammar grammar = new Grammar(lines);
         grammar.eliminationRecursion();

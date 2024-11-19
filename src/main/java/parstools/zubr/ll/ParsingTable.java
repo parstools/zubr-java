@@ -15,9 +15,19 @@ public class ParsingTable {
     Grammar grammar;
     List<TableElem> rows;
     Map<Rule, TokenSet> ruleSets;
+    private SetContainer sc;
+
+    public int firstSize() {
+        return sc.firstSize();
+    }
+
+    public int followSize() {
+        return sc.followSize();
+    }
 
     public ParsingTable(Grammar grammar) {
         this.grammar = grammar;
+        sc = new SetContainer(grammar);
     }
 
     private boolean isConflict() {
@@ -41,7 +51,6 @@ public class ParsingTable {
         for (int i = 0; i < grammar.nonterminals.size(); i++) {
             rows.add(new TableElem(grammar));
         }
-        SetContainer sc = new SetContainer(grammar);
         sc.reset(k);
         sc.makeFirstSetsK(k);
         sc.makeFollowSetsK(k);

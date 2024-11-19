@@ -17,6 +17,20 @@ public class SetContainer {
     public List<TokenSet> firstSets = new ArrayList<>();
     public List<TokenSet> followSets = new ArrayList<>();
 
+    public int firstSize() {
+        int result = 0;
+        for (TokenSet tokenSet: firstSets)
+            result += tokenSet.calculateSize();
+        return result;
+    }
+
+    public int followSize() {
+        int result = 0;
+        for (TokenSet tokenSet: followSets)
+            result += tokenSet.calculateSize();
+        return result;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
